@@ -237,9 +237,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
   .ar-bottom .btn-primary{width:100%;}
   /* Bottom filter pill + sheet */
   .filter-fade{
-    position:fixed;left:0;right:0;
-    bottom:0;height:130px;
-    background:linear-gradient(180deg,rgba(245,240,232,0) 0%,rgba(245,240,232,0.85) 45%,var(--cream) 80%);
+    position:fixed;left:50%;transform:translateX(-50%);
+    bottom:0;width:100%;max-width:420px;height:130px;
+    background:linear-gradient(180deg,rgba(245,240,232,0) 0%,rgba(245,240,232,0.9) 50%,var(--cream) 80%);
     pointer-events:none;z-index:55;
   }
   .bottom-filter-pill{
@@ -1471,6 +1471,17 @@ function openTodayDetail(day){
       <div class="benefits">${benefits}</div>
     </div>`:''}
     <div class="block">
+      <div class="block-title">Have a question?</div>
+      <div class="recipe-q-wrap">
+        <textarea class="recipe-q-input" id="recipe-q-input" rows="2" placeholder="Ask about ${day.title} — ingredients, method, your condition..."></textarea>
+        <button class="recipe-q-btn" id="recipe-q-submit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send to SB's team
+        </button>
+        <div class="recipe-q-note">Our team usually replies within 24 hrs. Your question may help others too — we sometimes add it to the FAQ.</div>
+      </div>
+    </div>
+    <div class="block">
       <div class="block-title">Quick quiz</div>
       ${mcqs}
     </div>
@@ -1483,17 +1494,6 @@ function openTodayDetail(day){
       <div class="wa-card">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.78 11.78 0 0 0 12 0 11.78 11.78 0 0 0 3.48 3.48 11.78 11.78 0 0 0 0 12c0 2.07.54 4.1 1.56 5.9L0 24l6.27-1.64A11.94 11.94 0 0 0 12 24a11.78 11.78 0 0 0 8.52-3.48A11.78 11.78 0 0 0 24 12a11.78 11.78 0 0 0-3.48-8.52z"/></svg>
         <div class="wa-card-text">${day.nudge}</div>
-      </div>
-    </div>
-    <div class="block">
-      <div class="block-title">Have a question?</div>
-      <div class="recipe-q-wrap">
-        <textarea class="recipe-q-input" id="recipe-q-input" rows="2" placeholder="Ask about ${day.title} — ingredients, method, your condition..."></textarea>
-        <button class="recipe-q-btn" id="recipe-q-submit">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Send to SB's team
-        </button>
-        <div class="recipe-q-note">Our team usually replies within 24 hrs. Your question may help others too — we sometimes add it to the FAQ.</div>
       </div>
     </div>
     <div style="height:110px;"></div>
