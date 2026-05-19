@@ -465,6 +465,16 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .share-actions .share-confirm svg{width:16px;height:16px;}
 
 </style>
+<script src="assets/analytics.js"></script>
+<script>
+  // Init Habuild Analytics (Mixpanel) as early as possible.
+  if(window.HabuildAnalytics){
+    window.HabuildAnalytics.init({
+      prototype_name: 'recipe-nutrition-magazine',
+      prototype_version: 'v1'
+    });
+  }
+</script>
 </head>
 <body>
 <div class="phone-wrap">
@@ -497,7 +507,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     </div>
     <div class="bp-wrap">
       <div class="bp-grid" id="bp-grid"></div>
-      <button class="bp-more" id="bp-more">
+      <button class="bp-more" id="bp-more" data-track="CTA Clicked" data-track-prop-cta_label="See more recipes" data-track-prop-cta_location="home-preview">
         Browse all recipes
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
@@ -523,7 +533,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
       </div>
     </div>
     <div class="upload-cta-wrap">
-      <button class="upload-cta-card" id="upload-cta-home">
+      <button class="upload-cta-card" id="upload-cta-home" data-track="CTA Clicked" data-track-prop-cta_label="Add a recipe" data-track-prop-cta_location="home-card">
         <div class="upload-cta-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         </div>
@@ -533,7 +543,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
         </div>
         <svg class="upload-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
-      <button class="upload-cta-card" id="faq-cta-home" style="margin-top:12px;">
+      <button class="upload-cta-card" id="faq-cta-home" data-track="CTA Clicked" data-track-prop-cta_label="Ask a question (FAQ)" data-track-prop-cta_location="home-card" style="margin-top:12px;">
         <div class="upload-cta-icon" style="background:linear-gradient(135deg,var(--cream-deep),var(--sand));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
@@ -570,7 +580,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
       <div class="ob-label">Name</div>
       <input class="ob-input" id="name-input" placeholder="Your name" autocomplete="given-name"/>
     </div>
-    <button class="btn-primary" id="name-continue" disabled>Continue</button>
+    <button class="btn-primary" id="name-continue" data-track="CTA Clicked" data-track-prop-cta_label="Continue (name)" data-track-prop-cta_location="onboarding-name" disabled>Continue</button>
   </div>
 </section>
 <section id="screen-onb-phone" class="screen">
@@ -602,7 +612,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     </div>
     <div class="ob-helper">We won't message you anything other than your Habuild updates.</div>
     <div class="ob-spacer"></div>
-    <button class="btn-primary" id="phone-continue" disabled>Get started</button>
+    <button class="btn-primary" id="phone-continue" data-track="CTA Clicked" data-track-prop-cta_label="Get started (phone)" data-track-prop-cta_location="onboarding-phone" disabled>Get started</button>
   </div>
 </section>
 <!-- =================== TODAY DETAIL =================== -->
@@ -619,7 +629,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     <div class="icon-btn" id="today-save-btn" aria-label="Save">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D5016" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
     </div>
-    <button class="btn-primary" id="today-share-btn">Share with family</button>
+    <button class="btn-primary" id="today-share-btn" data-track="Share Initiated" data-track-prop-share_target="family" data-track-prop-content_type="recipe">Share with family</button>
   </div>
 </section>
 <!-- =================== MEMBER DETAIL =================== -->
@@ -632,7 +642,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
   </div>
   <div class="detail-body" id="member-detail-body"></div>
   <div class="bottom-cta">
-    <button class="btn-primary" id="member-submit-btn">Add your dish</button>
+    <button class="btn-primary" id="member-submit-btn" data-track="CTA Clicked" data-track-prop-cta_label="Add your dish" data-track-prop-cta_location="member-detail">Add your dish</button>
   </div>
 </section>
 <!-- =================== BROWSE =================== -->
@@ -651,7 +661,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
   <!-- Cream fade behind floating filter pill -->
   <div class="filter-fade"></div>
   <!-- Bottom filter pill -->
-  <button class="bottom-filter-pill" id="bottom-filter-pill">
+  <button class="bottom-filter-pill" id="bottom-filter-pill" data-track="CTA Clicked" data-track-prop-cta_label="Filter" data-track-prop-cta_location="browse-bottom">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
     <span id="bottom-filter-label">Filter</span>
   </button>
@@ -780,26 +790,43 @@ const STATE = {
   remoteClubSubmissions:[], // pulled from Supabase if available (in-memory, refreshed)
   _currentDay:null
 };
-function track(event,props){ console.log('[track]',event,props||{}); }
+function track(event,props){
+  // Local console for debugging + forward to Habuild Analytics (Mixpanel)
+  try{ console.log('[track]',event,props||{}); }catch(e){}
+  try{ if(window.HabuildAnalytics) window.HabuildAnalytics.track(event, props||{}); }catch(e){}
+}
 
 // ---- Helpers used by recipe Q&A ----
 function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 // Try to answer a recipe-specific question from local PDF knowledge before sending to team.
-// Returns {answer, source} or null.
+// Returns {answer, source, heading} or null.
+//
+// Built from:
+//  - Theme for Feb 2026 (3).pdf (Ambali Practice booklet)
+//  - 1,521 WhatsApp queries audited 2026-05-19 (top themes: how-to-make, send-recipe,
+//    storage, who-should-avoid, timing, results-timeline, what-is-ambali, alternatives,
+//    regional names)
 function findRecipeAnswer(question, day){
-  const q = (question||'').toLowerCase();
-  if(!q || q.length<3) return null;
-  // Normalize words, drop common stopwords
-  const stop = new Set(['the','a','an','is','are','what','how','do','i','to','for','of','in','on','my','me','can','should','this','that','it','and','or','but','with','about','have','has','be','was','were','will','if','when','why','which','please','tell','any','some','also']);
-  const qTokens = q.replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(w=>w.length>2 && !stop.has(w));
+  if(!question) return null;
+  // Lowercase + normalize common ambali misspellings into canonical 'ambali'
+  let q = question.toLowerCase();
+  q = q.replace(/\b(ambli|ambil|amali|ambli|ambla|amba?ali|amabali|ambli)\b/g,'ambali');
+  q = q.replace(/\b(ragi)\s+(malt|kanji|pej|drink)\b/g,'ambali');
+  q = q.replace(/\bnachni\b/g,'ragi');
+  if(q.length<3) return null;
+
+  // Token: keep alphanumerics + Devanagari (so Hindi words match against tags)
+  const stop = new Set(['the','a','an','is','are','what','how','do','i','to','for','of','in','on','my','me','can','should','this','that','it','and','or','but','with','about','have','has','be','was','were','will','if','when','why','which','please','tell','any','some','also','need','want','take','here','too','only','one','from','they','them','their','there','these','those','then','than','so','as','at','up','out','off','not','no','yes','ok','okay','hi','hello','am','pm','ji','aap','aapka','kya','hai','ke','ka','ki','ko','mein','main','se','tu','hum','ho']);
+  const qTokens = q.replace(/[^a-z0-9ऀ-ॿ\s]/g,' ').split(/\s+/).filter(w=>w.length>=2 && !stop.has(w));
   if(!qTokens.length) return null;
 
   let best = null;
-  const score = (text, weight=1) => {
-    const t = (text||'').toLowerCase();
+  const score = (text, weight) => {
+    if(!text) return 0;
+    const t = String(text).toLowerCase();
     let s = 0;
-    qTokens.forEach(tok=>{ if(t.includes(tok)) s += weight; });
+    qTokens.forEach(tok=>{ if(t.indexOf(tok)>=0) s += weight; });
     return s;
   };
 
@@ -807,25 +834,25 @@ function findRecipeAnswer(question, day){
   if(day && day.qa){
     day.qa.forEach(item=>{
       const s = score(item.q,3) + score(item.why,2);
-      if(s>=3 && (!best || s>best.score)) best = {score:s, answer:item.why, source:'recipe-mcq', heading:item.q};
+      if(s>=4 && (!best || s>best.score)) best = {score:s, answer:item.why, source:'recipe-mcq', heading:item.q};
     });
   }
-  // 2. Recipe-level fields
-  if(day){
-    const recipeText = [day.explanation, day.nudge, (day.recipe && day.recipe.benefits||[]).join(' ')].join(' ');
-    const s = score(recipeText,1);
-    if(s>=3 && (!best || s>best.score)){
-      const ans = day.explanation || day.nudge || '';
-      if(ans) best = {score:s, answer:ans, source:'recipe-body'};
-    }
-  }
-  // 3. Global FAQS (tags + question + answer)
+  // 2. Global FAQS — tags weighted highest, then q, then a
   if(typeof FAQS!=='undefined'){
     FAQS.forEach(faq=>{
       const tagText = (faq.tags||[]).join(' ');
-      const s = score(faq.q,2) + score(faq.a,1) + score(tagText,3);
-      if(s>=3 && (!best || s>best.score)) best = {score:s, answer:faq.a, source:'faq', heading:faq.q};
+      const s = score(tagText,4) + score(faq.q,2) + score(faq.a,1);
+      if(s>=4 && (!best || s>best.score)) best = {score:s, answer:faq.a, source:'faq', heading:faq.q};
     });
+  }
+  // 3. Recipe-level fields as a last resort (only if no FAQ/MCQ hit yet)
+  if(!best && day){
+    const recipeText = [day.explanation, day.nudge, (day.recipe && day.recipe.benefits||[]).join(' ')].join(' ');
+    const s = score(recipeText,1);
+    if(s>=4){
+      const ans = day.explanation || day.nudge || '';
+      if(ans) best = {score:s, answer:ans, source:'recipe-body'};
+    }
   }
   return best;
 }
@@ -928,6 +955,8 @@ function go(id){
   const el=document.getElementById(id);
   if(el){ el.classList.add('active'); el.scrollTop=0; }
   window.scrollTo(0,0);
+  // Fire Screen Viewed via the analytics helper (it has its own dedupe + entry_screen logic)
+  try{ if(window.HabuildAnalytics) window.HabuildAnalytics.screen(id); }catch(e){}
 }
 document.querySelectorAll('[data-back-home]').forEach(b=>{
   b.addEventListener('click',()=>go('screen-home'));
@@ -1355,59 +1384,145 @@ function getFeatured(){return CLUB.find(c=>c.id==='c3')||CLUB[0];} // Kirti Sarm
 function getOtherMembers(){return CLUB.slice(1);}
 
 // =================== FAQ DATA ===================
+// FAQS — grounded in Theme for Feb 2026 (3).pdf + the top user-question themes
+// from the Habuild Recipes WhatsApp feedback channel (May 2026).
+// Each entry has tags used by findRecipeAnswer() for keyword matching.
 const FAQS = [
-  // Ambali troubleshooting (from PDF)
+  // ===== What is Ambali (most basic question — many new members) =====
+  { id:'q-what-is', q:'What is Ambali?',
+    a:'Ambali is a light, easy-to-make millet drink. You cook millet flour (ragi or jowar) with water into a smooth paste, then add buttermilk and salt. It is thin like chaas — easy to sip. People drink it in the morning. It is naturally rich in calcium, iron and fibre.',
+    tags:['what','ambali','ambli','ambil','amali','introduction','define','meaning','dont know','new']},
+  { id:'q-regional-names', q:'Is Ambali called something else in my region?',
+    a:'Same drink, different names: Ambali (Karnataka), Ambli / Ambil (Maharashtra), Amali (some areas), Ragi malt / Ragi kanji (Tamil Nadu, Kerala, Andhra), Nachni pej (Konkan). All refer to a fermented or freshly cooked millet drink. If your grandmother used to make ragi or jowar pej or kanji — that is the same thing.',
+    tags:['name','called','regional','marathi','tamil','telugu','kannada','malayalam','konkan','what is it']},
+
+  // ===== Ambali troubleshooting (directly from PDF page 5) =====
   { id:'q-lumps', q:'My Ambali has lumps — what should I do?',
     a:'Lumps form when the paste isn\'t mixed thoroughly. The fix: mix the ragi flour into ½ cup water very well first — only add the full glass of water once the paste is completely lump-free. A smooth paste makes a smooth Ambali.',
-    tags:['lump','lumps','clump','paste']},
+    tags:['lump','lumps','clump','paste','smooth']},
   { id:'q-thick', q:'My Ambali came out too thick — what now?',
     a:'Add a little water at a time and mix. The texture should be like chaas — thin and easy to sip. Don\'t pour in too much water at once.',
-    tags:['thick','heavy','consistency']},
+    tags:['thick','heavy','consistency','texture','dense']},
+  { id:'q-thin', q:'My Ambali is too thin or watery',
+    a:'Cook it slightly longer on a low flame, stirring continuously, until it looks slightly thick and glossy. If already cooled, you can heat a fresh small batch with a bit more flour and mix the two together.',
+    tags:['thin','watery','runny','liquid']},
   { id:'q-sour', q:'My Ambali turned out very sour',
     a:'This happens when the overnight fermentation goes too long. A slight sourness is normal. (1) Shorten the fermentation time — 6-8 hours max. (2) Try the freshly made version — you can drink it right away.',
-    tags:['sour','fermentation','tangy']},
+    tags:['sour','fermentation','tangy','khatta']},
   { id:'q-bland', q:'My Ambali tastes bland',
     a:'Add a pinch of namak and ½ tsp roasted jeera powder. A little more chaas brings out the tang. Try chopped coriander or green chilli. Find your own taste.',
-    tags:['bland','tasteless','flat']},
+    tags:['bland','tasteless','flat','no flavor','no flavour']},
 
-  // Timing & ritual
+  // ===== Storage / make-ahead (12% of user questions) =====
+  { id:'q-store-fridge', q:'Can I keep Ambali in the fridge?',
+    a:'For best taste, drink Ambali fresh on the same day. If you must store it: cook the base (millet + water) and keep in the fridge for up to 24 hours. Add the buttermilk and salt only just before drinking — buttermilk makes it sourer in the fridge. Don\'t store for more than 1 day.',
+    tags:['store','storage','fridge','refrigerate','keep','next day','tomorrow','later']},
+  { id:'q-make-ahead', q:'Can I make Ambali for 2 days at once?',
+    a:'Yes — make the base (millet flour + water cooked smooth) for 2 days and keep covered in the fridge. Add buttermilk and salt fresh each day. The base alone keeps well for 24-36 hours; once buttermilk is added the drink is best within 4-6 hours.',
+    tags:['two days','2 days','batch','ahead','multiple','enough','consecutive']},
+  { id:'q-overnight', q:'Overnight or freshly made — which is better?',
+    a:'Both are beneficial. Overnight (traditional, 6-8 hrs): lighter taste, easier digestion, mild tang. Freshly made: quick, light, no waiting. Choose by your routine. Consistency matters more than perfection.',
+    tags:['overnight','fresh','traditional','difference','both','better']},
+  { id:'q-no-pot', q:'I don\'t have an earthen pot for fermentation — what now?',
+    a:'No problem at all. Use a clean steel or glass bowl. Cover with a plate and rest on the kitchen counter for 6-8 hours. The fermentation comes from the buttermilk culture, not the pot. Earthen pots are traditional but not required.',
+    tags:['earthen','pot','clay','matka','steel','glass','container','bowl','no pot']},
+
+  // ===== Who should avoid / contraindications (8% — safety) =====
+  { id:'q-diabetes-safe', q:'Is Ambali safe if I have diabetes?',
+    a:'Yes — Ambali is generally good for diabetes. Millets release sugar slowly and improve insulin sensitivity. Drink it on empty stomach. Skip honey or jaggery. If you are on diabetes medication, monitor your fasting sugar for the first week and let your doctor know — you may need to adjust the dose.',
+    tags:['diabetes','diabetic','sugar','insulin','blood sugar','medication']},
+  { id:'q-bp-safe', q:'Is Ambali safe if I have high BP?',
+    a:'Yes, with one note: keep the salt small (just a pinch). The buttermilk and millets are fine. Avoid the green chilli and onion garnish if you are on a low-sodium diet. If you are on BP medication, no need to skip — just go easy on the salt.',
+    tags:['bp','blood pressure','high bp','hypertension','salt','sodium']},
+  { id:'q-thyroid-safe', q:'Can thyroid patients drink Ambali?',
+    a:'Yes — Ambali is safe with thyroid issues. Millets in moderation (1 glass a day) do not interfere with thyroid medication. Take your thyroid tablet 30-45 min before drinking Ambali so absorption isn\'t affected. If you have any concerns, mention to your doctor at the next visit.',
+    tags:['thyroid','hypothyroid','hyperthyroid','tsh','thyronorm','levothyroxine']},
+  { id:'q-pregnancy-safe', q:'Is Ambali safe during pregnancy?',
+    a:'In small amounts (half a glass), yes — millets are nutritious in pregnancy. But please run it past your gynaecologist first, especially in the first trimester. Skip the overnight fermented version during pregnancy (stick to freshly made). Don\'t use raw onion or green chilli garnishes.',
+    tags:['pregnancy','pregnant','garbh','expecting','trimester','baby']},
+  { id:'q-kids-safe', q:'Can children drink Ambali?',
+    a:'Yes — Ambali is excellent for children above 2 years. It is light, rich in calcium and iron, and great for growing kids. For children, skip the salt or use very little, and use freshly made (not fermented) version. A small glass once a day is enough.',
+    tags:['kid','kids','child','children','baby','toddler','bachcha']},
+  { id:'q-medication', q:'I am on medication — do I need to consult my doctor?',
+    a:'Ambali is generally safe with most medications. If you are on diabetes medication, BP medication, or thyroid medication, please tell your doctor at your next visit. Keep a 30-45 min gap between taking any tablet and drinking Ambali so absorption is not affected.',
+    tags:['medication','medicine','tablet','drug','consult','doctor','prescription']},
+
+  // ===== Timing — when to drink (8%) =====
   { id:'q-when-ambali', q:'When should I drink Ambali?',
     a:'In the morning, after yoga, on an empty stomach — best between 7-9 AM. Avoid it with lunch or dinner. Digestion and absorption are at their best on an empty stomach.',
-    tags:['when','timing','time','morning']},
+    tags:['when','timing','time','morning','kab','samay']},
+  { id:'q-breakfast-after', q:'Can I have breakfast after Ambali?',
+    a:'Yes — keep a 30-45 minute gap. The body absorbs Ambali\'s nutrients best on an empty stomach, then you can have your normal breakfast. Roti, poha, idli, oats, fruits — all fine after Ambali.',
+    tags:['breakfast','after','before','meal','khana','nashta','interval','gap']},
   { id:'q-empty-stomach', q:'What should I drink on an empty stomach?',
     a:'Right after waking, 1 glass of water (room temperature). 30 min later — Ambali, herbal tea (fennel-cumin, CCF), or lemon water. Water before chai or coffee — less acidity, more hydration.',
-    tags:['empty stomach','morning drink','wake up']},
+    tags:['empty stomach','khali pet','morning drink','wake up','sober']},
+  { id:'q-night', q:'Can I have Ambali at night or evening?',
+    a:'Stick to morning. Ambali in the evening is heavy on digestion and can disturb sleep. If you missed it in the morning, have it before 11 AM. If you really want a similar evening drink, try CCF tea or fennel water instead.',
+    tags:['night','evening','dinner','raat','shaam']},
   { id:'q-chai', q:'When should I avoid chai?',
     a:'(1) On an empty stomach — it causes acidity. (2) After 4 PM — it affects your sleep. (3) Right before or after a meal — iron absorption drops. Best: morning water or Ambali first, then chai with breakfast.',
     tags:['chai','tea','coffee','timing']},
 
-  // Health conditions
+  // ===== Results / how long (7%) =====
+  { id:'q-results-time', q:'How many days will it take to see results?',
+    a:'Most people notice lighter feeling and better digestion within 1 week. Visible changes — energy, less bloating, steady blood sugar — usually show in 2-4 weeks of daily Ambali. Hair, skin and weight changes take 6-8 weeks. Consistency matters more than intensity.',
+    tags:['result','results','effect','benefit','how long','kitne din','days','weeks','farak','dikhne','asar']},
+  { id:'q-benefits-list', q:'What are the benefits of Ambali?',
+    a:'Daily Ambali helps you feel: lighter and more comfortable, better digestion with less bloating, steadier energy without heaviness, more hydrated. It is also a simple way to add calcium, iron and fibre from millets into your routine.',
+    tags:['benefit','benefits','good','fayda','faayda','help','helpful','use']},
+
+  // ===== Substitutes & alternatives =====
+  { id:'q-no-buttermilk', q:'I don\'t have buttermilk — can I use curd?',
+    a:'Yes. Whisk 2 tbsp of curd with ¼ cup water to make quick chaas. Use that. Or skip the buttermilk entirely and just have it with salt and water — the freshly made version doesn\'t need buttermilk.',
+    tags:['buttermilk','chaas','curd','dahi','yogurt','no buttermilk','substitute','alternative']},
+  { id:'q-jaggery', q:'Can I add jaggery or sugar to Ambali?',
+    a:'Traditionally no — Ambali is a savoury drink (salt + chaas + jeera). Adding jaggery changes the digestive effect and works against the blood-sugar benefit. If you really need sweetness, half a date soaked in the buttermilk works better than jaggery. For diabetics — strictly no jaggery.',
+    tags:['jaggery','gud','sugar','sweet','meetha','honey']},
+  { id:'q-other-millet', q:'Can I use bajra, kodo or little millet?',
+    a:'Yes — all millets work. Bajra is best in cold months (it is warming). Kodo and little millet are gentle and good for digestive issues. Ragi is the easiest to start with (smoothest texture). Jowar is the most cooling. Rotate between them across the week.',
+    tags:['bajra','kodo','little millet','samai','varagu','rajgira','rajkira','other millet','different millet']},
+  { id:'q-rajkira', q:'Can Ambali be made with rajgira (amaranth) powder?',
+    a:'Rajgira (amaranth) is not a traditional Ambali ingredient. It is a different grain — works better as a flour for chilla or roti. For Ambali, stick to ragi, jowar, bajra or other small millets. The texture and digestion behaviour are different with rajgira.',
+    tags:['rajgira','rajkira','amaranth','ramdana','chaulai']},
+
+  // ===== Servings & quantity =====
+  { id:'q-one-person', q:'How much for one person?',
+    a:'For 1 glass (1 person): 2 tbsp millet flour (about 30g), ½ cup water for the paste, 1 glass water for cooking, ½ to 1 glass extra water after cooling, ½ cup buttermilk, salt to taste. The recipe in the app is for 1 glass — double everything for 2 people.',
+    tags:['one','1 person','single','solo','akela','for me','myself','quantity']},
+  { id:'q-grams', q:'Can you give measurements in grams?',
+    a:'Yes — for 1 glass: 30g (about 2 tbsp) millet flour, 250ml (1 glass) water for cooking + 125ml (½ cup) for the paste + 125ml extra after cooling, 125ml (½ cup) buttermilk, 2g (a pinch) salt. Approximate measurements work fine — Ambali is forgiving.',
+    tags:['gram','grams','ml','millilitre','milliliter','measure','weight','exact','approx']},
+  { id:'q-family-batch', q:'Can I make it for the whole family at once?',
+    a:'Yes! Multiply the base recipe by the number of people. Keep the base plain (ragi flour, water, salt, chaas). Then add individual add-ons to each serving — coriander for one, green chilli for another, just jeera for someone else. Everyone gets their own version.',
+    tags:['family','joint family','everyone','whole family','large batch','ghar','sab','log','persons','people','serving','servings','how many','number','recipe for']},
+
+  // ===== Seasonal (~1%) =====
+  { id:'q-summer', q:'Is Ambali okay in summer?',
+    a:'Ambali is perfect for summer — that is when it shines. It is hydrating, cooling, light on the stomach. Jowar is especially cooling for summer. Drink slightly chilled (room-temperature buttermilk) for max summer comfort.',
+    tags:['summer','garmi','hot','heat','garm','warm season']},
+  { id:'q-winter', q:'Can I drink Ambali in winter?',
+    a:'Yes — but switch to ragi or bajra (these are warming). Skip the cold buttermilk — use room-temperature or slightly warm buttermilk. Add a pinch of dry ginger powder (sonth) for extra warmth. Drink within 30 min of preparing — don\'t let it sit cold.',
+    tags:['winter','cold','sardi','thanda','cool season']},
+
+  // ===== Texture goal (PDF "final texture") =====
+  { id:'q-final-texture', q:'What should the final texture of Ambali be?',
+    a:'Thin and easy to sip — like chaas (buttermilk). You should be able to drink it from a glass, not eat it with a spoon. If it is too thick to sip, add water slowly and mix.',
+    tags:['final','final texture','texture','consistency','should be','target']},
+
+  // ===== Generic health (kept from before) =====
   { id:'q-ghee', q:'Is ghee okay with diabetes?',
     a:'Yes, in limited amounts — 1 tsp a day, in sabzi or dal. Pure desi ghee doesn\'t spike blood sugar — it actually lowers the GI of a meal. Healthier than refined oil. Watch the portion — 1 tsp is enough.',
-    tags:['ghee','diabetes','sugar','desi ghee']},
+    tags:['ghee','desi ghee']},
   { id:'q-joint', q:'What should I eat for joint pain?',
     a:'Cumin-ginger-lemon tea daily. Haldi milk at night (with a pinch of pepper for absorption). Omega-3 — whole flaxseed, walnuts, chia. An anti-inflammatory diet — leafy greens, lightly cooked vegetables, less refined oil and sugar.',
-    tags:['joint','pain','knee','arthritis']},
+    tags:['joint','knee','arthritis','ghutna']},
   { id:'q-acidity', q:'A home remedy for acidity?',
     a:'Cardamom (elaichi) tea — it cools the stomach. A glass of water first thing in the morning. CCF tea daily. Cold milk for instant relief. Avoid spicy food, heavy masala, and chai on an empty stomach. Chew saunf after meals.',
-    tags:['acidity','heartburn','burning','gas','reflux']},
-  { id:'q-bp', q:'Breakfast for BP control?',
-    a:'Magnesium-rich — moong dal chilla, sprouts salad, vegetable poha. Less salt. Coconut water and bananas are fine. Avoid refined carbs (white bread, biscuits). Hibiscus tea daily — you\'ll see a difference in 6 weeks.',
-    tags:['bp','blood pressure','high bp','hypertension']},
-  { id:'q-thyroid', q:'What should I avoid with thyroid issues?',
-    a:'Don\'t eat large amounts of raw cruciferous vegetables (raw cauliflower, broccoli, cabbage) — cook them. Limit soya products. Avoid refined sugar. Iodine-rich foods (rock salt, dairy) and selenium (Brazil nuts, sunflower seeds) help.',
-    tags:['thyroid','hypothyroid','tsh']},
-
-  // Ambali specific
-  { id:'q-overnight', q:'Overnight or freshly made — which is better?',
-    a:'Both are beneficial. Overnight (traditional): lighter taste, easier digestion. Freshly made: quick and light. Choose by your routine. Consistency matters more than perfection.',
-    tags:['overnight','fresh','traditional','difference','both']},
-  { id:'q-millet-choice', q:'Ragi or jowar — which is better?',
-    a:'Both are good, with different benefits. Ragi: more calcium and iron, slightly body-warming — good in winter and for children. Jowar: cooling, summer-friendly, gluten-free. Jowar in the heat, ragi in the cold.',
-    tags:['ragi','jowar','millet','choice','difference']},
-  { id:'q-everyone', q:'Can I make it for the whole family at once?',
-    a:'Yes! Keep the base recipe plain (ragi flour, water, namak, chaas). Then add individual add-ons to each serving — coriander for one, green chilli for another, just jeera for someone else. Everyone gets their own.',
-    tags:['family','joint family','everyone']}
+    tags:['acidity','heartburn','burning','gas','reflux','jalan']},
+  { id:'q-snack-evening', q:'A healthy snack for evening cravings?',
+    a:'Roasted chana, a handful of soaked almonds + walnuts, fruit (apple, banana, papaya), bhuna jeera with curd, or a small bowl of sprouts. Avoid biscuits, namkeen, fried snacks. CCF tea or tulsi tea can also kill the craving — often dehydration is mistaken for hunger.',
+    tags:['snack','evening','craving','hunger','bhukh','chai time','5pm','6pm','7pm']}
 ];
 
 function findFAQAnswer(query){
@@ -1942,7 +2057,14 @@ phoneContinue.addEventListener('click',()=>{
   STATE.user.phone=phoneInput.value.trim();
   STATE.user.prefix=phonePrefix.value;
   saveState();
-  track('Onboarding Phone Submitted');
+  // Capture Mixpanel identity now that we have both name + phone
+  try{
+    if(window.HabuildAnalytics){
+      window.HabuildAnalytics.captureIdentity(STATE.user.name, STATE.user.phone);
+    }
+  }catch(e){}
+  track('Onboarding Phone Submitted',{fields_filled:2});
+  track('Form Submitted',{form_name:'onboarding',fields_filled:2});
   track('Onboarding Completed');
   go('screen-home');
   renderHome();
