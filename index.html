@@ -451,7 +451,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
         SB's take · 0:28
       </div>
       <div class="cover-content">
-        <div class="cover-eyebrow" id="mag-eyebrow">Today's recipe · Day 4 of 7</div>
+        <div class="cover-eyebrow" id="mag-eyebrow">Today's recipe · Day 2 of 6</div>
         <h1 class="cover-title" id="mag-title">Cardamom<br/>Herbal Tea</h1>
         <p class="cover-lead" id="mag-lead">Light, fresh, gentle — the recipe that calms a heavy stomach without trying.</p>
         <a class="cover-cta" id="mag-cta">Read recipe
@@ -893,14 +893,24 @@ const IMG = {
   mem_apple_carrot:'https://images.unsplash.com/photo-1564093497595-593b96d80180?w=900&q=80',
   mem_oh_salad:'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=900&q=80',
   mem_karela:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=900&q=80',
-  // Ambali (May 18-24, 2026) — 7-day current-week journey, pre-downloaded local images
+  // Ambali — 6-day journey, pre-downloaded local images
   amb_d1_jowar:'assets/recipes/amb_d1_jowar.jpg',
   amb_d2_ragi_jeera:'assets/recipes/amb_d2_ragi_jeera.jpg',
   amb_d3_jowar_thin:'assets/recipes/amb_d3_jowar_thin.jpg',
   amb_d4_ragi_balance:'assets/recipes/amb_d4_ragi_balance.jpg',
   amb_d5_favourite:'assets/recipes/amb_d5_favourite.jpg',
   amb_d6_family:'assets/recipes/amb_d6_family.jpg',
-  amb_d7_reflection:'assets/recipes/amb_d7_reflection.jpg',
+  // 10 new recipes from Feb microhabits PDF
+  yogurt_cucumber:'assets/recipes/yogurt_cucumber.jpg',
+  chickpea_herb:'assets/recipes/chickpea_herb.jpg',
+  beetroot_carrot:'assets/recipes/beetroot_carrot.jpg',
+  sweet_potato:'assets/recipes/sweet_potato.jpg',
+  mixed_sprouts:'assets/recipes/mixed_sprouts.jpg',
+  beetroot_roti:'assets/recipes/beetroot_roti.jpg',
+  coconut_water:'assets/recipes/coconut_water.jpg',
+  tulsi_tea:'assets/recipes/tulsi_tea.jpg',
+  cinnamon_tea:'assets/recipes/cinnamon_tea.jpg',
+  ccf_tea:'assets/recipes/ccf_tea.jpg',
   // Legacy Ambali keys kept for back-compat (point to d2 default)
   amb_intro:'assets/recipes/amb_d2_ragi_jeera.jpg',
   amb_basic:'assets/recipes/amb_d2_ragi_jeera.jpg',
@@ -918,7 +928,7 @@ const IMG = {
 // MAY 2026 — Ambali 11-day millet drink journey (replaces previous multi-theme content)
 const DAYS = [
 // ===== AMBALI 7-DAY JOURNEY — Mon May 18 → Sun May 24 (Week 2 from PDF + Sat/Sun extensions) =====
-  { id:'amb-d1', date:'2026-05-18', week:1, weekName:'Ambali Week', day:'Mon', type:'recipe', img:IMG.amb_d1_jowar,
+  { id:'amb-d1', date:'2026-05-18', weekName:'Ambali', day:'Mon', type:'recipe', img:IMG.amb_d1_jowar,
     title:'Jowar Ambali',
     short:'A new millet — try jowar (sorghum).',
     explanation:'Week one begins. Try jowar flour — the texture is a little different and the taste is mild. Jowar is more cooling in summer — a perfect hot-weather drink.',
@@ -933,7 +943,7 @@ const DAYS = [
     ]
   },
 
-  { id:'amb-d2', date:'2026-05-19', week:1, weekName:'Ambali Week', day:'Tue', type:'recipe', img:IMG.amb_d2_ragi_jeera,
+  { id:'amb-d2', date:'2026-05-19', weekName:'Ambali', day:'Tue', type:'recipe', img:IMG.amb_d2_ragi_jeera,
     title:'Ragi Ambali + Jeera',
     short:'A familiar combo — the comfort of ragi.',
     explanation:'Day 2 — ragi flour with jeera. This combination could become your go-to. Iron-rich ragi paired with digestion-friendly jeera.',
@@ -948,7 +958,7 @@ const DAYS = [
     ]
   },
 
-  { id:'amb-d3', date:'2026-05-20', week:1, weekName:'Ambali Week', day:'Wed', type:'recipe', img:IMG.amb_d3_jowar_thin,
+  { id:'amb-d3', date:'2026-05-20', weekName:'Ambali', day:'Wed', type:'recipe', img:IMG.amb_d3_jowar_thin,
     title:'Thin Jowar Drink',
     short:'Jowar Ambali, drink-style.',
     explanation:'Day 3 — jowar Ambali with extra water, drink-style. The cooling effect doubles in summer: jowar\'s cooling plus extra hydration.',
@@ -963,7 +973,7 @@ const DAYS = [
     ]
   },
 
-  { id:'amb-d4', date:'2026-05-21', week:1, weekName:'Ambali Week', day:'Thu', type:'recipe', img:IMG.amb_d4_ragi_balance,
+  { id:'amb-d4', date:'2026-05-21', weekName:'Ambali', day:'Thu', type:'recipe', img:IMG.amb_d4_ragi_balance,
     title:'Perfectly Balanced Ragi',
     short:'Right salt, right water — perfect taste.',
     explanation:'Day 4 — balance the ragi Ambali perfectly. Namak, water, chaas, jeera — every proportion just right. This could become your signature Ambali.',
@@ -978,7 +988,7 @@ const DAYS = [
     ]
   },
 
-  { id:'amb-d5', date:'2026-05-22', week:1, weekName:'Ambali Week', day:'Fri', type:'recipe', img:IMG.amb_d5_favourite,
+  { id:'amb-d5', date:'2026-05-22', weekName:'Ambali', day:'Fri', type:'recipe', img:IMG.amb_d5_favourite,
     title:'Your Favourite Ambali',
     short:'After 5 days — your own Ambali.',
     explanation:'Day 5 — the week is closing. Make whichever style you liked best — ragi or jowar, thick or thin, plain or garnished. This is your Ambali.',
@@ -993,7 +1003,7 @@ const DAYS = [
     ]
   },
 
-  { id:'amb-d6', date:'2026-05-23', week:1, weekName:'Ambali Week', day:'Sat', type:'recipe', img:IMG.amb_d6_family,
+  { id:'amb-d6', date:'2026-05-23', weekName:'Ambali', day:'Sat', type:'recipe', img:IMG.amb_d6_family,
     title:'Family Ambali',
     short:'For the whole family — together.',
     explanation:'Day 6 — the Saturday family pour. Make one base, let each family member pick their own add-on. Perfect for joint families — everyone\'s own twist.',
@@ -1005,20 +1015,6 @@ const DAYS = [
       {q:'Why keep the family base plain?',options:['It\'s easier','Tastes differ — individual add-ons','Tradition'],correct:1,why:'A plain base with custom add-ons works for mother-in-law and kids alike.'},
       {q:'How much water for 4 servings?',options:['1 glass','4 glasses plus extra to adjust','10 glasses'],correct:1,why:'Keep the ratio the same — 4x flour means 4x water.'},
       {q:'The most common add-on?',options:['Sugar','Roasted jeera and namak','Ice'],correct:1,why:'Traditional Karnataka style — savoury and warming.'}
-    ]
-  },
-
-  { id:'amb-d7', date:'2026-05-24', week:1, weekName:'Ambali Week', day:'Sun', type:'habit', img:IMG.amb_d7_reflection,
-    title:'Week\'s Reflection',
-    short:'What did you learn this week? What would you repeat?',
-    explanation:'Day 7 — Sunday. No recipe today. Just reflection. You tried Ambali for 6 days this week — how did it feel? What would you repeat? How will you continue?',
-    reflection:'Which day this week felt best? Why?',
-    nudge:'Today, just think — could Ambali become a habit for you?',
-    conditions:['habit-building','reflection','women-health'],
-    qa:[
-      {q:'Why do habits form?',options:['By magic','Daily repeat plus a small win','By force'],correct:1,why:'Repeat plus reward equals the habit loop (Charles Duhigg).'},
-      {q:'The best way to keep Ambali going?',options:['Force it every day','Your favourite version, 4-5 days a week','Only weekends'],correct:1,why:'A realistic frequency — 4-5 days a week is sustainable.'},
-      {q:'What if you miss a day?',options:['Stop entirely','Restart tomorrow — zero shame','Skip the whole week'],correct:1,why:'A habit\'s strength is in its comebacks, not perfection.'}
     ]
   },
 
@@ -1112,6 +1108,97 @@ const DAYS = [
     conditions:['immunity','skin','hair','antioxidants','digestion'],
     recipe:{name:'Amla Shot',ingredients:['2 fresh amla (Indian gooseberry)','¼ cup water','Pinch black salt','Optional: tiny piece ginger'],method:['Wash amla, deseed, chop','Blend with water + black salt','Strain through fine sieve','Pour 30 ml shot','Drink first thing morning','Refrigerate rest — use within 2 days']},
     qa:[{q:'Why is amla\'s Vit C special?',options:['Stronger taste','Heat-stable — survives cooking','Cheaper'],correct:1,why:'Unlike orange Vit C which degrades, amla\'s tannin-bound C stays active.'},{q:'When during the year?',options:['Only summer','Winter when amla is in season + cold-prone months','Never'],correct:1,why:'Amla peaks Oct-Feb — also when immunity needs the most help.'},{q:'Side note?',options:['Sourness can erode teeth — rinse mouth after','Causes hair fall','Bad for digestion'],correct:0,why:'Acidic — quick water rinse protects enamel.'}]
+  },
+  // ===== 10 NEW RECIPES FROM FEB MICROHABITS PDF =====
+  { id:'yogurt-cucumber', date:null, weekName:'Digestion', type:'recipe', img:IMG.yogurt_cucumber,
+    title:'Yogurt Cucumber Salad', short:'One bowl of fibre — cool, simple, daily.',
+    explanation:'A single bowl of fibre-rich salad daily is enough — no quantity rules. Cool yogurt with cucumber gives fibre, hydration, and gut-friendly bacteria in one bite.',
+    reflection:'Did one bowl actually feel filling?',
+    nudge:'Add one fibre food today — fruit OR a small salad. That\'s it.',
+    conditions:['digestion','gut-health','weight'],
+    recipe:{name:'Yogurt Cucumber Salad',ingredients:['1 cucumber, diced','½ cup curd (yogurt)','¼ tsp roasted jeera powder','Pinch of black salt','Fresh coriander leaves','Optional: a few pomegranate seeds'],method:['Dice cucumber small','Whisk curd smooth','Mix cucumber into curd','Sprinkle jeera powder + black salt','Top with coriander','Eat fresh as a side or snack'],benefits:['Soluble fibre + hydration','Probiotics for gut','Cooling for summer','Filling but light']},
+    qa:[{q:'Why is one bowl enough?',options:['Tradition','Consistency beats quantity on day one','To save money'],correct:1,why:'Building a daily habit matters more than perfect portions.'},{q:'Why pair fibre with water/curd?',options:['Tastes better','Fibre needs water to swell and work','It cools the body'],correct:1,why:'Fibre is like a sponge — needs water to soften and move smoothly.'},{q:'Best time to eat?',options:['Anytime in the day','With or before lunch','Only at night'],correct:1,why:'Eating fibre before/with the main meal helps slow sugar spikes.'}]
+  },
+  { id:'chickpea-herb', date:null, weekName:'Digestion', type:'recipe', img:IMG.chickpea_herb,
+    title:'Chickpea Herb Salad', short:'Plant protein + fibre in one bowl.',
+    explanation:'Boiled chana with fresh herbs gives slow-release fibre, plant protein, and keeps you full longer. Drink water alongside — fibre works best with hydration.',
+    reflection:'Did you remember to sip water along with this salad?',
+    nudge:'Sip water with your fibre today — it helps fibre work, not feel heavy.',
+    conditions:['digestion','protein','weight','energy'],
+    recipe:{name:'Chickpea Herb Salad',ingredients:['1 cup boiled chana (chickpeas)','½ onion, finely chopped','1 tomato, chopped','Handful coriander + mint','½ lemon (juice)','½ tsp chaat masala','Salt to taste'],method:['Boil chickpeas till soft (or use canned, rinsed)','Mix with chopped onion + tomato','Add herbs, lemon, chaat masala','Toss well','Eat fresh — keeps 1 day in fridge'],benefits:['Plant protein','Steady energy','High fibre','Beats packaged snacks']},
+    qa:[{q:'Why drink water with fibre?',options:['Just for thirst','Fibre swells in water and prevents heaviness','To dilute taste'],correct:1,why:'Without water, fibre can feel heavy or constipating — water makes it work.'},{q:'Best time?',options:['Late dinner','Lunch or evening snack','Only mornings'],correct:1,why:'Slow-digesting protein + fibre keeps you full till next meal.'},{q:'Why add herbs?',options:['Colour only','More micronutrients + flavour without salt','Tradition'],correct:1,why:'Coriander and mint add iron, antioxidants, and natural digestive support.'}]
+  },
+  { id:'beetroot-carrot', date:null, weekName:'Digestion', type:'recipe', img:IMG.beetroot_carrot,
+    title:'Beetroot & Carrot Salad', short:'Slow chewing is the secret — not the recipe.',
+    explanation:'Today\'s habit is not what you eat — but how. Chew fibre slowly. Eating fast causes gas and bloating. Saliva and gut both need time. Bonus: jaw muscles work too.',
+    reflection:'Did slowing down change how full you felt?',
+    nudge:'Today, chew each bite of fibre slowly — count 15-20 chews.',
+    conditions:['digestion','iron','blood-sugar','skin'],
+    recipe:{name:'Beetroot & Carrot Salad',ingredients:['1 small beetroot, grated','1 carrot, grated','1 tbsp roasted peanuts (crushed)','½ lemon (juice)','½ tsp roasted jeera powder','Salt + pepper','Fresh coriander'],method:['Grate beetroot + carrot raw','Toss with peanuts','Squeeze lemon, sprinkle jeera + salt','Top with coriander','Eat slowly — chew each bite well'],benefits:['Iron + folate (beetroot)','Beta-carotene (carrot)','Crunch slows down eating','Natural sweetness']},
+    qa:[{q:'Why eat fibre slowly?',options:['For taste','Fast eating causes gas + bloating','It saves time'],correct:1,why:'Saliva starts digestion in the mouth — chewing well prevents heaviness later.'},{q:'Side benefit of crunchy salads?',options:['Better jawline + fullness signal','Fewer calories','None'],correct:0,why:'More chewing also gives the brain time to register fullness.'},{q:'Best season?',options:['Only summer','Cooler months — beetroot is at its sweetest','Only winter'],correct:1,why:'Winter beetroot is naturally sweeter and more vibrant.'}]
+  },
+  { id:'sweet-potato', date:null, weekName:'Digestion', type:'recipe', img:IMG.sweet_potato,
+    title:'Ayurvedic Sweet Potato Salad', short:'Eat fibre BEFORE the main meal.',
+    explanation:'Today\'s habit is about order — eat a little fibre before the main meal. Just a few bites: fruit, salad, sabzi. Stomach prepares, sugar spikes gentle, no overeating. Same food, same plate, just different sequence.',
+    reflection:'Did eating fibre first change how much rice/roti you ate after?',
+    nudge:'Try fibre before your main meal today — even 3-4 bites help.',
+    conditions:['digestion','blood-sugar','weight','energy'],
+    recipe:{name:'Ayurvedic Sweet Potato Salad',ingredients:['1 boiled sweet potato (cubed)','1 tsp ghee','½ tsp jeera','Pinch hing (asafoetida)','½ tsp chaat masala','½ lemon (juice)','Black salt','Coriander leaves'],method:['Boil sweet potato, peel, cube','Heat ghee, splutter jeera + hing','Toss sweet potato in this','Add chaat masala, lemon, black salt','Top with coriander','Eat warm — 3-4 bites before main meal'],benefits:['Slow-release carbs','Vitamin A + fibre','Warming for cool months','Stops overeating later']},
+    qa:[{q:'Why fibre BEFORE the main meal?',options:['Saves time','Helps portion control + slows sugar spikes','Tradition only'],correct:1,why:'Even a few bites of fibre first signals fullness — body eats less after.'},{q:'Why ghee + jeera?',options:['Just flavour','Ghee carries fat-soluble nutrients, jeera aids digestion','Tradition'],correct:1,why:'A small spoon of ghee actually helps absorption of vitamin A from sweet potato.'},{q:'Same food, different order?',options:['No difference','Order changes how sugar enters blood + how full you feel','Order makes no sense'],correct:1,why:'Sequence matters — fibre first, then protein, then carbs is the gentlest order.'}]
+  },
+  { id:'mixed-sprouts', date:null, weekName:'Digestion', type:'recipe', img:IMG.mixed_sprouts,
+    title:'Mixed Sprouts Salad', short:'A small bowl, anytime — fibre + plant protein.',
+    explanation:'Sprouts or soaked chana once a day — no big bowl needed. Even a small portion gives fibre, plant protein, and keeps you full longer. Better than packaged snacks. Morning, afternoon, evening — any time works.',
+    reflection:'Did the sprout bowl actually replace a packet snack today?',
+    nudge:'Add one small bowl of sprouts today — anytime, any way.',
+    conditions:['digestion','protein','weight','iron'],
+    recipe:{name:'Mixed Sprouts Salad',ingredients:['½ cup mixed sprouts (moong + chana + matki)','½ onion, chopped','1 tomato, chopped','½ green chilli','½ lemon (juice)','½ tsp chaat masala','Salt + coriander'],method:['Soak whole moong + chana overnight','Drain, tie in muslin, sprout 24 hrs','Steam sprouts 3-4 min (easier on digestion)','Mix with onion, tomato, chilli','Squeeze lemon, season, top with coriander'],benefits:['High plant protein','Easy digestion (sprouting helps)','Nutrient absorption','Replaces packet snacks']},
+    qa:[{q:'Why sprout the dals?',options:['Looks pretty','Soaking + sprouting reduces heaviness + boosts nutrients','Saves time'],correct:1,why:'Sprouting unlocks nutrients and makes pulses easier on the gut.'},{q:'How much is enough?',options:['Big bowl','A small bowl — consistency over quantity','Two bowls'],correct:1,why:'Small + daily beats big + occasional.'},{q:'Why steam sprouts?',options:['Better taste','Easier on the stomach, especially for sensitive guts','Tradition only'],correct:1,why:'Light steaming makes sprouts digestible while keeping the nutrients.'}]
+  },
+  { id:'beetroot-roti', date:null, weekName:'Digestion', type:'recipe', img:IMG.beetroot_roti,
+    title:'Beetroot Roti', short:'Hide veggies inside the roti — same dish, more fibre.',
+    explanation:'Add vegetables to your roti dough — beetroot, spinach, methi, carrot, whatever you have. Same roti, extra fibre, no new dish, no extra cooking time. The "feeling healthy" without feeling healthy.',
+    reflection:'Which veggie roti did your family actually finish?',
+    nudge:'Today, knead one veggie into the roti dough — that\'s it.',
+    conditions:['digestion','family','iron','hidden-veg','weight'],
+    recipe:{name:'Beetroot Roti',ingredients:['1 small beetroot, grated','2 cups atta (whole wheat flour)','½ tsp salt','½ tsp jeera','Water to knead','Ghee for cooking'],method:['Grate beetroot finely','Mix with atta, salt, jeera','Knead with little water (beetroot releases moisture)','Rest dough 15 min','Roll, cook on tawa as usual','Brush with ghee — serve hot'],benefits:['Hidden iron + fibre','Softer, more colourful rotis','Kids eat without fuss','No extra cooking time']},
+    qa:[{q:'Why add veggies to roti dough?',options:['Looks pretty','Same dish, more fibre + nutrients, no extra effort','Just colour'],correct:1,why:'No new dish, no extra time — the easiest fibre upgrade.'},{q:'Best veggies to try?',options:['Only beetroot','Beetroot, spinach, methi, carrot — rotate','Only spinach'],correct:1,why:'Different veggies give different fibres + nutrients — rotate over the week.'},{q:'Tip for soft rotis?',options:['Add water generously','Veggies release moisture — add water slowly','Skip resting'],correct:1,why:'Wet veggies = less water needed in the dough.'}]
+  },
+  { id:'coconut-water', date:null, weekName:'Hydration', type:'recipe', img:IMG.coconut_water,
+    title:'Coconut Water', short:'Hydration + natural minerals in one glass.',
+    explanation:'Plain water alone isn\'t enough — the body also needs minerals to hold onto water. Coconut water is nature\'s electrolyte drink — sodium, potassium, magnesium. One glass gives steady hydration, not the "drink and go to the bathroom" feeling.',
+    reflection:'Did your energy feel steadier with coconut water vs plain water?',
+    nudge:'Today, swap one glass of plain water for coconut water (or add fruits/veggies).',
+    conditions:['hydration','energy','minerals','summer'],
+    recipe:{name:'Coconut Water',ingredients:['1 fresh tender coconut (or 1 glass packaged unsweetened)','Optional: pinch of black salt','Optional: squeeze of lemon'],method:['Crack open fresh tender coconut','Pour out the water','Drink fresh — within 30 min of opening','Optional: pinch of black salt + lemon for extra minerals'],benefits:['Natural electrolytes','Better cellular hydration','Light on stomach','Cooling']},
+    qa:[{q:'Why plain water alone is not enough?',options:['It is enough','Body needs minerals to hold water properly','Cold water works better'],correct:1,why:'Without minerals, kidneys flush out the water — you pee more without feeling hydrated.'},{q:'Why coconut water specifically?',options:['Tastes good','Natural electrolytes — sodium, potassium, magnesium','Cheap'],correct:1,why:'It\'s close to your body\'s own mineral balance — hydrates at the cellular level.'},{q:'When is coconut water best?',options:['Only summer','After yoga, in summer, or after sweating','Only winter'],correct:1,why:'Anytime the body has lost minerals — post-workout, summer, or after illness.'}]
+  },
+  { id:'tulsi-tea', date:null, weekName:'Immunity', type:'recipe', img:IMG.tulsi_tea,
+    title:'Tulsi Tea', short:'Holy basil — daily adaptogen, calm + immunity.',
+    explanation:'Replace one cup of regular chai with tulsi tea. Tulsi is an adaptogen — it helps the body manage stress, supports immunity, and is caffeine-free. Made in 4 minutes. A small daily swap, big steady effect.',
+    reflection:'Did the evening feel calmer after tulsi tea?',
+    nudge:'Swap one chai with tulsi tea today — just one.',
+    conditions:['immunity','stress','sleep','cough','daily'],
+    recipe:{name:'Tulsi Tea',ingredients:['8-10 fresh tulsi leaves (or 1 tsp dried)','1 cup water','½ inch ginger (crushed)','Optional: ½ tsp honey','Optional: lemon slice'],method:['Crush tulsi leaves gently','Add to boiling water with ginger','Simmer 4-5 min','Strain','Add honey + lemon when warm (not hot)','Sip slowly'],benefits:['Stress relief (adaptogen)','Immunity boost','Caffeine-free','Calms cough + throat']},
+    qa:[{q:'Why tulsi is called an adaptogen?',options:['Tastes adaptable','Helps body adapt to stress (mental + physical)','Adapts to weather'],correct:1,why:'Adaptogens balance the body — they calm when stressed, energise when low.'},{q:'Best time to drink?',options:['Only mornings','Morning OR evening — instead of chai','Only night'],correct:1,why:'Caffeine-free, so safe anytime — but evening swap is most useful.'},{q:'Why add honey only when warm?',options:['Tastes better','Hot honey loses its enzymes + may turn toxic','Tradition'],correct:1,why:'Ayurveda: never heat honey — add when tea is sip-warm, not boiling.'}]
+  },
+  { id:'cinnamon-tea', date:null, weekName:'Diabetes', type:'recipe', img:IMG.cinnamon_tea,
+    title:'Cinnamon (Dalchini) Tea', short:'A daily sip — gentle blood sugar support.',
+    explanation:'Cinnamon (dalchini) has been shown in studies to improve insulin sensitivity and stabilise blood sugar. A small daily cup is the easiest way to take it in. Warming, slightly sweet, no sugar needed.',
+    reflection:'Did the cinnamon tea reduce your craving for sweets later?',
+    nudge:'A small cup of dalchini tea after lunch — 2-3 times a week.',
+    conditions:['diabetes','blood-sugar','digestion','cholesterol'],
+    recipe:{name:'Cinnamon Tea',ingredients:['1 small piece dalchini stick (½ inch)','1 cup water','Optional: ¼ tsp grated ginger','Optional: ½ tsp honey'],method:['Boil water','Add dalchini stick + ginger','Simmer 5 min','Cover and rest 2 min','Strain','Sip warm — after lunch or mid-morning'],benefits:['Improves insulin sensitivity','Stabilises blood sugar','Anti-inflammatory','Warming']},
+    qa:[{q:'Why dalchini for blood sugar?',options:['Sweet taste','Active compounds improve insulin sensitivity','Tradition only'],correct:1,why:'Cinnamaldehyde in cinnamon helps cells respond to insulin better.'},{q:'Best time?',options:['Empty stomach','After meals — when sugar rises','Late night'],correct:1,why:'Post-meal is when sugar spikes — dalchini buffers it gently.'},{q:'How much is safe?',options:['As much as you want','One small piece daily — ceylon variety if possible','Skip it entirely'],correct:1,why:'Cassia cinnamon (common) has coumarin — limit to small daily amount.'}]
+  },
+  { id:'ccf-tea', date:null, weekName:'Digestion', type:'recipe', img:IMG.ccf_tea,
+    title:'CCF Tea (Jeera-Saunf-Dhaniya)', short:'Three seeds, one cup — bloating relief.',
+    explanation:'CCF = Cumin, Coriander, Fennel. The classic Ayurvedic trio for digestion. Calms bloating, gas, and post-meal heaviness. Just a teaspoon of each in hot water — 5 minutes. Drink after meals for the gentlest digestion support.',
+    reflection:'Did your stomach feel lighter after meals with CCF tea?',
+    nudge:'After today\'s lunch — sip a small cup of CCF tea.',
+    conditions:['digestion','bloating','gas','women-health'],
+    recipe:{name:'CCF Tea',ingredients:['½ tsp jeera (cumin)','½ tsp dhaniya seeds (coriander)','½ tsp saunf (fennel)','2 cups water'],method:['Lightly crush the seeds (releases oils)','Add to boiling water','Simmer 5 min','Cover, rest 2 min','Strain','Sip warm — after meals or in the evening'],benefits:['Reduces bloating + gas','Cools the gut','Mild diuretic — flushes excess water','Calms post-meal heaviness']},
+    qa:[{q:'Why crush the seeds?',options:['Looks nice','Releases essential oils into the tea','Tradition only'],correct:1,why:'Whole seeds give weak tea — crushing unlocks the digestive compounds.'},{q:'When is CCF tea most useful?',options:['Before sleep','After meals or when bloated','First thing morning'],correct:1,why:'After eating is when the digestive support helps most.'},{q:'Why these 3 specifically?',options:['Common in kitchens','Each calms a different part of digestion — they work as a trio','Just for flavour'],correct:1,why:'Cumin warms, coriander cools, fennel relaxes — together they balance.'}]
   }
 ];
 
@@ -1319,7 +1406,7 @@ function openTodayDetail(day){
   document.getElementById('today-detail-body').innerHTML=`
     <div class="recipe-hero" style="background-image:url('${day.img}')">
       <div class="recipe-hero-content">
-        <div class="recipe-tag">Week ${day.week||''} · ${day.weekName}</div>
+        <div class="recipe-tag">${day.weekName||'Recipe'}</div>
         <h1 class="recipe-h1">${day.title}</h1>
         <div class="recipe-sub">${day.short}</div>
       </div>
@@ -1815,7 +1902,7 @@ async function generateShareCard(day){
 
   // ---- Top-right kicker: weekName or fallback
   const dayNum=day.id&&day.id.startsWith('amb-d')?parseInt(day.id.replace('amb-d',''),10):null;
-  const kicker=dayNum?`${day.weekName||'Ambali'} · Day ${dayNum}`:(day.weekName||day.day||'Today\'s recipe');
+  const kicker=dayNum?`${day.weekName||'Today'} · Day ${dayNum}`:(day.weekName||day.day||'Today\'s recipe');
   ctx.fillStyle='#E8D5B7'; // sand
   ctx.font='600 20px "Inter", sans-serif';
   ctx.textAlign='right';
@@ -2092,12 +2179,12 @@ function renderHome(){
   const feat = getFeatured();
   // Cover background switches to today's image
   document.querySelector('.cover').style.backgroundImage = `url('${t.img}')`;
-  document.getElementById('mag-spine').textContent = `Recipes · Week ${t.week||''} · ${t.weekName}`;
-  // Eyebrow — "Today's recipe · Day 3 of 7" for Ambali journey, otherwise fall back to weekday
+  document.getElementById('mag-spine').textContent = `Recipes · ${t.weekName||'Daily'}`;
+  // Eyebrow — "Today's recipe · Day X of 6" for Ambali journey, otherwise fall back to weekday
   let eyebrowText = `Today's recipe · ${t.day||''}`;
   if (t.id && t.id.startsWith('amb-')) {
     const dayNum = parseInt(t.id.replace('amb-d',''), 10);
-    if (!isNaN(dayNum)) eyebrowText = `Today's recipe · Day ${dayNum} of 7`;
+    if (!isNaN(dayNum)) eyebrowText = `Today's recipe · Day ${dayNum} of 6`;
   }
   document.getElementById('mag-eyebrow').textContent = eyebrowText;
   document.getElementById('mag-title').innerHTML = t.title.replace(' ', '<br/>');
