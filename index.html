@@ -464,7 +464,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     <div class="bp-wrap">
       <div class="bp-grid" id="bp-grid"></div>
       <button class="bp-more" id="bp-more">
-        Sabhi 34 recipes dekhein
+        Browse all recipes
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
@@ -522,23 +522,23 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
     </div>
     <div class="ob-hero">
-      <h1 class="ob-title">Aapki Recipe Book banayein</h1>
-      <p class="ob-sub">Har din ek choti si seekh — recipe, tip, habit. SB ki raay ke saath.</p>
+      <h1 class="ob-title">Build your recipe book</h1>
+      <p class="ob-sub">One small lesson a day — recipes, tips, habits. With SB's perspective on every one.</p>
     </div>
     <div class="ob-field">
-      <div class="ob-label">Naam</div>
-      <input class="ob-input" id="name-input" placeholder="Aapka naam" autocomplete="given-name"/>
+      <div class="ob-label">Name</div>
+      <input class="ob-input" id="name-input" placeholder="Your name" autocomplete="given-name"/>
     </div>
     <div class="ob-spacer"></div>
-    <button class="btn-primary" id="name-continue" disabled>Aage badhein</button>
+    <button class="btn-primary" id="name-continue" disabled>Continue</button>
   </div>
 </section>
 <section id="screen-onb-phone" class="screen">
   <div class="ob">
     <div class="ob-brand">Habuild · Recipes</div>
     <div class="ob-hero">
-      <h1 class="ob-title">Apna number daalein</h1>
-      <p class="ob-sub">Taaki aap apni progress kabhi bhi access kar sakein.</p>
+      <h1 class="ob-title">Enter your number</h1>
+      <p class="ob-sub">So you can come back to your progress any time.</p>
     </div>
     <div class="ob-phone-row">
       <div class="ob-field prefix">
@@ -562,7 +562,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     </div>
     <div class="ob-helper">We won't message you anything other than your Habuild updates.</div>
     <div class="ob-spacer"></div>
-    <button class="btn-primary" id="phone-continue" disabled>Shuru karein</button>
+    <button class="btn-primary" id="phone-continue" disabled>Get started</button>
   </div>
 </section>
 <!-- =================== TODAY DETAIL =================== -->
@@ -874,17 +874,17 @@ const IMG = {
   bp_apple:'https://images.unsplash.com/photo-1564093497595-593b96d80180?w=900&q=80',
   bp_curd:'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900&q=80',
   bp_moong:'https://images.unsplash.com/photo-1606923829579-0cb981a83e2e?w=900&q=80',
-  // New condition recipes
-  methi_water:'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=900&q=80',
-  karela:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=900&q=80',
-  hibiscus:'https://images.unsplash.com/photo-1568051243858-533a607809a5?w=900&q=80',
-  beetroot_juice:'https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=900&q=80',
-  nutmeg_milk:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  banana_smoothie:'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=900&q=80',
-  brazil_nut:'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=900&q=80',
-  spearmint:'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=900&q=80',
-  kadha:'https://images.unsplash.com/photo-1563911892437-1feda0179e1b?w=900&q=80',
-  amla_shot:'https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=900&q=80',
+  // Condition recipes — AI-gen via Pollinations.ai with specific prompts per dish
+  methi_water:'https://image.pollinations.ai/prompt/glass%20of%20water%20with%20soaked%20yellow%20fenugreek%20methi%20seeds%20at%20bottom%2C%20wooden%20table%2C%20indian%20kitchen%20morning%2C%20photorealistic?width=900&height=900&seed=8001&model=flux&nologo=true',
+  karela:'https://image.pollinations.ai/prompt/indian%20karela%20bitter%20gourd%20sabzi%20curry%20in%20black%20kadai%20pan%20with%20onion%20and%20masala%2C%20home%20kitchen%2C%20photorealistic%20food%20photography?width=900&height=900&seed=8002&model=flux&nologo=true',
+  hibiscus:'https://image.pollinations.ai/prompt/ruby%20red%20hibiscus%20gudhal%20tea%20in%20clear%20glass%20teacup%20with%20dried%20hibiscus%20petals%20on%20side%2C%20wooden%20table%2C%20warm%20natural%20light%2C%20photorealistic?width=900&height=900&seed=8003&model=flux&nologo=true',
+  beetroot_juice:'https://image.pollinations.ai/prompt/deep%20red%20beetroot%20juice%20in%20tall%20glass%20with%20straw%2C%20fresh%20beets%20and%20ginger%20beside%2C%20indian%20kitchen%2C%20photorealistic?width=900&height=900&seed=8004&model=flux&nologo=true',
+  nutmeg_milk:'https://image.pollinations.ai/prompt/warm%20glass%20of%20milk%20with%20grated%20nutmeg%20jaiphal%20on%20top%2C%20wooden%20board%20with%20whole%20nutmeg%20beside%2C%20evening%20warm%20light%2C%20photorealistic?width=900&height=900&seed=8005&model=flux&nologo=true',
+  banana_smoothie:'https://image.pollinations.ai/prompt/creamy%20banana%20milk%20smoothie%20in%20tall%20glass%20sprinkled%20with%20cinnamon%2C%20banana%20slices%20on%20side%2C%20indian%20kitchen%2C%20photorealistic?width=900&height=900&seed=8006&model=flux&nologo=true',
+  brazil_nut:'https://image.pollinations.ai/prompt/small%20bowl%20of%20trail%20mix%20with%20brazil%20nuts%20walnuts%20pumpkin%20seeds%20and%20raisins%20on%20wooden%20table%2C%20indian%20home%2C%20photorealistic?width=900&height=900&seed=8007&model=flux&nologo=true',
+  spearmint:'https://image.pollinations.ai/prompt/clear%20glass%20cup%20of%20fresh%20spearmint%20pudina%20tea%20with%20floating%20mint%20leaves%2C%20wooden%20board%20with%20mint%20sprigs%20beside%2C%20photorealistic?width=900&height=900&seed=8008&model=flux&nologo=true',
+  kadha:'https://image.pollinations.ai/prompt/dark%20golden%20brown%20herbal%20kadha%20decoction%20drink%20in%20steel%20glass%20with%20tulsi%20leaves%20cinnamon%20pepper%20ginger%20visible%20beside%2C%20indian%20kitchen%2C%20photorealistic?width=900&height=900&seed=8009&model=flux&nologo=true',
+  amla_shot:'https://image.pollinations.ai/prompt/small%20glass%20shot%20of%20green%20amla%20indian%20gooseberry%20juice%2C%20whole%20amla%20fruits%20beside%2C%20morning%20kitchen%20light%2C%20photorealistic?width=900&height=900&seed=8010&model=flux&nologo=true',
   // Member dishes
   mem_ragi:'assets/kirti-ragi-laddu.jpg',
   mem_methi:'https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=900&q=80',
@@ -892,150 +892,66 @@ const IMG = {
   mem_apple_carrot:'https://images.unsplash.com/photo-1564093497595-593b96d80180?w=900&q=80',
   mem_oh_salad:'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=900&q=80',
   mem_karela:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=900&q=80',
-  // Ambali (May 2026) — millet drink journey
-  // Consistent beige-drink photo across all days (the journey is one drink with variations)
-  amb_intro:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_basic:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_jeera:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_thin:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_balance:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_personalise:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_jowar:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_ragi_jeera:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_jowar_thin:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_ragi_balance:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
-  amb_favourite:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  // Ambali (May 18-24, 2026) — 7-day current-week journey, AI-gen per-day images via Pollinations.ai
+  amb_d1_jowar:'https://image.pollinations.ai/prompt/jowar%20sorghum%20millet%20porridge%20ambali%20drink%20in%20indian%20steel%20glass%20tumbler%2C%20rural%20kitchen%2C%20morning%20light%2C%20photorealistic%20food%20photography?width=900&height=900&seed=7011&model=flux&nologo=true',
+  amb_d2_ragi_jeera:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20porridge%20drink%20with%20roasted%20cumin%20jeera%20powder%20on%20top%2C%20terracotta%20clay%20glass%2C%20indian%20home%20kitchen%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_d3_jowar_thin:'https://image.pollinations.ai/prompt/jowar%20millet%20thin%20drink%20like%20buttermilk%20chaas%20in%20tall%20brass%20glass%2C%20indian%20summer%20kitchen%2C%20natural%20daylight%2C%20photorealistic%20food%20photography?width=900&height=900&seed=7013&model=flux&nologo=true',
+  amb_d4_ragi_balance:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20in%20steel%20glass%20garnished%20with%20fresh%20coriander%20leaves%20on%20top%2C%20indian%20kitchen%20table%2C%20photorealistic%20food%20photography?width=900&height=900&seed=7014&model=flux&nologo=true',
+  amb_d5_favourite:'https://image.pollinations.ai/prompt/homemade%20millet%20ambali%20drink%20in%20copper%20glass%20with%20coriander%20garnish%2C%20rustic%20wooden%20table%2C%20indian%20kitchen%2C%20warm%20light%2C%20photorealistic?width=900&height=900&seed=7015&model=flux&nologo=true',
+  amb_d6_family:'https://image.pollinations.ai/prompt/large%20pot%20of%20ragi%20millet%20ambali%20drink%20with%20multiple%20small%20glasses%20for%20family%20on%20indian%20dining%20table%2C%20small%20bowls%20of%20coriander%20chilli%20cumin%20on%20side%2C%20photorealistic?width=900&height=900&seed=7016&model=flux&nologo=true',
+  amb_d7_reflection:'https://image.pollinations.ai/prompt/peaceful%20indian%20woman%20with%20open%20journal%20notebook%20and%20pen%20at%20kitchen%20table%2C%20cup%20of%20tea%20beside%2C%20morning%20warm%20sunlight%2C%20mindfulness%2C%20photorealistic?width=900&height=900&seed=7017&model=flux&nologo=true',
+  // Legacy Ambali keys kept for back-compat (point to d2 default)
+  amb_intro:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_basic:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_jeera:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_thin:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_balance:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_personalise:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_jowar:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_ragi_jeera:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_jowar_thin:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_ragi_balance:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
+  amb_favourite:'https://image.pollinations.ai/prompt/ragi%20millet%20ambali%20drink%20with%20cumin%20jeera%20floating%20on%20top%2C%20indian%20terracotta%20glass%2C%20soft%20morning%20light%2C%20photorealistic?width=900&height=900&seed=7012&model=flux&nologo=true',
 };
 
 // MAY 2026 — Ambali 11-day millet drink journey (replaces previous multi-theme content)
 const DAYS = [
-  // ===== AMBALI JOURNEY — May 12-22, 2026 (11 days) =====
-  // Week 1: Same millet (ragi), 5 simple formats. Week 2: rotate millets.
-
-  { id:'amb-d1', date:'2026-05-12', week:1, weekName:'Ambali · Week 1', day:'Tue', type:'habit', img:IMG.amb_intro,
-    title:'Ambali Se Mulaqaat',
-    short:'Aaj sirf padhein — kal subah pehla glass.',
-    explanation:'Ambali ek halki millet drink hai — ragi (nachni), jowar, ya bajra ke aate se banta hai. Pet ko light rakhta hai, digestion smooth karta hai, energy steady deta hai. Calcium aur iron ka natural source — yoga ke baad ka perfect drink. Aaj sirf padhein, benefits samjhein. Kal raat ragi flour kharid kar rakh lein.',
-    reflection:'Aapko Ambali se sabse zyada kya chahiye — energy, digestion, ya weight balance?',
-    nudge:'Aaj raat tak ragi flour kharid lein. Bas wahi ek kaam.',
-    conditions:['digestion','energy','women-health','calcium','iron','weight'],
-    qa:[
-      {q:'Ambali kis se banta hai?',options:['Wheat flour','Millet flour (ragi/jowar/bajra)','Rice flour'],correct:1,why:'Ambali kisi bhi millet flour se ban sakta hai — sabse easy ragi se shuru karein.'},
-      {q:'Ambali sabse pehle kab piyna chahiye?',options:['Subah, yoga ke baad, khaali pet','Raat ko dinner ke saath','Kabhi bhi'],correct:0,why:'Empty stomach, yoga ke baad — maximum absorption + digestive activation.'},
-      {q:'Iss journey mein "same daily" kyun?',options:['Saste hai','Habit easy banane ke liye','Tradition'],correct:1,why:'Same base = predictable habit. Sirf chhote tweaks har din.'}
-    ]
-  },
-
-  { id:'amb-d2', date:'2026-05-13', week:1, weekName:'Ambali · Week 1', day:'Wed', type:'recipe', img:IMG.amb_basic,
-    title:'Basic Ambali',
-    short:'Pehla glass — sirf ragi, paani, namak, chaas.',
-    explanation:'Day 2 — basic Ambali ka first try. Sirf 4 ingredients. Ragi flour ko paani mein paste banayein, cook karein, thanda karein, chaas + namak mila ke piyo. Bina kuch add kiye. Aaj sirf notice karein — kaisa lagta hai pet ko.',
-    reflection:'Pehli baar Ambali peene ke baad pet halka laga ya bhaari?',
-    nudge:'Aaj basic Ambali — bina kuch add kiye. Sirf taste lein.',
-    conditions:['digestion','women-health','calcium','energy'],
-    recipe:{name:'Basic Ambali (1 glass)',ingredients:['2 tbsp ragi flour (nachni)','½ cup paani (paste ke liye)','1 glass paani (cooking ke liye)','½ glass paani (adjust karne ke liye)','½ cup chaas (buttermilk)','Namak swaad anusaar'],method:['STEP 1 — Smooth paste: ragi flour + ½ cup paani, lump-free ho ne tak mix karein. (Yeh sabse important step hai)','STEP 2 — Cook: 1 glass paani add karein. Low-medium flame, 5-7 min, continuously hila te rahe. Slightly thick aur glossy ho jaaye toh utaar lein.','STEP 3 — Cool: room temperature tak thanda hone dein (garam mein chaas mat daalein — phat jaayega).','STEP 4 — Finish: ½-1 glass paani aur mix karein. Phir chaas aur namak daalein. Mix karke piyo.'],benefits:['Halki, easy-to-digest','Calcium + iron','Subah ka gentle start','Yoga ke baad perfect']},
-    qa:[
-      {q:'Lumps kyun nahi hone chahiye?',options:['Dikhne mein bura lagta hai','Texture smooth + properly cooked rahega','Tradition'],correct:1,why:'Lumpy paste = uneven cooking = upset stomach. Pehle paste perfectly smooth karein.'},
-      {q:'Chaas garam Ambali mein daalein?',options:['Haan, taste better','Nahi — pehle thanda karein','Optional'],correct:1,why:'Garam liquid + chaas = curd phat jaata hai. Room temperature pe daalein.'},
-      {q:'Cooking ke time kya zaroori?',options:['Continuously hilana','Cover karna','Tez aanch'],correct:0,why:'Hilana zaroori — neeche stick na ho aur lumps na bane.'}
-    ]
-  },
-
-  { id:'amb-d3', date:'2026-05-14', week:1, weekName:'Ambali · Week 1', day:'Thu', type:'recipe', img:IMG.amb_jeera,
-    title:'Ambali + Jeera',
-    short:'Ek chutki bhuna jeera — pet halka, taste better.',
-    explanation:'Day 3 — basic Ambali mein roasted jeera powder add karein. Slight warmth, digestion ko boost, anti-bloating. Bas itna sa change — Ambali familiar feel hone lagta hai.',
-    reflection:'Jeera ke saath ya bina — kaunsa zyada acha laga?',
-    nudge:'Aaj Ambali mein ek chutki bhuna jeera. Choti si addition, bada asar.',
-    conditions:['digestion','bloating','energy','gas'],
-    recipe:{name:'Ambali + Jeera',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','½ cup chaas','½ tsp bhuna jeera powder','Namak swaad anusaar'],method:['Basic Ambali method follow karein (paste → cook → cool)','Chaas aur namak mix karein','Bhuna jeera powder upar se daalein','Quickly mix karke piyo'],benefits:['Anti-bloating','Better digestion','Adds warmth','Familiar Indian taste']},
-    qa:[
-      {q:'Jeera ko bhunna kyun zaroori?',options:['Taste better','Volatile oils + flavour release','Saves time'],correct:1,why:'Bhuna jeera mein flavour aur medicinal compounds active hote hain.'},
-      {q:'Jeera kab daalein?',options:['Cooking ke time','Last mein, serving se pehle','Paste banane se pehle'],correct:1,why:'Aroma bachta hai — last mein daalein.'},
-      {q:'Jeera kya help karta hai?',options:['Sirf taste','Digestion + gas relief','Skin only'],correct:1,why:'Cumin ke compounds gas reduce karte hain aur gut motility improve karte hain.'}
-    ]
-  },
-
-  { id:'amb-d4', date:'2026-05-15', week:1, weekName:'Ambali · Week 1', day:'Fri', type:'recipe', img:IMG.amb_thin,
-    title:'Patla Ambali (Drink-Style)',
-    short:'Chaas jaisa patla — sip karna easy.',
-    explanation:'Day 4 — extra paani daal kar Ambali ko thin banayein. Texture chaas jaisi. Sip-able. Aapke pet ke liye kaunsi consistency zyada acchi lagti hai — gaadhi ya patli?',
-    reflection:'Patla ya gaadha — aapke pet ko kaunsa suit karta hai?',
-    nudge:'Aaj Ambali extra paani ke saath — chaas jaisa patla.',
-    conditions:['digestion','hydration','summer'],
-    recipe:{name:'Patla Ambali',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','1 glass extra paani (thin karne ke liye)','½ cup chaas','½ tsp jeera, namak'],method:['Basic method follow karein','Cooling ke baad — pura 1 glass extra paani daalein','Chaas + namak + jeera','Mix karke piyo — texture chaas jaisi honi chahiye'],benefits:['Easy to sip','Summer-friendly','Extra hydration','Light on stomach']},
-    qa:[
-      {q:'Patla rakhne ka faayda?',options:['Dikhta achha','Sip karna easy, summer mein cooling','Saves flour'],correct:1,why:'Garmi mein patla Ambali = hydration + nutrition saath mein.'},
-      {q:'Kitna paani extra?',options:['Sirf 2 chamach','½ se 1 glass — taste check karte hue','Jitna marzi'],correct:1,why:'Slowly add karein — texture chaas jaisi rakhein.'},
-      {q:'Patla ya gaadha — kya better?',options:['Patla always','Gaadha always','Aapke pet ke hisaab se'],correct:2,why:'Both works — body sunke decide karein.'}
-    ]
-  },
-
-  { id:'amb-d5', date:'2026-05-16', week:1, weekName:'Ambali · Week 1', day:'Sat', type:'recipe', img:IMG.amb_balance,
-    title:'Salt + Paani Balance',
-    short:'Sahi namak, sahi paani — taste perfect.',
-    explanation:'Day 5 — Ambali ka asli flavor balance mein hai. Salt thoda zyada lagega ya kam — yeh aapki body batayegi. Paani aur namak ka right ratio find karein.',
-    reflection:'Aaj ka salt thoda zyada laga, kam, ya bilkul sahi?',
-    nudge:'Aaj salt + paani ka balance try karein. Apni taste find karein.',
-    conditions:['digestion','electrolytes','summer'],
-    recipe:{name:'Balanced Ambali',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','½-1 glass paani (adjust)','½ cup chaas','¼-½ tsp namak (start small, taste, add more)','½ tsp bhuna jeera'],method:['Basic method follow karein','Pehle thoda namak daalein — chakhein','Aur paani daalein agar gaadha ho','Jeera mila ke pi lein','Goal: balanced, not bland, not too salty'],benefits:['Right electrolyte balance','Natural ORS effect','Replenishes after yoga','Balanced taste']},
-    qa:[
-      {q:'Namak kyun zaroori?',options:['Sirf taste','Electrolyte balance + flavor','Preservative'],correct:1,why:'Subah ke pasine ka nuksan — namak se body sodium replace karta hai.'},
-      {q:'Namak kitna daalein?',options:['Jitna marzi','Thoda start karein, taste karke add karein','Bahut zyada'],correct:1,why:'Start small — bharma sakte hain, kam nahi.'},
-      {q:'Bland Ambali ka fix?',options:['Sugar daalein','Namak + bhuna jeera','Chai bana lein'],correct:1,why:'Namak + jeera = traditional savory fix.'}
-    ]
-  },
-
-  { id:'amb-d6', date:'2026-05-17', week:1, weekName:'Ambali · Week 1', day:'Sun', type:'recipe', img:IMG.amb_personalise,
-    title:'Aapka Apna Ambali',
-    short:'Coriander, mirchi, ya kuch aur — apni pasand.',
-    explanation:'Day 6 — Sunday. Personalise karein. Coriander, green chilli, pyaaz, ya kuch aur jo aapko pasand ho. Yeh aapka Ambali hai — joint family ke liye, ya khud ke liye. Make it yours.',
-    reflection:'Kaunsa add-on aapko sabse acha laga? Ya simple basic hi best?',
-    nudge:'Aaj experiment karein — coriander, mirchi, pyaaz. Apna twist.',
-    conditions:['digestion','personalise','family'],
-    recipe:{name:'Personalised Ambali',ingredients:['Basic Ambali (din 2 ki recipe)','Optional add-ons (choose any):','• 1 tbsp chopped coriander','• ¼ green chilli, finely chopped','• 1 tbsp finely chopped onion','• Squeeze of lemon','• Pinch of black salt'],method:['Basic Ambali banayein','Apne pasand ke add-ons daalein','Family ke liye plain rakhein, apne liye thoda spice','Mix karein, piyo'],benefits:['Customisation','Joint family-friendly','Long-term habit ban sakta hai','No two glasses same']},
-    qa:[
-      {q:'Personalisation kyun zaroori?',options:['Boring nahi lagega','Long-term habit ke liye','Saves time'],correct:1,why:'Same drink everyday boring ho jaata hai — small variations habit sustain karte hain.'},
-      {q:'Joint family ke liye?',options:['Plain rakhein, sabki taste alag','Sirf masaledar','Kabhi nahi banayein'],correct:0,why:'Base plain, individual additions — sab apni pasand add kar sakte hain.'},
-      {q:'Sabse popular add-on?',options:['Cheeni','Coriander + chilli','Ice cubes'],correct:1,why:'Traditional Karnataka/Andhra style — savory + fresh.'}
-    ]
-  },
-
-  { id:'amb-d7', date:'2026-05-18', week:2, weekName:'Ambali · Week 2', day:'Mon', type:'recipe', img:IMG.amb_jowar,
+// ===== AMBALI 7-DAY JOURNEY — Mon May 18 → Sun May 24 (Week 2 from PDF + Sat/Sun extensions) =====
+  { id:'amb-d1', date:'2026-05-18', week:1, weekName:'Ambali Week', day:'Mon', type:'recipe', img:IMG.amb_d1_jowar,
     title:'Jowar Ambali',
     short:'Naya millet — jowar (sorghum) ka try.',
-    explanation:'Week 2 shuru. Ab tak ragi try kiya — aaj jowar flour. Texture thoda different, taste mild. Garmi mein jowar zyada cooling — perfect summer drink.',
-    reflection:'Jowar ya ragi — texture aur taste mein kya farak laga?',
-    nudge:'Aaj jowar Ambali — naya millet, same method.',
-    conditions:['digestion','summer','women-health','protein'],
-    recipe:{name:'Jowar Ambali',ingredients:['2 tbsp jowar flour','½ cup paani (paste)','1 glass paani (cook)','½ glass paani (adjust)','½ cup chaas','½ tsp jeera, namak'],method:['Jowar flour + paani — smooth paste banayein (jowar thoda dhaaga jaisa ho sakta hai, mehnat se mix karein)','1 glass paani daalein, low flame pe cook karein (jowar ko ragi se thoda zyada time lagta hai — 8-10 min)','Cool karein','Chaas + namak + jeera mila ke piyo'],benefits:['Cooling property — summer ideal','Gluten-free','High protein','Different texture, same nutrition']},
+    explanation:'Week shuru. Jowar flour try karein — texture thoda different, taste mild. Garmi mein jowar zyada cooling — perfect summer drink.',
+    reflection:'Jowar ke saath kaisa laga — texture aur taste mein kya farak?',
+    nudge:'Aaj jowar Ambali — naya millet, same simple method.',
+    conditions:['digestion','summer','women-health','protein','iron','calcium'],
+    recipe:{name:'Jowar Ambali',ingredients:['2 tbsp jowar flour','½ cup paani (paste)','1 glass paani (cook)','½ glass paani (adjust)','½ cup chaas','½ tsp jeera, namak'],method:['Jowar flour + paani — smooth paste banayein (mehnat se mix karein)','1 glass paani daalein, low flame pe cook karein (jowar ko 8-10 min lagta hai)','Cool karein','Chaas + namak + jeera mila ke piyo'],benefits:['Cooling — summer ideal','Gluten-free','High protein','Iron + calcium']},
     qa:[
-      {q:'Jowar ki specialty?',options:['Cooling, summer-friendly','Warming','High in sugar'],correct:0,why:'Jowar body cooling hai — Karnataka/Maharashtra mein garmi mein common.'},
-      {q:'Jowar Ambali kitna cook?',options:['Same as ragi (5-7 min)','Thoda zyada (8-10 min)','15+ min'],correct:1,why:'Jowar starch ko break hone mein ragi se zyada time lagta hai.'},
-      {q:'Jowar ka taste?',options:['Sweet, jaisa kheer','Mild, slightly nutty','Bitter'],correct:1,why:'Mild aur subtle — ragi se halka, slightly nutty.'}
+      {q:'Jowar ki specialty kya hai?',options:['Cooling, summer-friendly','Warming','High in sugar'],correct:0,why:'Jowar body cooling hai — Karnataka/Maharashtra mein garmi mein common.'},
+      {q:'Jowar Ambali kitna cook karein?',options:['Same as ragi (5-7 min)','Thoda zyada (8-10 min)','15+ min'],correct:1,why:'Jowar starch ko break hone mein ragi se zyada time lagta hai.'},
+      {q:'Jowar ka taste kaisa hai?',options:['Sweet, jaisa kheer','Mild, slightly nutty','Bitter'],correct:1,why:'Mild aur subtle — ragi se halka, slightly nutty.'}
     ]
   },
 
-  { id:'amb-d8', date:'2026-05-19', week:2, weekName:'Ambali · Week 2', day:'Tue', type:'recipe', img:IMG.amb_ragi_jeera,
-    title:'Ragi + Jeera (Combo Wapas)',
+  { id:'amb-d2', date:'2026-05-19', week:1, weekName:'Ambali Week', day:'Tue', type:'recipe', img:IMG.amb_d2_ragi_jeera,
+    title:'Ragi Ambali + Jeera',
     short:'Familiar combo — ragi ka comfort.',
-    explanation:'Day 8 — Ragi flour wapas, jeera ke saath. Ab tak aap maahir ho gaye honge. Yeh combo aapka go-to ban sakta hai.',
-    reflection:'Ragi + jeera ka combo aapka favourite ban gaya kya?',
-    nudge:'Wapas ragi, jeera ke saath. Comfort drink.',
-    conditions:['digestion','energy','iron','calcium','bloating'],
-    recipe:{name:'Ragi-Jeera Ambali',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','½ cup chaas','½ tsp bhuna jeera powder','Namak'],method:['Basic Ambali method','Bhuna jeera last mein','Mix karke piyo'],benefits:['Familiar comfort','Iron rich','Anti-bloating','Easy to repeat daily']},
+    explanation:'Day 2 — ragi flour, jeera ke saath. Yeh combo aapka go-to ban sakta hai. Iron-rich ragi + digestion-friendly jeera.',
+    reflection:'Ragi + jeera ka combo — pet ko light laga?',
+    nudge:'Aaj ragi Ambali jeera ke saath. Comfort drink.',
+    conditions:['digestion','energy','iron','calcium','bloating','anaemia','women-health'],
+    recipe:{name:'Ragi Ambali + Jeera',ingredients:['2 tbsp ragi flour (nachni)','½ cup paani (paste)','1 glass paani (cook)','½ cup chaas (buttermilk)','½ tsp bhuna jeera powder','Namak swaad anusaar'],method:['Ragi flour + ½ cup paani — smooth paste, lumps na ho','1 glass paani add karein, low flame 5-7 min, continuously hila te rahe','Room temperature pe thanda karein','Chaas + namak + bhuna jeera daal ke piyo'],benefits:['Iron rich — calcium dense','Anti-bloating','Familiar Indian taste','Easy daily habit']},
     qa:[
-      {q:'Variation lekin same base — kyun?',options:['Boring','Habit easy banta hai jab base same ho','Saves money'],correct:1,why:'Confidence build hota hai — same base, chhote tweaks.'},
-      {q:'Ragi sabse zyada kya deta hai?',options:['Protein','Calcium + iron','Sugar'],correct:1,why:'Ragi mein calcium aur iron concentration kisi bhi grain se zyada.'},
-      {q:'Daily ragi safe hai?',options:['Haan, normal matra mein','Nahi, weekly only','Sirf bachhon ke liye'],correct:0,why:'1 glass roz safe aur recommended — South India mein traditional staple.'}
+      {q:'Ragi sabse zyada kya deta hai?',options:['Protein','Calcium + iron','Sugar'],correct:1,why:'Ragi mein calcium aur iron concentration kisi bhi grain se zyada — 40+ ke liye zaroori dono.'},
+      {q:'Jeera ko bhunna kyun?',options:['Taste better','Volatile oils + flavour active hote hain','Saves time'],correct:1,why:'Bhuna jeera mein flavour aur medicinal compounds zyada active.'},
+      {q:'Daily ragi safe hai?',options:['Haan, 1 glass roz','Nahi, weekly only','Sirf bachhon ke liye'],correct:0,why:'1 glass roz South India mein traditional staple — safe aur recommended.'}
     ]
   },
 
-  { id:'amb-d9', date:'2026-05-20', week:2, weekName:'Ambali · Week 2', day:'Wed', type:'recipe', img:IMG.amb_jowar_thin,
+  { id:'amb-d3', date:'2026-05-20', week:1, weekName:'Ambali Week', day:'Wed', type:'recipe', img:IMG.amb_d3_jowar_thin,
     title:'Jowar Patla Drink',
     short:'Jowar Ambali, drink-style.',
-    explanation:'Day 9 — jowar Ambali, extra paani ke saath. Drink-style. Garmi mein cooling effect double — jowar ka cooling + extra hydration.',
-    reflection:'Jowar patla vs ragi patla — kaunsa zyada refreshing laga?',
+    explanation:'Day 3 — jowar Ambali, extra paani ke saath. Drink-style. Garmi mein cooling effect double — jowar ka cooling + extra hydration.',
+    reflection:'Jowar patla vs ragi patla — kaunsa zyada refreshing?',
     nudge:'Aaj jowar Ambali, patla. Summer ka best drink.',
     conditions:['digestion','summer','hydration'],
     recipe:{name:'Jowar Patla Ambali',ingredients:['2 tbsp jowar flour','½ cup paani (paste)','1 glass paani (cook)','1 glass extra paani (thin)','½ cup chaas','½ tsp jeera, namak'],method:['Basic jowar Ambali banayein (8-10 min cook)','Cool karein','Extra 1 glass paani daalein','Chaas, jeera, namak mila ke piyo'],benefits:['Cooling + hydrating','Easy to sip in hot weather','Light on digestion','Travel-friendly']},
@@ -1046,37 +962,66 @@ const DAYS = [
     ]
   },
 
-  { id:'amb-d10', date:'2026-05-21', week:2, weekName:'Ambali · Week 2', day:'Thu', type:'recipe', img:IMG.amb_ragi_balance,
+  { id:'amb-d4', date:'2026-05-21', week:1, weekName:'Ambali Week', day:'Thu', type:'recipe', img:IMG.amb_d4_ragi_balance,
     title:'Ragi Balance Perfect',
-    short:'Ab tak ki seekh — ragi ko perfectly balance karein.',
-    explanation:'Day 10 — ab tak 9 din ka anubhav. Aaj ragi Ambali ko perfectly balance karein. Namak, paani, chaas, jeera — sabhi proportions theek. Yeh aapki signature Ambali hai ab.',
-    reflection:'9 din baad — aapne kya seekha Ambali banane mein?',
+    short:'Sahi namak, sahi paani — taste perfect.',
+    explanation:'Day 4 — ragi Ambali ko perfectly balance karein. Namak, paani, chaas, jeera — sabhi proportions theek. Yeh aapki signature Ambali ban sakti hai.',
+    reflection:'4 din baad — Ambali banane mein kya seekha?',
     nudge:'Aapki perfect ragi Ambali — sahi balance, sahi taste.',
-    conditions:['digestion','iron','calcium','women-health','daily-habit'],
+    conditions:['digestion','iron','calcium','women-health','daily-habit','anaemia'],
     recipe:{name:'Perfectly Balanced Ragi Ambali',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','½ glass paani (adjust)','½ cup chaas','½ tsp bhuna jeera','¼-½ tsp namak (aapki taste)','Optional: 1 tbsp chopped coriander'],method:['Smooth paste (sabse important)','Cook 5-7 min, hila te rahe','Cool fully','Chaas, jeera, namak daalein','Taste karke adjust','Coriander upar se'],benefits:['Aapki signature recipe','Long-term habit format','Daily-ready','Balanced nutrition']},
     qa:[
-      {q:'Perfect Ambali ka raaz?',options:['Mehnga ingredients','Practice + balance','Magic'],correct:1,why:'10 din ki practice — aapki taste calibrate ho gayi.'},
-      {q:'Salt + chaas balance?',options:['Both high','Salt thoda, chaas zyada (tang for digestion)','Both low'],correct:1,why:'Chaas ka tang aur thoda namak = digestive sweet spot.'},
+      {q:'Salt + chaas ka balance?',options:['Both high','Salt thoda, chaas zyada (tang for digestion)','Both low'],correct:1,why:'Chaas ka tang aur thoda namak = digestive sweet spot.'},
+      {q:'Perfect Ambali ka raaz?',options:['Mehnga ingredients','Practice + balance','Magic'],correct:1,why:'Daily practice — aapki taste calibrate ho jaati hai.'},
       {q:'Daily Ambali ke fayde 1 month mein?',options:['Kuch nahi','Better digestion, energy, iron levels','Weight gain'],correct:1,why:'Studies show consistent millet intake → improvement in 4-6 weeks.'}
     ]
   },
 
-  { id:'amb-d11', date:'2026-05-22', week:2, weekName:'Ambali · Week 2', day:'Fri', type:'recipe', img:IMG.amb_favourite,
+  { id:'amb-d5', date:'2026-05-22', week:1, weekName:'Ambali Week', day:'Fri', type:'recipe', img:IMG.amb_d5_favourite,
     title:'Aapki Favourite Ambali',
-    short:'11 din baad — ab aapka apna Ambali.',
-    explanation:'Day 11 — final day. Ab tak jo style sabse achhi lagi — ragi ya jowar, gaadhi ya patli, plain ya garnished — wahi banayein. Yeh aapki Ambali hai. Iss journey ka closing — par habit ki shuruwat.',
-    reflection:'11 din ke baad — Ambali ek choice hai ya habit ban gaya?',
-    nudge:'Aaj aapki favourite Ambali. Aage chalti rahe — daily routine ka hissa.',
+    short:'5 din baad — ab aapka apna Ambali.',
+    explanation:'Day 5 — week closing. Ab tak jo style sabse achhi lagi — ragi ya jowar, gaadhi ya patli, plain ya garnished — wahi banayein. Yeh aapki Ambali hai.',
+    reflection:'5 din ke baad — Ambali ek choice hai ya habit ban gaya?',
+    nudge:'Aaj aapki favourite Ambali. Apni pasand.',
     conditions:['digestion','daily-habit','women-health','calcium','iron','energy'],
-    recipe:{name:'Your Signature Ambali',ingredients:['Choose your millet (ragi/jowar/bajra)','2 tbsp flour','½ cup paani (paste)','1 glass paani (cook)','Paani extra (jitna taste lage)','½ cup chaas','Add-ons of your choice (jeera, coriander, mirchi, namak)'],method:['Smooth paste','Cook till glossy','Cool','Add chaas + your add-ons','Make it yours'],benefits:['Sustainable habit','Personal recipe','Daily nourishment','11-day journey ka outcome']},
+    recipe:{name:'Your Signature Ambali',ingredients:['Choose your millet (ragi/jowar)','2 tbsp flour','½ cup paani (paste)','1 glass paani (cook)','Paani extra (jitna taste lage)','½ cup chaas','Add-ons of your choice (jeera, coriander, mirchi, namak)'],method:['Smooth paste','Cook till glossy','Cool','Add chaas + your add-ons','Make it yours'],benefits:['Sustainable habit','Personal recipe','Daily nourishment','Week ka outcome']},
     qa:[
-      {q:'11 din mein habit ban sakti hai?',options:['Nahi','Haan, agar daily kiya jaaye','Sirf 30 din mein'],correct:1,why:'Research: 11-21 din = habit formation window for simple actions.'},
+      {q:'5 din mein habit ban sakti hai?',options:['Nahi','Haan, agar daily kiya jaaye','Sirf 30 din mein'],correct:1,why:'Research: 5-21 din = habit formation window for simple actions.'},
       {q:'Aage kya?',options:['Band karein','Daily routine ka hissa banayein','Sirf weekends'],correct:1,why:'Habit jiyo — daily morning ka 5-minute ritual.'},
-      {q:'Iss journey ka biggest takeaway?',options:['Recipe seekhi','Consistency + personalisation','Time waste'],correct:1,why:'11 din me consistency aur personalisation dono — yahi habit ka core hai.'}
+      {q:'Iss journey ka biggest takeaway?',options:['Recipe seekhi','Consistency + personalisation','Time waste'],correct:1,why:'Consistency aur personalisation dono — yahi habit ka core hai.'}
     ]
   },
 
-  // ===== NEW CONDITION-SPECIFIC RECIPES =====
+  { id:'amb-d6', date:'2026-05-23', week:1, weekName:'Ambali Week', day:'Sat', type:'recipe', img:IMG.amb_d6_family,
+    title:'Family Ambali',
+    short:'Pure parivaar ke liye — saath mein.',
+    explanation:'Day 6 — Saturday family pour. Ek base banayein, har family member apni pasand ka add-on chunein. Joint family ke liye perfect — sab apna twist.',
+    reflection:'Family ne kaisa try kiya? Kisko sabse zyada acha laga?',
+    nudge:'Aaj saturday — family ke liye bada batch banayein.',
+    conditions:['digestion','iron','calcium','women-health','family'],
+    recipe:{name:'Family Ambali (4 portions)',ingredients:['½ cup ragi flour (4x base)','2 cups paani (paste)','4 glass paani (cook)','2 cups chaas','Namak swaad anusaar','Setup individual add-on bowls: chopped coriander, finely chopped green chilli, finely chopped onion, bhuna jeera powder, lemon wedges'],method:['Bada paste banayein — ragi + paani, smooth','4 glass paani add karein, 8-10 min low flame, hila te rahe','Cool karein','Chaas + namak base mein daalein','Sabko alag glass dein, individual add-ons khud chun ne dein'],benefits:['Joint family-friendly','Same base, alag taste','Cooking once = pour for all','Conversation starter']},
+    qa:[
+      {q:'Family ke liye base plain kyun?',options:['Easy hai','Sabki taste alag — individual add-ons','Tradition'],correct:1,why:'Plain base + custom add-ons = MIL ko bhi pasand, kids ko bhi.'},
+      {q:'Kitna paani for 4 servings?',options:['1 glass','4 glass + extra adjust','10 glass'],correct:1,why:'Ratio same rahe — flour 4x, paani 4x.'},
+      {q:'Sabse common add-on kya hai?',options:['Sugar','Bhuna jeera + namak','Ice'],correct:1,why:'Traditional Karnataka style — savory + warming.'}
+    ]
+  },
+
+  { id:'amb-d7', date:'2026-05-24', week:1, weekName:'Ambali Week', day:'Sun', type:'habit', img:IMG.amb_d7_reflection,
+    title:'Hafte ka Reflection',
+    short:'Iss hafte kya seekha? Kya repeat karna chahti hain?',
+    explanation:'Day 7 — Sunday. Aaj recipe nahi. Bas reflection. Iss hafte aap ne 6 din Ambali try ki — kya laga? Kya repeat karna chahti hain? Aage kaise continue karein?',
+    reflection:'Iss hafte kaunsa din sabse acha laga? Kyun?',
+    nudge:'Aaj sirf socho — Ambali habit ban sakti hai kya aapke liye?',
+    conditions:['habit-building','reflection','women-health'],
+    qa:[
+      {q:'Habit kyun banti hai?',options:['Magic se','Daily repeat + small win','Force se'],correct:1,why:'Repeat + reward = habit loop (Charles Duhigg).'},
+      {q:'Aage Ambali continue karne ka best way?',options:['Roz force karna','Apni favourite version, week mein 4-5 din','Sirf weekends'],correct:1,why:'Realistic frequency — 4-5 din/week sustainable.'},
+      {q:'Habit miss ho jaaye toh?',options:['Sab band kar do','Kal phir shuru karein — zero shame','Hafta skip karein'],correct:1,why:'Habit ki strength comebacks mein hai, perfection mein nahi.'}
+    ]
+  },
+
+    // ===== NEW CONDITION-SPECIFIC RECIPES =====
   { id:'methi-water', date:null, weekName:'Diabetes', type:'recipe', img:IMG.methi_water,
     title:'Methi Water', short:'Fenugreek soak — subah ka diabetes nuskha.',
     explanation:'Soaked methi (fenugreek) seeds drunk on empty stomach are a tested folk remedy for blood sugar. Bitter, but effective. The mucilage from soaking is what helps slow sugar absorption.',
@@ -2151,7 +2096,7 @@ function renderHome(){
   let eyebrowText = `Aaj ka Recipe · ${t.day||''}`;
   if (t.id && t.id.startsWith('amb-')) {
     const dayNum = parseInt(t.id.replace('amb-d',''), 10);
-    if (!isNaN(dayNum)) eyebrowText = `Aaj ka Recipe · Day ${dayNum} of 11`;
+    if (!isNaN(dayNum)) eyebrowText = `Aaj ka Recipe · Day ${dayNum} of 7`;
   }
   document.getElementById('mag-eyebrow').textContent = eyebrowText;
   document.getElementById('mag-title').innerHTML = t.title.replace(' ', '<br/>');
