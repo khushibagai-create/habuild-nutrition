@@ -376,6 +376,16 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .recipe-q-btn:active{transform:scale(0.97);}
 .recipe-q-btn.sent{background:var(--cream-deep);color:var(--forest);}
 .recipe-q-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.4;}
+.recipe-q-asked{font-size:13.5px;color:var(--muted);font-style:italic;line-height:1.45;padding:4px 12px 10px 0;border-bottom:1px dashed var(--cream-deep);margin-bottom:12px;}
+.recipe-q-asked::before{content:'You asked: ';font-weight:600;color:var(--forest);font-style:normal;}
+.recipe-q-answer{background:rgba(45,80,22,0.04);border-radius:12px;padding:12px 14px;margin-top:4px;}
+.recipe-q-answer-label{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--forest);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+.recipe-q-answer-text{font-size:14.5px;color:var(--ink);line-height:1.55;}
+.recipe-q-followup{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.recipe-q-followup-btn{background:var(--forest);color:white;border:none;border-radius:100px;padding:9px 14px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:transform 0.1s;}
+.recipe-q-followup-btn.ghost{background:transparent;color:var(--forest);border:1.5px solid var(--cream-deep);}
+.recipe-q-followup-btn:active{transform:scale(0.97);}
+.recipe-q-sent{padding:6px 0 4px;}
 .mcq{background:white;border:1px solid var(--sand);border-radius:14px;padding:16px;margin-bottom:12px;}
 .mcq-q{font-size:14px;color:var(--ink);font-weight:600;line-height:1.45;margin-bottom:12px;}
 .mcq-opt{display:block;width:100%;background:var(--warm-white);border:1.5px solid var(--cream-deep);border-radius:11px;padding:10px 14px;margin-bottom:7px;font-family:inherit;font-size:14px;color:var(--ink);cursor:pointer;transition:all 0.15s;}
@@ -771,6 +781,54 @@ const STATE = {
   _currentDay:null
 };
 function track(event,props){ console.log('[track]',event,props||{}); }
+
+// ---- Helpers used by recipe Q&A ----
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// Try to answer a recipe-specific question from local PDF knowledge before sending to team.
+// Returns {answer, source} or null.
+function findRecipeAnswer(question, day){
+  const q = (question||'').toLowerCase();
+  if(!q || q.length<3) return null;
+  // Normalize words, drop common stopwords
+  const stop = new Set(['the','a','an','is','are','what','how','do','i','to','for','of','in','on','my','me','can','should','this','that','it','and','or','but','with','about','have','has','be','was','were','will','if','when','why','which','please','tell','any','some','also']);
+  const qTokens = q.replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(w=>w.length>2 && !stop.has(w));
+  if(!qTokens.length) return null;
+
+  let best = null;
+  const score = (text, weight=1) => {
+    const t = (text||'').toLowerCase();
+    let s = 0;
+    qTokens.forEach(tok=>{ if(t.includes(tok)) s += weight; });
+    return s;
+  };
+
+  // 1. Recipe's own MCQs — strongest signal for that specific recipe
+  if(day && day.qa){
+    day.qa.forEach(item=>{
+      const s = score(item.q,3) + score(item.why,2);
+      if(s>=3 && (!best || s>best.score)) best = {score:s, answer:item.why, source:'recipe-mcq', heading:item.q};
+    });
+  }
+  // 2. Recipe-level fields
+  if(day){
+    const recipeText = [day.explanation, day.nudge, (day.recipe && day.recipe.benefits||[]).join(' ')].join(' ');
+    const s = score(recipeText,1);
+    if(s>=3 && (!best || s>best.score)){
+      const ans = day.explanation || day.nudge || '';
+      if(ans) best = {score:s, answer:ans, source:'recipe-body'};
+    }
+  }
+  // 3. Global FAQS (tags + question + answer)
+  if(typeof FAQS!=='undefined'){
+    FAQS.forEach(faq=>{
+      const tagText = (faq.tags||[]).join(' ');
+      const s = score(faq.q,2) + score(faq.a,1) + score(tagText,3);
+      if(s>=3 && (!best || s>best.score)) best = {score:s, answer:faq.a, source:'faq', heading:faq.q};
+    });
+  }
+  return best;
+}
 function loadState(){
   try{ const s=localStorage.getItem('habuild-nut-v2'); if(s) Object.assign(STATE,JSON.parse(s)); }catch(e){}
 }
@@ -1522,7 +1580,7 @@ function openTodayDetail(day){
     showToast('Voice tip · pretend audio playing');
   });
 
-  // Recipe-specific question submit
+  // Recipe-specific question submit — try to answer from PDF knowledge first
   const qBtn=document.getElementById('recipe-q-submit');
   const qInput=document.getElementById('recipe-q-input');
   if(qBtn && qInput){
@@ -1530,11 +1588,52 @@ function openTodayDetail(day){
       const text=(qInput.value||'').trim();
       if(!text){ qInput.focus(); return; }
       track('Recipe Question Asked',{recipe:day.id,len:text.length});
-      qBtn.classList.add('sent');
-      qBtn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sent — SB\'s team will reply';
-      qInput.value='';
-      qInput.disabled=true;
-      showToast('Question sent — usually replied within 24 hrs');
+      const match=findRecipeAnswer(text,day);
+      const wrap=document.querySelector('.recipe-q-wrap');
+      if(match){
+        track('Recipe Question Auto-Answered',{recipe:day.id,source:match.source});
+        wrap.innerHTML=`
+          <div class="recipe-q-asked">${escapeHtml(text)}</div>
+          <div class="recipe-q-answer">
+            <div class="recipe-q-answer-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              From SB's recipe guide
+            </div>
+            <div class="recipe-q-answer-text">${match.answer}</div>
+            <div class="recipe-q-followup">
+              <button class="recipe-q-followup-btn" id="recipe-q-helpful">This helps — thanks</button>
+              <button class="recipe-q-followup-btn ghost" id="recipe-q-still-ask">Still ask the team</button>
+            </div>
+          </div>
+        `;
+        document.getElementById('recipe-q-helpful').onclick=()=>{
+          track('Recipe Answer Helpful',{recipe:day.id});
+          showToast('Glad that helped 🌱');
+        };
+        document.getElementById('recipe-q-still-ask').onclick=()=>{
+          track('Recipe Question Escalated',{recipe:day.id});
+          wrap.innerHTML=`
+            <div class="recipe-q-asked">${escapeHtml(text)}</div>
+            <div class="recipe-q-sent">
+              <div class="recipe-q-answer-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Sent — SB's team will reply within 24 hrs
+              </div>
+            </div>`;
+          showToast('Question sent to SB\\'s team');
+        };
+      } else {
+        wrap.innerHTML=`
+          <div class="recipe-q-asked">${escapeHtml(text)}</div>
+          <div class="recipe-q-sent">
+            <div class="recipe-q-answer-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Sent — SB's team will reply within 24 hrs
+            </div>
+            <div class="recipe-q-note">Your question may help others too — we sometimes add it to the FAQ.</div>
+          </div>`;
+        showToast('Question sent — usually replied within 24 hrs');
+      }
     });
   }
 
@@ -1805,9 +1904,6 @@ function renderBrowseGrid(){
     const cond=(d.conditions&&d.conditions[0])||'';
     return `<div class="browse-card ${h}" data-rid="${d.id}">
       <div class="img" style="background-image:url('${d.img}')"></div>
-      <div class="voice-corner">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21a1 1 0 1 0 2 0v-3.08A7 7 0 0 0 19 11z"/></svg>
-      </div>
       <div class="browse-card-body">
         <div class="browse-card-title">${d.title}</div>
         ${cond?`<div class="browse-card-chip">${cond.replace('-',' ')}</div>`:''}
