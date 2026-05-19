@@ -1,0 +1,2219 @@
+<!-- DESIGN MEMO: Editorial cover style with WhatsApp Status-aware CTA. Refs: Apple News magazine, Kinfolk, Cereal. Fixed spine using writing-mode (was clipped by rotate). Cover image swaps to today's recipe. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f3a0e">
+<title>Habuild — Nutrition Magazine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+
+:root{
+  --forest:#2D5016;--forest-deep:#1f3a0e;
+  --sage:#4A7C59;--sage-light:#8FAE9B;
+  --cream:#F5F0E8;--cream-deep:#EDE5D3;
+  --sand:#E8D5B7;--gold:#8B6914;--gold-soft:#b89146;
+  --ink:#1a1a1a;--muted:#5a5a5a;
+  --warm-white:#FAF7F1;
+  --shadow:0 4px 18px rgba(45,80,22,0.10);
+  --shadow-lg:0 18px 50px rgba(0,0,0,0.15);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5;font-size:16px;}
+.phone-wrap{position:relative;width:100%;height:100vh;height:100dvh;background:var(--cream);}
+.phone{position:relative;width:100%;height:100%;background:var(--cream);overflow-y:auto;}
+@media (min-width:480px){
+  body{background:#1c2615;display:flex;align-items:center;justify-content:center;}
+  .phone-wrap{width:420px;height:92vh;max-height:900px;border-radius:34px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.4);}
+  .phone{border-radius:34px;}
+}
+.screen{position:absolute;inset:0;background:var(--cream);display:none;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.screen.active{display:flex;}
+
+
+.ob{flex:1;display:flex;flex-direction:column;padding:max(env(safe-area-inset-top),24px) 24px 24px;background:linear-gradient(180deg,var(--cream) 0%,var(--cream-deep) 100%);min-height:100%;}
+.ob-brand{font-family:'Playfair Display',serif;font-weight:600;font-size:14px;color:var(--forest);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;}
+.ob-hero{margin-top:18px;margin-bottom:24px;}
+.ob-title{font-family:'Playfair Display',serif;font-size:30px;color:var(--forest);line-height:1.15;margin-bottom:10px;font-weight:600;}
+.ob-sub{color:var(--muted);font-size:15px;line-height:1.5;}
+.ob-illu{align-self:center;width:140px;height:140px;margin:6px 0 18px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--sand) 0%,var(--cream-deep) 70%);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 -8px 20px rgba(139,105,20,0.10);}
+.ob-illu svg{width:70px;height:70px;color:var(--forest);}
+.ob-field{background:white;border:1.5px solid var(--sand);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+.ob-field:focus-within{border-color:var(--sage);}
+.ob-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;font-weight:600;}
+.ob-input{width:100%;border:none;outline:none;background:transparent;font-family:inherit;font-size:17px;color:var(--ink);}
+.ob-phone-row{display:flex;gap:10px;}
+.ob-phone-row .ob-field{flex:1;margin-bottom:0;}
+.ob-phone-row .ob-field.prefix{flex:0 0 110px;}
+.ob-helper{font-size:12px;color:var(--muted);margin-top:-6px;margin-bottom:14px;padding-left:4px;}
+.ob-spacer{height:18px;}
+.btn-primary{width:100%;background:var(--forest);color:white;border:none;border-radius:14px;padding:16px;font-family:inherit;font-size:16px;font-weight:600;cursor:pointer;transition:transform 0.1s,background 0.2s;}
+.btn-primary:disabled{background:var(--sage-light);cursor:not-allowed;}
+.btn-primary:active:not(:disabled){transform:scale(0.98);}
+
+
+  /* MAGAZINE HOME — Editorial */
+  .mag-home{min-height:100%;background:var(--cream);padding-bottom:max(env(safe-area-inset-bottom),24px);}
+  .cover{
+    position:relative;width:100%;height:68vh;min-height:540px;
+    background-image:url('https://images.unsplash.com/photo-1563911892437-1feda0179e1b?w=1400&q=85');
+    background-size:cover;background-position:center;
+    background-color:#1f3a0e;
+  }
+  .cover::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,0.55) 0%,rgba(0,0,0,0.05) 18%,rgba(0,0,0,0) 38%,rgba(0,0,0,0.55) 60%,rgba(0,0,0,0.92) 88%,rgba(0,0,0,0.97) 100%);
+  }
+  .cover-top{display:none;}
+  .issue-line,.brand-mark{display:none;}
+  .cover-spine{display:none;}
+  .cover-content{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:80px 26px max(env(safe-area-inset-bottom),34px);
+    color:white;z-index:3;
+    background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.55) 35%,rgba(0,0,0,0.88) 100%);
+  }
+  .cover-eyebrow{
+    display:inline-block;
+    color:white;
+    background:var(--sage);
+    padding:5px 11px 4px;
+    border-radius:4px;
+    font-family:'Inter',sans-serif;
+    font-size:10.5px;font-weight:700;
+    letter-spacing:1.8px;text-transform:uppercase;
+    margin-bottom:18px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  }
+  .cover-title{
+    font-family:'Playfair Display',serif;
+    font-size:46px;font-weight:800;
+    line-height:1.0;letter-spacing:-1.3px;
+    color:white;
+    text-shadow:0 4px 20px rgba(0,0,0,0.75),0 0 30px rgba(0,0,0,0.35);
+    margin-bottom:16px;
+  }
+  .cover-lead{
+    font-size:17px;line-height:1.5;
+    color:white;
+    font-family:'Inter',sans-serif;font-style:normal;
+    font-weight:400;
+    max-width:340px;margin-bottom:22px;
+    text-shadow:0 2px 10px rgba(0,0,0,0.65);
+  }
+  .cover-cta{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--forest);background:white;
+    text-decoration:none;font-family:'Inter',sans-serif;
+    font-size:14px;font-weight:700;
+    padding:11px 20px;border-radius:100px;
+    letter-spacing:0.3px;cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,0.25);
+  }
+  .cover-cta svg{width:14px;height:14px;}
+  .cover-voice{display:none;}
+  .masthead{padding:36px 26px 8px;text-align:center;background:var(--cream);}
+  .masthead-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;letter-spacing:6px;text-transform:uppercase;color:var(--forest);position:relative;display:inline-block;}
+  .masthead-title::before,.masthead-title::after{content:'';position:absolute;top:50%;width:34px;height:1px;background:var(--sage-light);}
+  .masthead-title::before{right:calc(100% + 16px);}
+  .masthead-title::after{left:calc(100% + 16px);}
+  .feature{padding:20px 22px 0;}
+  .feature-card{display:flex;flex-direction:column;background:white;border-radius:22px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,0.12);cursor:pointer;}
+  .feature-img{width:100%;aspect-ratio:16/11;background-size:cover;background-position:center;background-color:var(--sand);}
+  .feature-body{padding:22px 22px 24px;}
+  .feature-kicker{font-family:'Playfair Display',serif;font-size:10.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+  .feature-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;line-height:1.15;letter-spacing:-0.4px;color:var(--forest);margin-bottom:8px;}
+  .feature-byline{font-size:13px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .feature-byline .ava{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#b89146,var(--gold));color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Playfair Display',serif;}
+  .feature-lead{font-size:15.5px;color:var(--ink);line-height:1.65;font-family:'Playfair Display',serif;font-style:italic;margin-bottom:16px;}
+  .feature-link{display:inline-flex;align-items:center;gap:8px;color:var(--forest);text-decoration:none;font-size:13.5px;font-weight:600;letter-spacing:0.3px;padding-bottom:4px;border-bottom:1.5px solid var(--sage-light);cursor:pointer;}
+  .feature-link svg{width:13px;height:13px;}
+  .browse-strip{margin:40px 22px 24px;padding:24px;background:linear-gradient(135deg,var(--forest) 0%,var(--sage) 100%);border-radius:22px;color:white;text-align:center;cursor:pointer;}
+  .browse-strip-eyebrow{font-family:'Playfair Display',serif;font-size:10.5px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.78);margin-bottom:8px;}
+  .browse-strip-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;letter-spacing:-0.3px;line-height:1.2;margin-bottom:14px;}
+  .browse-strip-link{display:inline-flex;align-items:center;gap:8px;color:white;font-size:14px;font-weight:600;padding:10px 22px;background:rgba(255,255,255,0.14);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.3);border-radius:100px;}
+  .browse-strip-link svg{width:14px;height:14px;}
+  .colophon{display:none;}
+  /* Inline Browse Preview */
+  .masthead-spaced{padding-top:30px;}
+  .bp-wrap{padding:6px 22px 12px;}
+  .bp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+  .bp-card{position:relative;background:white;border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.08);}
+  .bp-card .img{aspect-ratio:4/5;background-size:cover;background-position:center;background-color:var(--sand);}
+  .bp-card .img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,0.78) 100%);}
+  .bp-card .overlay{position:absolute;left:12px;right:12px;bottom:12px;color:white;z-index:2;}
+  .bp-card .t{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;line-height:1.2;margin-bottom:3px;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+  .bp-card .c{font-size:10px;letter-spacing:0.5px;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,0.92);text-shadow:0 1px 6px rgba(0,0,0,0.6);}
+  .bp-card .vc{position:absolute;top:9px;right:9px;width:24px;height:24px;background:rgba(245,240,232,0.95);color:var(--forest);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;}
+  .bp-card .vc svg{width:11px;height:11px;}
+  .bp-more{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;background:var(--forest);color:white;
+    border:none;border-radius:14px;padding:14px;
+    font-family:inherit;font-size:14.5px;font-weight:600;
+    cursor:pointer;box-shadow:0 8px 20px rgba(45,80,22,0.25);
+  }
+  .bp-more svg{width:14px;height:14px;}
+  .bp-more:active{transform:scale(0.99);}
+
+  /* Upload CTA card (home + member detail) */
+  .upload-cta-wrap{padding:24px 22px 40px;}
+  .upload-cta-card{
+    display:flex;align-items:center;gap:14px;
+    width:100%;background:white;
+    border:1.8px dashed var(--sage);
+    border-radius:16px;padding:18px 16px;
+    text-align:left;cursor:pointer;
+    font-family:inherit;
+    box-shadow:0 4px 14px rgba(45,80,22,0.08);
+  }
+  .upload-cta-card:active{transform:scale(0.99);}
+  .upload-cta-icon{
+    width:44px;height:44px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--sand),var(--cream-deep));
+    color:var(--forest);border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .upload-cta-icon svg{width:22px;height:22px;}
+  .upload-cta-body{flex:1;min-width:0;}
+  .upload-cta-title{font-family:'Playfair Display',serif;font-size:15.5px;font-weight:700;color:var(--forest);margin-bottom:2px;}
+  .upload-cta-sub{font-size:12.5px;color:var(--muted);line-height:1.3;}
+  .upload-cta-arrow{width:18px;height:18px;color:var(--sage);flex-shrink:0;}
+
+  /* Add Recipe screen */
+  .ar-head{
+    position:sticky;top:0;background:var(--cream);z-index:10;
+    padding:max(env(safe-area-inset-top),12px) 16px 12px;
+    display:flex;align-items:center;gap:12px;
+    border-bottom:1px solid var(--cream-deep);
+  }
+  .ar-body{flex:1;padding:18px;padding-bottom:120px;}
+  .ar-hero-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--forest);font-weight:700;margin-bottom:6px;line-height:1.2;}
+  .ar-hero-sub{font-size:13.5px;color:var(--muted);margin-bottom:20px;line-height:1.5;}
+  .ar-photo-zone{
+    aspect-ratio:5/4;background:var(--cream-deep);
+    border:1.8px dashed var(--sage);border-radius:18px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:var(--forest);cursor:pointer;margin-bottom:18px;
+    background-size:cover;background-position:center;
+    overflow:hidden;position:relative;
+  }
+  .ar-photo-zone svg{width:38px;height:38px;margin-bottom:8px;}
+  .ar-photo-zone span{font-size:14px;font-weight:600;}
+  .ar-photo-zone .sub{font-size:12px;color:var(--muted);font-weight:400;margin-top:3px;}
+  .ar-field-label{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:7px;}
+  .ar-field{
+    background:white;border:1.5px solid var(--sand);
+    border-radius:14px;padding:13px 16px;margin-bottom:18px;
+  }
+  .ar-field:focus-within{border-color:var(--sage);}
+  .ar-field input,.ar-field textarea{
+    width:100%;border:none;outline:none;background:transparent;
+    font-family:inherit;font-size:15px;color:var(--ink);resize:none;
+  }
+  .ar-tag-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+  .ar-tag{background:white;border:1.5px solid var(--sand);border-radius:100px;padding:7px 14px;font-size:12.5px;color:var(--muted);cursor:pointer;font-weight:500;}
+  .ar-tag.selected{background:var(--forest);color:white;border-color:var(--forest);}
+  .ar-bottom{
+    position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+    width:100%;max-width:420px;
+    padding:12px 18px max(env(safe-area-inset-bottom),16px);
+    background:linear-gradient(180deg,rgba(245,240,232,0) 0%,var(--cream) 25%);
+    z-index:50;
+  }
+  .ar-bottom .btn-primary{width:100%;}
+  /* Bottom filter pill + sheet */
+  .bottom-filter-pill{
+    position:fixed;left:50%;transform:translateX(-50%);
+    bottom:max(env(safe-area-inset-bottom),20px);
+    display:flex;align-items:center;gap:8px;
+    background:var(--forest);color:white;
+    border:none;border-radius:100px;
+    padding:13px 22px 13px 18px;
+    font-family:inherit;font-size:14px;font-weight:600;
+    cursor:pointer;
+    box-shadow:0 14px 32px rgba(45,80,22,0.42),0 2px 8px rgba(0,0,0,0.18);
+    z-index:60;letter-spacing:0.2px;
+  }
+  .bottom-filter-pill svg{flex-shrink:0;}
+  .bottom-filter-pill:active{transform:translateX(-50%) scale(0.97);}
+  .bottom-filter-pill .count{
+    display:inline-block;background:white;color:var(--forest);
+    font-size:11px;font-weight:700;
+    padding:1px 8px;border-radius:100px;margin-left:6px;
+  }
+  .sheet-backdrop{
+    position:fixed;inset:0;background:rgba(0,0,0,0.4);
+    z-index:90;opacity:0;pointer-events:none;
+    transition:opacity 0.2s;
+  }
+  .sheet-backdrop.open{opacity:1;pointer-events:auto;}
+  .filter-sheet{
+    position:fixed;left:0;right:0;bottom:0;
+    background:var(--cream);border-radius:24px 24px 0 0;
+    z-index:100;padding:8px 22px max(env(safe-area-inset-bottom),24px);
+    transform:translateY(100%);transition:transform 0.28s cubic-bezier(.2,.7,.2,1);
+    box-shadow:0 -20px 60px rgba(0,0,0,0.3);
+    max-width:420px;margin:0 auto;
+  }
+  .filter-sheet.open{transform:translateY(0);}
+  .sheet-handle{width:42px;height:4px;background:var(--sand);border-radius:100px;margin:8px auto 18px;}
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .sheet-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--forest);font-weight:600;}
+  .sheet-close{width:32px;height:32px;background:white;border:1px solid var(--sand);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);}
+  .sheet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding-bottom:8px;}
+  .sheet-opt{
+    background:white;border:1.5px solid var(--sand);
+    border-radius:14px;padding:14px;
+    text-align:left;cursor:pointer;font-family:inherit;
+    color:var(--ink);
+  }
+  .sheet-opt .nm{font-size:14px;font-weight:600;line-height:1.2;}
+  .sheet-opt .ds{font-size:12px;color:var(--muted);margin-top:3px;}
+  .sheet-opt.active{background:var(--forest);color:white;border-color:var(--forest);}
+  .sheet-opt.active .ds{color:rgba(255,255,255,0.85);}
+  .sheet-opt:active{transform:scale(0.98);}
+  .browse-grid{padding-bottom:120px !important;}
+
+  /* FAQ / Ask a Question */
+  .faq-ask-wrap{background:white;border:1.5px solid var(--sand);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,0.06);}
+  .faq-ask-input{width:100%;border:none;outline:none;background:transparent;font-family:inherit;font-size:15px;line-height:1.5;color:var(--ink);resize:none;margin-bottom:10px;}
+  .faq-ask-input::placeholder{color:#888;}
+  .faq-ask-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--forest);color:white;
+    border:none;border-radius:100px;
+    padding:9px 18px;font-family:inherit;font-size:14px;font-weight:600;
+    cursor:pointer;
+    box-shadow:0 4px 12px rgba(45,80,22,0.25);
+  }
+  .faq-ask-btn:active{transform:scale(0.97);}
+  .faq-result{margin-bottom:24px;}
+  .faq-result-card{
+    background:linear-gradient(135deg,var(--sand),var(--cream-deep));
+    border-radius:16px;padding:18px;
+    margin-bottom:8px;
+    border-left:4px solid var(--sage);
+    animation:slideDown 0.3s ease-out;
+  }
+  .faq-result-card.support-card{background:linear-gradient(135deg,#fff7e6,var(--cream-deep));border-left-color:var(--gold);}
+  .faq-result-label{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .faq-result-label svg{width:13px;height:13px;}
+  .faq-result-q{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--forest);margin-bottom:8px;line-height:1.3;}
+  .faq-result-a{font-size:14.5px;line-height:1.6;color:var(--ink);}
+  .faq-result-meta{font-size:12px;color:var(--muted);margin-top:10px;font-style:italic;}
+  @keyframes slideDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+
+  .faq-list-header{margin:24px 0 12px;}
+  .faq-list-header h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--forest);font-weight:700;margin-bottom:4px;}
+  .faq-list-header p{font-size:12.5px;color:var(--muted);}
+
+  .faq-list{background:white;border-radius:16px;overflow:hidden;border:1px solid var(--cream-deep);box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .faq-item{border-bottom:1px solid var(--cream-deep);cursor:pointer;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item-head{padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .faq-item-q{font-size:14px;font-weight:600;color:var(--ink);line-height:1.35;flex:1;}
+  .faq-item-arrow{color:var(--sage);font-size:18px;flex-shrink:0;transition:transform 0.2s;}
+  .faq-item.open .faq-item-arrow{transform:rotate(90deg);}
+  .faq-item-body{padding:0 16px 14px;font-size:13.5px;line-height:1.6;color:var(--ink);display:none;}
+  .faq-item-body.show{display:block;}
+  .faq-item.matched{background:linear-gradient(90deg,rgba(74,124,89,0.08),transparent);}
+
+
+.detail-head{position:sticky;top:0;background:var(--cream);z-index:10;padding:max(env(safe-area-inset-top),12px) 16px 12px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--cream-deep);}
+.back-btn{width:36px;height:36px;background:white;border:1px solid var(--sand);border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:var(--forest);}
+.detail-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--forest);font-weight:600;line-height:1.2;flex:1;}
+.detail-body{flex:1;padding:0 18px;padding-bottom:120px;}
+.recipe-hero{margin:14px -18px 18px;border-radius:0;overflow:hidden;position:relative;aspect-ratio:5/6;background-size:cover;background-position:center;background-color:var(--sand);}
+.recipe-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.78) 100%);}
+.recipe-hero-content{position:absolute;left:18px;right:18px;bottom:20px;color:white;z-index:2;}
+.recipe-tag{display:inline-block;background:rgba(255,255,255,0.18);backdrop-filter:blur(10px);padding:5px 12px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.5px;margin-bottom:10px;text-transform:uppercase;}
+.recipe-h1{font-family:'Playfair Display',serif;font-size:30px;line-height:1.1;letter-spacing:-0.4px;margin-bottom:8px;font-weight:700;text-shadow:0 2px 12px rgba(0,0,0,0.4);}
+.recipe-sub{font-size:14px;color:rgba(255,255,255,0.92);line-height:1.5;text-shadow:0 1px 6px rgba(0,0,0,0.4);}
+.voice-card{display:none;}
+.voice-icon-wrap{width:42px;height:42px;background:var(--forest);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.voice-icon-wrap svg{width:18px;height:18px;}
+.voice-card-body{flex:1;}
+.voice-card-title{font-size:14px;color:var(--ink);font-weight:600;}
+.voice-card-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+.voice-play{width:34px;height:34px;border-radius:50%;background:var(--cream-deep);display:flex;align-items:center;justify-content:center;color:var(--forest);}
+.voice-play svg{width:14px;height:14px;}
+.block{margin-bottom:24px;}
+.block-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--forest);font-weight:700;letter-spacing:-0.2px;margin-bottom:12px;padding-bottom:8px;border-bottom:1.5px solid var(--sand);text-transform:none;}
+.block-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--sage);border-radius:2px;margin-right:8px;vertical-align:-2px;}
+.ingredients{background:white;border:1px solid var(--sand);border-radius:14px;padding:12px 18px;list-style:none;}
+.ingredients li{padding:7px 0;font-size:14.5px;color:var(--ink);border-bottom:1px dashed var(--cream-deep);display:flex;gap:10px;}
+.ingredients li::before{content:'•';color:var(--sage);font-weight:bold;}
+.ingredients li:last-child{border-bottom:none;}
+.steps{counter-reset:step;list-style:none;}
+.steps li{counter-increment:step;padding:10px 0 10px 38px;font-size:14.5px;color:var(--ink);line-height:1.55;position:relative;border-bottom:1px solid var(--cream-deep);}
+.steps li::before{content:counter(step);position:absolute;left:0;top:9px;width:26px;height:26px;background:var(--sage);color:white;font-size:13px;font-weight:600;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.benefits{display:flex;flex-wrap:wrap;}
+.benefit-pill{display:inline-block;background:var(--cream-deep);color:var(--forest);padding:7px 14px;border-radius:100px;font-size:12.5px;font-weight:500;margin:4px 6px 4px 0;}
+.mcq{background:white;border:1px solid var(--sand);border-radius:14px;padding:16px;margin-bottom:12px;}
+.mcq-q{font-size:14px;color:var(--ink);font-weight:600;line-height:1.45;margin-bottom:12px;}
+.mcq-opt{display:block;width:100%;background:var(--warm-white);border:1.5px solid var(--cream-deep);border-radius:11px;padding:10px 14px;margin-bottom:7px;font-family:inherit;font-size:14px;color:var(--ink);cursor:pointer;transition:all 0.15s;}
+.mcq-opt:hover{background:white;}
+.mcq-opt.correct{background:#e8f5e8;border-color:#4CAF50;color:#1b5e20;font-weight:600;}
+.mcq-opt.wrong{background:#fff0f0;border-color:#e57373;color:#b71c1c;}
+.mcq-why{margin-top:10px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:1.5;background:#fff7f0;color:#b65a00;display:none;}
+.mcq-why.show{display:block;}
+.soft-card{background:linear-gradient(135deg,var(--sand) 0%,var(--cream-deep) 100%);border-radius:16px;padding:18px;margin-bottom:12px;}
+.soft-card-label{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:0.6px;font-weight:600;margin-bottom:6px;}
+.soft-card-text{font-family:'Playfair Display',serif;font-size:17px;color:var(--forest);font-weight:600;line-height:1.35;}
+.wa-card{background:#25D366;color:white;border-radius:16px;padding:14px 18px;display:flex;gap:12px;align-items:center;}
+.wa-card svg{flex-shrink:0;}
+.wa-card-text{font-size:13.5px;line-height:1.45;font-weight:500;}
+.bottom-cta{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;padding:12px 18px max(env(safe-area-inset-bottom),16px);background:linear-gradient(180deg,rgba(245,240,232,0) 0%,var(--cream) 25%);display:flex;gap:10px;z-index:50;}
+.bottom-cta .btn-primary{flex:1;}
+.icon-btn{width:54px;height:54px;background:white;border:1px solid var(--sand);border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;}
+.icon-btn.saved{background:var(--forest);}
+.icon-btn.saved svg{stroke:white;fill:white;}
+.member-hero{width:100%;aspect-ratio:1;background-size:cover;background-position:center;background-color:var(--sand);border-radius:18px;margin:14px 0 16px;}
+.member-info{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--cream-deep);}
+.member-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--gold-soft),var(--gold));color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.member-name{font-size:16px;font-weight:600;color:var(--ink);}
+.member-meta{font-size:12.5px;color:var(--muted);}
+.member-tag{display:inline-block;background:var(--cream-deep);color:var(--gold);font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;margin-top:4px;}
+.member-dish-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--forest);margin-bottom:12px;letter-spacing:-0.3px;}
+.member-story{margin-bottom:24px;}
+.member-story p{font-size:14.5px;line-height:1.65;color:var(--ink);margin-bottom:12px;}
+.member-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.member-grid .tile{aspect-ratio:1;border-radius:14px;background-size:cover;background-position:center;background-color:var(--sand);position:relative;cursor:pointer;overflow:hidden;}
+.member-grid .tile:not(.upload-tile)::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,0.7) 100%);}
+.member-grid .tile .name{position:absolute;bottom:8px;left:10px;right:10px;color:white;font-size:11.5px;font-weight:600;z-index:2;line-height:1.3;text-shadow:0 1px 4px rgba(0,0,0,0.4);}
+.member-grid .upload-tile{background:linear-gradient(135deg,var(--sand) 0%,var(--cream-deep) 100%);border:1.8px dashed var(--sage);display:flex;align-items:center;justify-content:center;}
+.member-grid .upload-tile .upload-tile-inner{text-align:center;color:var(--forest);font-family:'Playfair Display',serif;font-size:13px;font-weight:600;line-height:1.3;}
+.member-grid .upload-tile svg{width:30px;height:30px;color:var(--forest);margin-bottom:6px;}
+.browse-head{position:sticky;top:0;background:var(--cream);z-index:10;padding:max(env(safe-area-inset-top),12px) 0 0;border-bottom:1px solid var(--cream-deep);}
+.browse-top{display:flex;align-items:center;justify-content:space-between;padding:0 16px 12px;}
+.browse-top h1{font-family:'Playfair Display',serif;font-size:18px;color:var(--forest);font-weight:600;}
+.cond-strip{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.cond-strip::-webkit-scrollbar{display:none;}
+.cond-chip{flex-shrink:0;padding:8px 14px;background:white;border:1.5px solid var(--sand);border-radius:100px;font-size:13px;color:var(--ink);font-weight:500;cursor:pointer;white-space:nowrap;}
+.cond-chip.active{background:var(--forest);color:white;border-color:var(--forest);}
+.browse-grid{padding:14px 16px 60px;columns:2;column-gap:10px;}
+.browse-card{display:inline-block;width:100%;break-inside:avoid;margin-bottom:10px;border-radius:14px;overflow:hidden;background:white;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.08);position:relative;}
+.browse-card .img{background-size:cover;background-position:center;background-color:var(--sand);}
+.browse-card.h-tall .img{aspect-ratio:3/4.2;}
+.browse-card.h-square .img{aspect-ratio:1/1;}
+.browse-card.h-medium .img{aspect-ratio:3/3.6;}
+.browse-card-body{padding:10px 12px 12px;}
+.browse-card-title{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:4px;}
+.browse-card-chip{display:inline-block;font-size:9.5px;background:var(--cream-deep);color:var(--gold);padding:2px 7px;border-radius:5px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;}
+.voice-corner{position:absolute;top:9px;right:9px;width:24px;height:24px;background:rgba(245,240,232,0.95);color:var(--forest);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;}
+.voice-corner svg{width:11px;height:11px;}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--forest);color:white;padding:12px 22px;border-radius:100px;font-size:14px;font-weight:500;z-index:200;opacity:0;transition:opacity 0.2s;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,0.25);}
+.toast.show{opacity:1;}
+
+/* ===== Share preview sheet ===== */
+.share-overlay{position:fixed;inset:0;z-index:300;background:rgba(31,58,14,0.55);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);opacity:0;pointer-events:none;transition:opacity 0.25s ease;display:flex;align-items:flex-end;justify-content:center;}
+.share-overlay.show{opacity:1;pointer-events:auto;}
+.share-sheet{width:100%;max-width:420px;background:var(--cream);border-radius:28px 28px 0 0;padding:18px 18px max(env(safe-area-inset-bottom),22px);transform:translateY(40px);transition:transform 0.32s cubic-bezier(0.16,1,0.3,1);box-shadow:0 -18px 60px rgba(0,0,0,0.28);}
+.share-overlay.show .share-sheet{transform:translateY(0);}
+.share-grab{width:42px;height:4px;background:var(--sand);border-radius:4px;margin:2px auto 14px;}
+.share-sheet-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--forest);text-align:center;margin-bottom:4px;}
+.share-sheet-sub{font-size:12.5px;color:var(--muted);text-align:center;margin-bottom:14px;}
+.share-preview-frame{width:100%;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:var(--sand) center/cover;box-shadow:0 10px 30px rgba(0,0,0,0.22);position:relative;}
+.share-preview-frame img{display:block;width:100%;height:100%;object-fit:cover;}
+.share-preview-frame .share-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--cream-deep);color:var(--forest);font-family:'Playfair Display',serif;font-size:15px;letter-spacing:0.5px;}
+.share-actions{display:flex;gap:10px;margin-top:14px;}
+.share-actions button{flex:1;border:none;border-radius:14px;padding:14px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:transform 0.1s,opacity 0.15s;}
+.share-actions .share-cancel{background:transparent;color:var(--forest);border:1.5px solid var(--sand);}
+.share-actions .share-confirm{background:#25D366;color:white;display:flex;align-items:center;justify-content:center;gap:8px;}
+.share-actions .share-confirm:disabled{opacity:0.6;cursor:not-allowed;}
+.share-actions button:active:not(:disabled){transform:scale(0.97);}
+.share-actions .share-confirm svg{width:16px;height:16px;}
+
+</style>
+</head>
+<body>
+<div class="phone-wrap">
+<div class="phone">
+
+<!-- =================== MAGAZINE HOME =================== -->
+<section id="screen-home" class="screen">
+  <div class="mag-home">
+    <div class="cover">
+      <div class="cover-top">
+        <div class="issue-line" id="mag-issue">Issue 19 · 14 May 2026</div>
+        <div class="brand-mark">Habuild</div>
+      </div>
+      <div class="cover-spine" id="mag-spine">Recipes · Week 2 · Herbal Tea</div>
+      <div class="cover-voice" id="mag-cover-voice">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21a1 1 0 1 0 2 0v-3.08A7 7 0 0 0 19 11z"/></svg>
+        SB ki raay · 0:28
+      </div>
+      <div class="cover-content">
+        <div class="cover-eyebrow" id="mag-eyebrow">Aaj ka Recipe · Day 4 of 6</div>
+        <h1 class="cover-title" id="mag-title">Cardamom<br/>Herbal Tea</h1>
+        <p class="cover-lead" id="mag-lead">Light, fresh, gentle — the recipe that calms a heavy stomach without trying.</p>
+        <a class="cover-cta" id="mag-cta">Read recipe
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="masthead">
+      <div class="masthead-title">Browse Recipes</div>
+    </div>
+    <div class="bp-wrap">
+      <div class="bp-grid" id="bp-grid"></div>
+      <button class="bp-more" id="bp-more">
+        Sabhi 34 recipes dekhein
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="masthead masthead-spaced">
+      <div class="masthead-title">Featured Today</div>
+    </div>
+    <div class="feature">
+      <div class="feature-card" id="mag-feature-card">
+        <div class="feature-img" id="mag-feature-img" style="background-image:url('assets/kirti-ragi-laddu.jpg')"></div>
+        <div class="feature-body">
+          <div class="feature-kicker" id="mag-feat-kicker">From the Community · Diabetes</div>
+          <h2 class="feature-title" id="mag-feat-title">Ragi Laddoo</h2>
+          <div class="feature-byline">
+            <div class="ava" id="mag-feat-ava">A</div>
+            <span id="mag-feat-byline">Ashalatha · Bengaluru</span>
+          </div>
+          <p class="feature-lead" id="mag-feat-lead">"Mom's recipe — my kids fight for these. Energy + iron, no sugar."</p>
+          <a class="feature-link" id="mag-feat-link">Read the story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="upload-cta-wrap">
+      <button class="upload-cta-card" id="upload-cta-home">
+        <div class="upload-cta-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <div class="upload-cta-body">
+          <div class="upload-cta-title">Apni recipe share karein</div>
+          <div class="upload-cta-sub">Photo + ek line — community ke saath</div>
+        </div>
+        <svg class="upload-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <button class="upload-cta-card" id="faq-cta-home" style="margin-top:12px;">
+        <div class="upload-cta-icon" style="background:linear-gradient(135deg,var(--cream-deep),var(--sand));">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="upload-cta-body">
+          <div class="upload-cta-title">Aapke sawaal · FAQ</div>
+          <div class="upload-cta-sub">Common questions · ya apna poochein</div>
+        </div>
+        <svg class="upload-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- =================== ONBOARDING NAME =================== -->
+<section id="screen-onb-name" class="screen">
+  <div class="ob">
+    <div class="ob-brand">Habuild · Recipes</div>
+    <div class="ob-illu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <div class="ob-hero">
+      <h1 class="ob-title">Aapki Recipe Book banayein</h1>
+      <p class="ob-sub">Har din ek choti si seekh — recipe, tip, habit. SB ki raay ke saath.</p>
+    </div>
+    <div class="ob-field">
+      <div class="ob-label">Naam</div>
+      <input class="ob-input" id="name-input" placeholder="Aapka naam" autocomplete="given-name"/>
+    </div>
+    <div class="ob-spacer"></div>
+    <button class="btn-primary" id="name-continue" disabled>Aage badhein</button>
+  </div>
+</section>
+<section id="screen-onb-phone" class="screen">
+  <div class="ob">
+    <div class="ob-brand">Habuild · Recipes</div>
+    <div class="ob-hero">
+      <h1 class="ob-title">Apna number daalein</h1>
+      <p class="ob-sub">Taaki aap apni progress kabhi bhi access kar sakein.</p>
+    </div>
+    <div class="ob-phone-row">
+      <div class="ob-field prefix">
+        <div class="ob-label">Code</div>
+        <select class="ob-input" id="phone-prefix" style="font-size:15px;">
+          <option value="+91">+91 India</option>
+          <option value="+1">+1 USA</option>
+          <option value="+44">+44 UK</option>
+          <option value="+61">+61 AUS</option>
+          <option value="+971">+971 UAE</option>
+          <option value="+65">+65 SG</option>
+          <option value="+64">+64 NZ</option>
+          <option value="+27">+27 SA</option>
+          <option value="+966">+966 KSA</option>
+        </select>
+      </div>
+      <div class="ob-field">
+        <div class="ob-label">Phone</div>
+        <input class="ob-input" id="phone-input" type="tel" placeholder="98XXXXXXXX" inputmode="numeric"/>
+      </div>
+    </div>
+    <div class="ob-helper">We won't message you anything other than your Habuild updates.</div>
+    <div class="ob-spacer"></div>
+    <button class="btn-primary" id="phone-continue" disabled>Shuru karein</button>
+  </div>
+</section>
+<!-- =================== TODAY DETAIL =================== -->
+<section id="screen-today" class="screen">
+  <div class="detail-head">
+    <div class="back-btn" data-back-home>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+    <div class="detail-title" id="today-detail-title">Recipe</div>
+  </div>
+  <div class="detail-body" id="today-detail-body"></div>
+  <div class="bottom-cta">
+    <div class="icon-btn" id="today-save-btn" aria-label="Save">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D5016" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </div>
+    <button class="btn-primary" id="today-share-btn">Family ko bhejein</button>
+  </div>
+</section>
+<!-- =================== MEMBER DETAIL =================== -->
+<section id="screen-member" class="screen">
+  <div class="detail-head">
+    <div class="back-btn" data-back-home>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+    <div class="detail-title" id="member-detail-title">Featured</div>
+  </div>
+  <div class="detail-body" id="member-detail-body"></div>
+  <div class="bottom-cta">
+    <button class="btn-primary" id="member-submit-btn">Apni dish add karein</button>
+  </div>
+</section>
+<!-- =================== BROWSE =================== -->
+<section id="screen-browse" class="screen">
+  <div class="browse-head">
+    <div class="browse-top">
+      <div class="back-btn" data-back-home>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <h1>Recipes</h1>
+      <div style="width:38px;"></div>
+    </div>
+    <div class="cond-strip" id="cond-strip"></div>
+  </div>
+  <div class="browse-grid" id="browse-grid"></div>
+  <!-- Bottom filter pill -->
+  <button class="bottom-filter-pill" id="bottom-filter-pill">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+    <span id="bottom-filter-label">Filter karein</span>
+  </button>
+  <!-- Bottom sheet -->
+  <div class="sheet-backdrop" id="sheet-backdrop"></div>
+  <div class="filter-sheet" id="filter-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <div class="sheet-title">Filter by health condition</div>
+      <button class="sheet-close" id="sheet-close" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="sheet-grid" id="sheet-grid"></div>
+  </div>
+</section>
+
+<!-- =================== ADD RECIPE =================== -->
+<section id="screen-add-recipe" class="screen">
+  <div class="ar-head">
+    <div class="back-btn" data-back-home>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+    <div class="detail-title">Apni Recipe Share Karein</div>
+  </div>
+  <div class="ar-body">
+    <div class="ar-hero-title">Aapki dish, community ke saath</div>
+    <div class="ar-hero-sub">Ek photo, ek line — bas itna. Aapke jaise members aapse seekhenge.</div>
+
+    <div class="ar-photo-zone" id="ar-photo-zone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      <span>Photo lagayein</span>
+      <div class="sub">Apni dish ki ek tasveer</div>
+    </div>
+    <input type="file" id="ar-photo-file" accept="image/*" style="display:none;"/>
+
+    <div class="ar-field-label">Dish ka naam</div>
+    <div class="ar-field">
+      <input id="ar-dish" placeholder="e.g., Ragi Laddoo"/>
+    </div>
+
+    <div class="ar-field-label">Ek line — kya special hai</div>
+    <div class="ar-field">
+      <textarea id="ar-note" rows="3" placeholder="Family ko kaisa laga, kya badla — Hindi/English mein"></textarea>
+    </div>
+
+    <div class="ar-field-label">Kis condition ke liye? (optional)</div>
+    <div class="ar-tag-grid" id="ar-tags"></div>
+  </div>
+  <div class="ar-bottom">
+    <button class="btn-primary" id="ar-submit" disabled>Club mein add karein</button>
+  </div>
+</section>
+
+<!-- =================== FAQ / ASK A QUESTION =================== -->
+<section id="screen-faq" class="screen">
+  <div class="ar-head">
+    <div class="back-btn" data-back-home>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+    <div class="detail-title">Aapke sawaal</div>
+  </div>
+  <div class="ar-body" style="padding-bottom:40px;">
+    <div class="ar-hero-title">Koi sawaal hai?</div>
+    <div class="ar-hero-sub">Apna sawaal poochein — humari team 10 minute mein WhatsApp pe reply karegi.</div>
+
+    <div class="faq-ask-wrap">
+      <textarea class="faq-ask-input" id="faq-input" rows="2" placeholder="Apna sawaal yahan likhein — Hindi/English/Hinglish"></textarea>
+      <button class="faq-ask-btn" id="faq-submit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Poochein
+      </button>
+    </div>
+
+    <div class="faq-result" id="faq-result"></div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<!-- Share preview sheet -->
+<div class="share-overlay" id="share-overlay" role="dialog" aria-modal="true" aria-labelledby="share-sheet-title">
+  <div class="share-sheet">
+    <div class="share-grab"></div>
+    <div class="share-sheet-title" id="share-sheet-title">Family ko bhejein</div>
+    <div class="share-sheet-sub">Yeh image WhatsApp pe share hogi</div>
+    <div class="share-preview-frame" id="share-preview-frame">
+      <div class="share-loading" id="share-loading">Image bana rahe hain...</div>
+    </div>
+    <div class="share-actions">
+      <button class="share-cancel" id="share-cancel-btn">Cancel</button>
+      <button class="share-confirm" id="share-confirm-btn" disabled>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.78 11.78 0 0 0 12 0 11.78 11.78 0 0 0 3.48 3.48 11.78 11.78 0 0 0 0 12c0 2.07.54 4.1 1.56 5.9L0 24l6.27-1.64A11.94 11.94 0 0 0 12 24a11.78 11.78 0 0 0 8.52-3.48A11.78 11.78 0 0 0 24 12a11.78 11.78 0 0 0-3.48-8.52z"/></svg>
+        Bhejein
+      </button>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+<script>
+
+// ============ BACKEND CONFIG ============
+// To enable live submissions across all users:
+// 1. Create a free Supabase project at https://supabase.com
+// 2. Paste URL + anon key below
+// 3. Run the SQL from SUPABASE_SETUP.md in your Supabase SQL editor
+// If left empty, app falls back to localStorage (per-device only).
+const SUPABASE_URL = '';
+const SUPABASE_ANON_KEY = '';
+let sb = null;
+try {
+  if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('[backend] Supabase active');
+  } else {
+    console.log('[backend] localStorage only — set SUPABASE_URL + SUPABASE_ANON_KEY to go live');
+  }
+} catch (e) { console.warn('[backend] Supabase init failed:', e); }
+
+const STATE = {
+  user:{name:'',phone:'',prefix:'+91'},
+  savedRecipes:[],
+  myClubSubmissions:[],  // local user submissions (for instant feedback + offline)
+  remoteClubSubmissions:[], // pulled from Supabase if available (in-memory, refreshed)
+  _currentDay:null
+};
+function track(event,props){ console.log('[track]',event,props||{}); }
+function loadState(){
+  try{ const s=localStorage.getItem('habuild-nut-v2'); if(s) Object.assign(STATE,JSON.parse(s)); }catch(e){}
+}
+function saveState(){
+  try{
+    // Only persist these — skip remoteClubSubmissions (memory-only)
+    const persisted = {user:STATE.user, savedRecipes:STATE.savedRecipes, myClubSubmissions:STATE.myClubSubmissions};
+    localStorage.setItem('habuild-nut-v2',JSON.stringify(persisted));
+  }catch(e){}
+}
+if(new URLSearchParams(location.search).has('reset')){ try{ localStorage.removeItem('habuild-nut-v2'); }catch(e){} }
+loadState();
+
+// ============ BACKEND HELPERS ============
+// All submissions go here. Each: { id, name, loc, dish, note, tag, img, initial, created_at }
+// If Supabase configured: writes to `submissions` table + uploads photo to `submission-photos` bucket.
+// Else: stores in localStorage only (visible to this user only).
+
+async function backendSubmit(submission, photoBlob) {
+  if (!sb) return { ok: true, local: true, submission };
+  try {
+    // Upload photo if present
+    let photoUrl = submission.img || '';
+    if (photoBlob) {
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+      const { data: upData, error: upErr } = await sb.storage
+        .from('submission-photos')
+        .upload(fileName, photoBlob, { contentType: 'image/jpeg', upsert: false });
+      if (upErr) throw upErr;
+      const { data: urlData } = sb.storage.from('submission-photos').getPublicUrl(fileName);
+      photoUrl = urlData.publicUrl;
+    }
+    // Insert row
+    const row = {
+      member_name: submission.name,
+      city: submission.loc,
+      dish: submission.dish,
+      note: submission.note,
+      condition_tag: submission.tag,
+      image_url: photoUrl,
+      initial: submission.initial
+    };
+    const { data, error } = await sb.from('submissions').insert(row).select().single();
+    if (error) throw error;
+    return { ok: true, local: false, submission: rowToSubmission(data) };
+  } catch (e) {
+    console.warn('[backend] submit failed, falling back to local:', e);
+    return { ok: true, local: true, submission };
+  }
+}
+
+async function backendFetchSubmissions() {
+  if (!sb) return [];
+  try {
+    const { data, error } = await sb.from('submissions')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(50);
+    if (error) throw error;
+    return (data || []).map(rowToSubmission);
+  } catch (e) {
+    console.warn('[backend] fetch failed:', e);
+    return [];
+  }
+}
+
+function rowToSubmission(row) {
+  return {
+    id: 'remote-' + row.id,
+    name: row.member_name,
+    loc: row.city,
+    dish: row.dish,
+    note: row.note,
+    tag: row.condition_tag,
+    img: row.image_url,
+    initial: row.initial || (row.member_name || '?')[0],
+    condition: row.condition_tag || 'Member dish',
+    story: row.note || '',
+    created_at: row.created_at,
+    isRemote: true
+  };
+}
+
+// Refresh remote submissions in the background
+async function refreshRemoteSubmissions() {
+  const remote = await backendFetchSubmissions();
+  STATE.remoteClubSubmissions = remote;
+  // Re-render home feed if it's currently shown
+  if (document.getElementById('screen-home')?.classList.contains('active')) {
+    try { renderHome(); } catch(e) {}
+  }
+}
+refreshRemoteSubmissions();
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById(id);
+  if(el){ el.classList.add('active'); el.scrollTop=0; }
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('[data-back-home]').forEach(b=>{
+  b.addEventListener('click',()=>go('screen-home'));
+});
+
+// =================== DATA ===================
+// =================== DATA ===================
+// Curated Unsplash food photo URLs — tested set
+const IMG = {
+  // Week 1 — Hydration
+  hyd_water:'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=900&q=80',
+  hyd_morning:'https://images.unsplash.com/photo-1523362628745-0c100150b504?w=900&q=80',
+  hyd_minerals:'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=900&q=80',
+  hyd_bed:'https://images.unsplash.com/photo-1559561853-08451507cbe7?w=900&q=80',
+  hyd_over:'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=900&q=80',
+  hyd_chai:'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&q=80',
+  // Week 2 — Herbal Teas
+  tea_fennel:'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=900&q=80',
+  tea_cinnamon:'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=900&q=80',
+  tea_tulsi:'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=900&q=80',
+  tea_cardamom:'https://images.unsplash.com/photo-1563911892437-1feda0179e1b?w=900&q=80',
+  tea_ccf:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=900&q=80',
+  tea_lemon:'https://images.unsplash.com/photo-1606471191009-63994c53433b?w=900&q=80',
+  // Week 3 — Fibre Salads
+  sal_yog:'https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=900&q=80',
+  sal_chick:'https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=900&q=80',
+  sal_beet:'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=900&q=80',
+  sal_sweet:'https://images.unsplash.com/photo-1607330289024-1535c6b4e1c1?w=900&q=80',
+  sal_sprouts:'https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=900&q=80',
+  sal_roti:'https://images.unsplash.com/photo-1574484284002-952d92456975?w=900&q=80',
+  // Week 4 — Balanced Plate
+  bp_matar:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=900&q=80',
+  bp_cuc:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=900&q=80',
+  bp_chana:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=900&q=80',
+  bp_apple:'https://images.unsplash.com/photo-1564093497595-593b96d80180?w=900&q=80',
+  bp_curd:'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900&q=80',
+  bp_moong:'https://images.unsplash.com/photo-1606923829579-0cb981a83e2e?w=900&q=80',
+  // New condition recipes
+  methi_water:'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=900&q=80',
+  karela:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=900&q=80',
+  hibiscus:'https://images.unsplash.com/photo-1568051243858-533a607809a5?w=900&q=80',
+  beetroot_juice:'https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=900&q=80',
+  nutmeg_milk:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  banana_smoothie:'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=900&q=80',
+  brazil_nut:'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=900&q=80',
+  spearmint:'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=900&q=80',
+  kadha:'https://images.unsplash.com/photo-1563911892437-1feda0179e1b?w=900&q=80',
+  amla_shot:'https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=900&q=80',
+  // Member dishes
+  mem_ragi:'assets/kirti-ragi-laddu.jpg',
+  mem_methi:'https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=900&q=80',
+  mem_walnut_laddu:'assets/kirti-ragi-laddu.jpg',
+  mem_apple_carrot:'https://images.unsplash.com/photo-1564093497595-593b96d80180?w=900&q=80',
+  mem_oh_salad:'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=900&q=80',
+  mem_karela:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=900&q=80',
+  // Ambali (May 2026) — millet drink journey
+  // Consistent beige-drink photo across all days (the journey is one drink with variations)
+  amb_intro:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_basic:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_jeera:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_thin:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_balance:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_personalise:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_jowar:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_ragi_jeera:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_jowar_thin:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_ragi_balance:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+  amb_favourite:'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=900&q=80',
+};
+
+// MAY 2026 — Ambali 11-day millet drink journey (replaces previous multi-theme content)
+const DAYS = [
+  // ===== AMBALI JOURNEY — May 12-22, 2026 (11 days) =====
+  // Week 1: Same millet (ragi), 5 simple formats. Week 2: rotate millets.
+
+  { id:'amb-d1', date:'2026-05-12', week:1, weekName:'Ambali · Week 1', day:'Tue', type:'habit', img:IMG.amb_intro,
+    title:'Ambali Se Mulaqaat',
+    short:'Aaj sirf padhein — kal subah pehla glass.',
+    explanation:'Ambali ek halki millet drink hai — ragi (nachni), jowar, ya bajra ke aate se banta hai. Pet ko light rakhta hai, digestion smooth karta hai, energy steady deta hai. Calcium aur iron ka natural source — yoga ke baad ka perfect drink. Aaj sirf padhein, benefits samjhein. Kal raat ragi flour kharid kar rakh lein.',
+    reflection:'Aapko Ambali se sabse zyada kya chahiye — energy, digestion, ya weight balance?',
+    nudge:'Aaj raat tak ragi flour kharid lein. Bas wahi ek kaam.',
+    conditions:['digestion','energy','women-health','calcium','iron','weight'],
+    qa:[
+      {q:'Ambali kis se banta hai?',options:['Wheat flour','Millet flour (ragi/jowar/bajra)','Rice flour'],correct:1,why:'Ambali kisi bhi millet flour se ban sakta hai — sabse easy ragi se shuru karein.'},
+      {q:'Ambali sabse pehle kab piyna chahiye?',options:['Subah, yoga ke baad, khaali pet','Raat ko dinner ke saath','Kabhi bhi'],correct:0,why:'Empty stomach, yoga ke baad — maximum absorption + digestive activation.'},
+      {q:'Iss journey mein "same daily" kyun?',options:['Saste hai','Habit easy banane ke liye','Tradition'],correct:1,why:'Same base = predictable habit. Sirf chhote tweaks har din.'}
+    ]
+  },
+
+  { id:'amb-d2', date:'2026-05-13', week:1, weekName:'Ambali · Week 1', day:'Wed', type:'recipe', img:IMG.amb_basic,
+    title:'Basic Ambali',
+    short:'Pehla glass — sirf ragi, paani, namak, chaas.',
+    explanation:'Day 2 — basic Ambali ka first try. Sirf 4 ingredients. Ragi flour ko paani mein paste banayein, cook karein, thanda karein, chaas + namak mila ke piyo. Bina kuch add kiye. Aaj sirf notice karein — kaisa lagta hai pet ko.',
+    reflection:'Pehli baar Ambali peene ke baad pet halka laga ya bhaari?',
+    nudge:'Aaj basic Ambali — bina kuch add kiye. Sirf taste lein.',
+    conditions:['digestion','women-health','calcium','energy'],
+    recipe:{name:'Basic Ambali (1 glass)',ingredients:['2 tbsp ragi flour (nachni)','½ cup paani (paste ke liye)','1 glass paani (cooking ke liye)','½ glass paani (adjust karne ke liye)','½ cup chaas (buttermilk)','Namak swaad anusaar'],method:['STEP 1 — Smooth paste: ragi flour + ½ cup paani, lump-free ho ne tak mix karein. (Yeh sabse important step hai)','STEP 2 — Cook: 1 glass paani add karein. Low-medium flame, 5-7 min, continuously hila te rahe. Slightly thick aur glossy ho jaaye toh utaar lein.','STEP 3 — Cool: room temperature tak thanda hone dein (garam mein chaas mat daalein — phat jaayega).','STEP 4 — Finish: ½-1 glass paani aur mix karein. Phir chaas aur namak daalein. Mix karke piyo.'],benefits:['Halki, easy-to-digest','Calcium + iron','Subah ka gentle start','Yoga ke baad perfect']},
+    qa:[
+      {q:'Lumps kyun nahi hone chahiye?',options:['Dikhne mein bura lagta hai','Texture smooth + properly cooked rahega','Tradition'],correct:1,why:'Lumpy paste = uneven cooking = upset stomach. Pehle paste perfectly smooth karein.'},
+      {q:'Chaas garam Ambali mein daalein?',options:['Haan, taste better','Nahi — pehle thanda karein','Optional'],correct:1,why:'Garam liquid + chaas = curd phat jaata hai. Room temperature pe daalein.'},
+      {q:'Cooking ke time kya zaroori?',options:['Continuously hilana','Cover karna','Tez aanch'],correct:0,why:'Hilana zaroori — neeche stick na ho aur lumps na bane.'}
+    ]
+  },
+
+  { id:'amb-d3', date:'2026-05-14', week:1, weekName:'Ambali · Week 1', day:'Thu', type:'recipe', img:IMG.amb_jeera,
+    title:'Ambali + Jeera',
+    short:'Ek chutki bhuna jeera — pet halka, taste better.',
+    explanation:'Day 3 — basic Ambali mein roasted jeera powder add karein. Slight warmth, digestion ko boost, anti-bloating. Bas itna sa change — Ambali familiar feel hone lagta hai.',
+    reflection:'Jeera ke saath ya bina — kaunsa zyada acha laga?',
+    nudge:'Aaj Ambali mein ek chutki bhuna jeera. Choti si addition, bada asar.',
+    conditions:['digestion','bloating','energy','gas'],
+    recipe:{name:'Ambali + Jeera',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','½ cup chaas','½ tsp bhuna jeera powder','Namak swaad anusaar'],method:['Basic Ambali method follow karein (paste → cook → cool)','Chaas aur namak mix karein','Bhuna jeera powder upar se daalein','Quickly mix karke piyo'],benefits:['Anti-bloating','Better digestion','Adds warmth','Familiar Indian taste']},
+    qa:[
+      {q:'Jeera ko bhunna kyun zaroori?',options:['Taste better','Volatile oils + flavour release','Saves time'],correct:1,why:'Bhuna jeera mein flavour aur medicinal compounds active hote hain.'},
+      {q:'Jeera kab daalein?',options:['Cooking ke time','Last mein, serving se pehle','Paste banane se pehle'],correct:1,why:'Aroma bachta hai — last mein daalein.'},
+      {q:'Jeera kya help karta hai?',options:['Sirf taste','Digestion + gas relief','Skin only'],correct:1,why:'Cumin ke compounds gas reduce karte hain aur gut motility improve karte hain.'}
+    ]
+  },
+
+  { id:'amb-d4', date:'2026-05-15', week:1, weekName:'Ambali · Week 1', day:'Fri', type:'recipe', img:IMG.amb_thin,
+    title:'Patla Ambali (Drink-Style)',
+    short:'Chaas jaisa patla — sip karna easy.',
+    explanation:'Day 4 — extra paani daal kar Ambali ko thin banayein. Texture chaas jaisi. Sip-able. Aapke pet ke liye kaunsi consistency zyada acchi lagti hai — gaadhi ya patli?',
+    reflection:'Patla ya gaadha — aapke pet ko kaunsa suit karta hai?',
+    nudge:'Aaj Ambali extra paani ke saath — chaas jaisa patla.',
+    conditions:['digestion','hydration','summer'],
+    recipe:{name:'Patla Ambali',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','1 glass extra paani (thin karne ke liye)','½ cup chaas','½ tsp jeera, namak'],method:['Basic method follow karein','Cooling ke baad — pura 1 glass extra paani daalein','Chaas + namak + jeera','Mix karke piyo — texture chaas jaisi honi chahiye'],benefits:['Easy to sip','Summer-friendly','Extra hydration','Light on stomach']},
+    qa:[
+      {q:'Patla rakhne ka faayda?',options:['Dikhta achha','Sip karna easy, summer mein cooling','Saves flour'],correct:1,why:'Garmi mein patla Ambali = hydration + nutrition saath mein.'},
+      {q:'Kitna paani extra?',options:['Sirf 2 chamach','½ se 1 glass — taste check karte hue','Jitna marzi'],correct:1,why:'Slowly add karein — texture chaas jaisi rakhein.'},
+      {q:'Patla ya gaadha — kya better?',options:['Patla always','Gaadha always','Aapke pet ke hisaab se'],correct:2,why:'Both works — body sunke decide karein.'}
+    ]
+  },
+
+  { id:'amb-d5', date:'2026-05-16', week:1, weekName:'Ambali · Week 1', day:'Sat', type:'recipe', img:IMG.amb_balance,
+    title:'Salt + Paani Balance',
+    short:'Sahi namak, sahi paani — taste perfect.',
+    explanation:'Day 5 — Ambali ka asli flavor balance mein hai. Salt thoda zyada lagega ya kam — yeh aapki body batayegi. Paani aur namak ka right ratio find karein.',
+    reflection:'Aaj ka salt thoda zyada laga, kam, ya bilkul sahi?',
+    nudge:'Aaj salt + paani ka balance try karein. Apni taste find karein.',
+    conditions:['digestion','electrolytes','summer'],
+    recipe:{name:'Balanced Ambali',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','½-1 glass paani (adjust)','½ cup chaas','¼-½ tsp namak (start small, taste, add more)','½ tsp bhuna jeera'],method:['Basic method follow karein','Pehle thoda namak daalein — chakhein','Aur paani daalein agar gaadha ho','Jeera mila ke pi lein','Goal: balanced, not bland, not too salty'],benefits:['Right electrolyte balance','Natural ORS effect','Replenishes after yoga','Balanced taste']},
+    qa:[
+      {q:'Namak kyun zaroori?',options:['Sirf taste','Electrolyte balance + flavor','Preservative'],correct:1,why:'Subah ke pasine ka nuksan — namak se body sodium replace karta hai.'},
+      {q:'Namak kitna daalein?',options:['Jitna marzi','Thoda start karein, taste karke add karein','Bahut zyada'],correct:1,why:'Start small — bharma sakte hain, kam nahi.'},
+      {q:'Bland Ambali ka fix?',options:['Sugar daalein','Namak + bhuna jeera','Chai bana lein'],correct:1,why:'Namak + jeera = traditional savory fix.'}
+    ]
+  },
+
+  { id:'amb-d6', date:'2026-05-17', week:1, weekName:'Ambali · Week 1', day:'Sun', type:'recipe', img:IMG.amb_personalise,
+    title:'Aapka Apna Ambali',
+    short:'Coriander, mirchi, ya kuch aur — apni pasand.',
+    explanation:'Day 6 — Sunday. Personalise karein. Coriander, green chilli, pyaaz, ya kuch aur jo aapko pasand ho. Yeh aapka Ambali hai — joint family ke liye, ya khud ke liye. Make it yours.',
+    reflection:'Kaunsa add-on aapko sabse acha laga? Ya simple basic hi best?',
+    nudge:'Aaj experiment karein — coriander, mirchi, pyaaz. Apna twist.',
+    conditions:['digestion','personalise','family'],
+    recipe:{name:'Personalised Ambali',ingredients:['Basic Ambali (din 2 ki recipe)','Optional add-ons (choose any):','• 1 tbsp chopped coriander','• ¼ green chilli, finely chopped','• 1 tbsp finely chopped onion','• Squeeze of lemon','• Pinch of black salt'],method:['Basic Ambali banayein','Apne pasand ke add-ons daalein','Family ke liye plain rakhein, apne liye thoda spice','Mix karein, piyo'],benefits:['Customisation','Joint family-friendly','Long-term habit ban sakta hai','No two glasses same']},
+    qa:[
+      {q:'Personalisation kyun zaroori?',options:['Boring nahi lagega','Long-term habit ke liye','Saves time'],correct:1,why:'Same drink everyday boring ho jaata hai — small variations habit sustain karte hain.'},
+      {q:'Joint family ke liye?',options:['Plain rakhein, sabki taste alag','Sirf masaledar','Kabhi nahi banayein'],correct:0,why:'Base plain, individual additions — sab apni pasand add kar sakte hain.'},
+      {q:'Sabse popular add-on?',options:['Cheeni','Coriander + chilli','Ice cubes'],correct:1,why:'Traditional Karnataka/Andhra style — savory + fresh.'}
+    ]
+  },
+
+  { id:'amb-d7', date:'2026-05-18', week:2, weekName:'Ambali · Week 2', day:'Mon', type:'recipe', img:IMG.amb_jowar,
+    title:'Jowar Ambali',
+    short:'Naya millet — jowar (sorghum) ka try.',
+    explanation:'Week 2 shuru. Ab tak ragi try kiya — aaj jowar flour. Texture thoda different, taste mild. Garmi mein jowar zyada cooling — perfect summer drink.',
+    reflection:'Jowar ya ragi — texture aur taste mein kya farak laga?',
+    nudge:'Aaj jowar Ambali — naya millet, same method.',
+    conditions:['digestion','summer','women-health','protein'],
+    recipe:{name:'Jowar Ambali',ingredients:['2 tbsp jowar flour','½ cup paani (paste)','1 glass paani (cook)','½ glass paani (adjust)','½ cup chaas','½ tsp jeera, namak'],method:['Jowar flour + paani — smooth paste banayein (jowar thoda dhaaga jaisa ho sakta hai, mehnat se mix karein)','1 glass paani daalein, low flame pe cook karein (jowar ko ragi se thoda zyada time lagta hai — 8-10 min)','Cool karein','Chaas + namak + jeera mila ke piyo'],benefits:['Cooling property — summer ideal','Gluten-free','High protein','Different texture, same nutrition']},
+    qa:[
+      {q:'Jowar ki specialty?',options:['Cooling, summer-friendly','Warming','High in sugar'],correct:0,why:'Jowar body cooling hai — Karnataka/Maharashtra mein garmi mein common.'},
+      {q:'Jowar Ambali kitna cook?',options:['Same as ragi (5-7 min)','Thoda zyada (8-10 min)','15+ min'],correct:1,why:'Jowar starch ko break hone mein ragi se zyada time lagta hai.'},
+      {q:'Jowar ka taste?',options:['Sweet, jaisa kheer','Mild, slightly nutty','Bitter'],correct:1,why:'Mild aur subtle — ragi se halka, slightly nutty.'}
+    ]
+  },
+
+  { id:'amb-d8', date:'2026-05-19', week:2, weekName:'Ambali · Week 2', day:'Tue', type:'recipe', img:IMG.amb_ragi_jeera,
+    title:'Ragi + Jeera (Combo Wapas)',
+    short:'Familiar combo — ragi ka comfort.',
+    explanation:'Day 8 — Ragi flour wapas, jeera ke saath. Ab tak aap maahir ho gaye honge. Yeh combo aapka go-to ban sakta hai.',
+    reflection:'Ragi + jeera ka combo aapka favourite ban gaya kya?',
+    nudge:'Wapas ragi, jeera ke saath. Comfort drink.',
+    conditions:['digestion','energy','iron','calcium','bloating'],
+    recipe:{name:'Ragi-Jeera Ambali',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','½ cup chaas','½ tsp bhuna jeera powder','Namak'],method:['Basic Ambali method','Bhuna jeera last mein','Mix karke piyo'],benefits:['Familiar comfort','Iron rich','Anti-bloating','Easy to repeat daily']},
+    qa:[
+      {q:'Variation lekin same base — kyun?',options:['Boring','Habit easy banta hai jab base same ho','Saves money'],correct:1,why:'Confidence build hota hai — same base, chhote tweaks.'},
+      {q:'Ragi sabse zyada kya deta hai?',options:['Protein','Calcium + iron','Sugar'],correct:1,why:'Ragi mein calcium aur iron concentration kisi bhi grain se zyada.'},
+      {q:'Daily ragi safe hai?',options:['Haan, normal matra mein','Nahi, weekly only','Sirf bachhon ke liye'],correct:0,why:'1 glass roz safe aur recommended — South India mein traditional staple.'}
+    ]
+  },
+
+  { id:'amb-d9', date:'2026-05-20', week:2, weekName:'Ambali · Week 2', day:'Wed', type:'recipe', img:IMG.amb_jowar_thin,
+    title:'Jowar Patla Drink',
+    short:'Jowar Ambali, drink-style.',
+    explanation:'Day 9 — jowar Ambali, extra paani ke saath. Drink-style. Garmi mein cooling effect double — jowar ka cooling + extra hydration.',
+    reflection:'Jowar patla vs ragi patla — kaunsa zyada refreshing laga?',
+    nudge:'Aaj jowar Ambali, patla. Summer ka best drink.',
+    conditions:['digestion','summer','hydration'],
+    recipe:{name:'Jowar Patla Ambali',ingredients:['2 tbsp jowar flour','½ cup paani (paste)','1 glass paani (cook)','1 glass extra paani (thin)','½ cup chaas','½ tsp jeera, namak'],method:['Basic jowar Ambali banayein (8-10 min cook)','Cool karein','Extra 1 glass paani daalein','Chaas, jeera, namak mila ke piyo'],benefits:['Cooling + hydrating','Easy to sip in hot weather','Light on digestion','Travel-friendly']},
+    qa:[
+      {q:'Garmi mein jowar zyada acha kyun?',options:['Cooling property','Tasty hai','Sasta hai'],correct:0,why:'Body ko thanda karne ki natural property — Ayurveda mein documented.'},
+      {q:'Patla version kab best?',options:['Subah workout ke baad','Raat ko','Cooking ke time'],correct:0,why:'Workout/yoga ke baad — replenishment + hydration.'},
+      {q:'Iss combo ka biggest pro?',options:['Sweet hai','Light + nutrition + hydration','Bharti hai'],correct:1,why:'Three benefits in one glass.'}
+    ]
+  },
+
+  { id:'amb-d10', date:'2026-05-21', week:2, weekName:'Ambali · Week 2', day:'Thu', type:'recipe', img:IMG.amb_ragi_balance,
+    title:'Ragi Balance Perfect',
+    short:'Ab tak ki seekh — ragi ko perfectly balance karein.',
+    explanation:'Day 10 — ab tak 9 din ka anubhav. Aaj ragi Ambali ko perfectly balance karein. Namak, paani, chaas, jeera — sabhi proportions theek. Yeh aapki signature Ambali hai ab.',
+    reflection:'9 din baad — aapne kya seekha Ambali banane mein?',
+    nudge:'Aapki perfect ragi Ambali — sahi balance, sahi taste.',
+    conditions:['digestion','iron','calcium','women-health','daily-habit'],
+    recipe:{name:'Perfectly Balanced Ragi Ambali',ingredients:['2 tbsp ragi flour','½ cup paani (paste)','1 glass paani (cook)','½ glass paani (adjust)','½ cup chaas','½ tsp bhuna jeera','¼-½ tsp namak (aapki taste)','Optional: 1 tbsp chopped coriander'],method:['Smooth paste (sabse important)','Cook 5-7 min, hila te rahe','Cool fully','Chaas, jeera, namak daalein','Taste karke adjust','Coriander upar se'],benefits:['Aapki signature recipe','Long-term habit format','Daily-ready','Balanced nutrition']},
+    qa:[
+      {q:'Perfect Ambali ka raaz?',options:['Mehnga ingredients','Practice + balance','Magic'],correct:1,why:'10 din ki practice — aapki taste calibrate ho gayi.'},
+      {q:'Salt + chaas balance?',options:['Both high','Salt thoda, chaas zyada (tang for digestion)','Both low'],correct:1,why:'Chaas ka tang aur thoda namak = digestive sweet spot.'},
+      {q:'Daily Ambali ke fayde 1 month mein?',options:['Kuch nahi','Better digestion, energy, iron levels','Weight gain'],correct:1,why:'Studies show consistent millet intake → improvement in 4-6 weeks.'}
+    ]
+  },
+
+  { id:'amb-d11', date:'2026-05-22', week:2, weekName:'Ambali · Week 2', day:'Fri', type:'recipe', img:IMG.amb_favourite,
+    title:'Aapki Favourite Ambali',
+    short:'11 din baad — ab aapka apna Ambali.',
+    explanation:'Day 11 — final day. Ab tak jo style sabse achhi lagi — ragi ya jowar, gaadhi ya patli, plain ya garnished — wahi banayein. Yeh aapki Ambali hai. Iss journey ka closing — par habit ki shuruwat.',
+    reflection:'11 din ke baad — Ambali ek choice hai ya habit ban gaya?',
+    nudge:'Aaj aapki favourite Ambali. Aage chalti rahe — daily routine ka hissa.',
+    conditions:['digestion','daily-habit','women-health','calcium','iron','energy'],
+    recipe:{name:'Your Signature Ambali',ingredients:['Choose your millet (ragi/jowar/bajra)','2 tbsp flour','½ cup paani (paste)','1 glass paani (cook)','Paani extra (jitna taste lage)','½ cup chaas','Add-ons of your choice (jeera, coriander, mirchi, namak)'],method:['Smooth paste','Cook till glossy','Cool','Add chaas + your add-ons','Make it yours'],benefits:['Sustainable habit','Personal recipe','Daily nourishment','11-day journey ka outcome']},
+    qa:[
+      {q:'11 din mein habit ban sakti hai?',options:['Nahi','Haan, agar daily kiya jaaye','Sirf 30 din mein'],correct:1,why:'Research: 11-21 din = habit formation window for simple actions.'},
+      {q:'Aage kya?',options:['Band karein','Daily routine ka hissa banayein','Sirf weekends'],correct:1,why:'Habit jiyo — daily morning ka 5-minute ritual.'},
+      {q:'Iss journey ka biggest takeaway?',options:['Recipe seekhi','Consistency + personalisation','Time waste'],correct:1,why:'11 din me consistency aur personalisation dono — yahi habit ka core hai.'}
+    ]
+  },
+
+  // ===== NEW CONDITION-SPECIFIC RECIPES =====
+  { id:'methi-water', date:null, weekName:'Diabetes', type:'recipe', img:IMG.methi_water,
+    title:'Methi Water', short:'Fenugreek soak — subah ka diabetes nuskha.',
+    explanation:'Soaked methi (fenugreek) seeds drunk on empty stomach are a tested folk remedy for blood sugar. Bitter, but effective. The mucilage from soaking is what helps slow sugar absorption.',
+    reflection:'Did methi water feel easier after a few days?',
+    nudge:'Raat ko 1 chamach methi dane bhigo dein. Subah uthkar paani piyo.',
+    conditions:['diabetes','weight','blood-sugar'],
+    recipe:{name:'Methi Water',ingredients:['1 tsp methi seeds (fenugreek)','1 glass water (250ml)','Optional: half a lemon'],method:['Night: soak methi seeds in water','Cover and leave overnight','Morning: strain — drink the water on empty stomach','Optional: chew the soaked seeds too'],benefits:['Helps lower fasting sugar','Slows glucose absorption','Supports digestion','Reduces sugar cravings']},
+    qa:[{q:'Why soak overnight specifically?',options:['Tradition only','Mucilage releases — that\'s what slows sugar','Tastes better'],correct:1,why:'The slimy gel that forms is soluble fibre — exactly what blunts sugar spikes.'},{q:'When to drink methi water?',options:['Anytime','First thing morning, empty stomach','With meals'],correct:1,why:'Empty stomach absorption is maximum — before tea, before food.'},{q:'How long to see results?',options:['1 day','3-4 weeks of daily use','Never'],correct:1,why:'Like all dietary remedies — consistency over weeks shows fasting sugar drop.'}]
+  },
+  { id:'karela-sabzi', date:null, weekName:'Diabetes', type:'recipe', img:IMG.karela,
+    title:'Karela Sabzi (Bitterness Removed)', short:'Bitter gourd — bina bitterness ke.',
+    explanation:'Karela is one of the most studied vegetables for blood sugar. The salt-soak trick removes the harsh bitterness so even joint family eats it. Geeta from Nagpur shared this — her husband\'s sugar dropped 20 points in 3 months.',
+    reflection:'Was the karela actually edible after the salt soak?',
+    nudge:'Karela kaatein, namak laga ke 30 min rakhein. Phir paani se dho ke pakao.',
+    conditions:['diabetes','blood-sugar','liver'],
+    recipe:{name:'Karela Sabzi',ingredients:['2 medium karela (bitter gourd)','1 onion sliced','1 tomato chopped','½ tsp haldi, ½ tsp jeera','Salt for soak + cooking','1 tsp oil'],method:['Slice karela thin, remove seeds','Rub with 1 tsp salt, leave 30 min','Squeeze and rinse 2-3 times','Heat oil, add jeera, onion','Add karela, haldi, cook 10 min covered','Add tomato, salt, cook 5 more min'],benefits:['Charantin lowers blood sugar','Improves insulin sensitivity','Liver detox','High in fibre']},
+    qa:[{q:'Why salt-soak karela?',options:['Adds flavour','Draws out the bitter compounds (momordicin)','Makes it crunchy'],correct:1,why:'Salt extracts the bitter cucurbitacins through osmosis — squeeze and rinse to remove.'},{q:'Best frequency?',options:['Daily','2-3 times a week','Once a month'],correct:1,why:'Karela is potent — too much can drop sugar too low especially if on medication.'},{q:'Who should be cautious?',options:['Children only','People on diabetes medication (consult doctor)','Vegetarians'],correct:1,why:'Karela + medicine can stack and cause hypoglycaemia — coordinate with doctor.'}]
+  },
+  { id:'hibiscus-tea', date:null, weekName:'High BP', type:'recipe', img:IMG.hibiscus,
+    title:'Hibiscus Tea', short:'Lal phool, gulabi paani — BP ka dost.',
+    explanation:'Hibiscus (gudhal) flowers brewed as tea have been shown in studies to lower systolic blood pressure within weeks. Tart, ruby-coloured, refreshing hot or cold. Caffeine-free.',
+    reflection:'Did your evening feel calmer after hibiscus tea?',
+    nudge:'2 cup hibiscus tea daily — 6 weeks mein BP mein farak.',
+    conditions:['bp','blood-pressure','cholesterol'],
+    recipe:{name:'Hibiscus Tea',ingredients:['1 tbsp dried hibiscus petals','2 cups water','½ tsp honey (optional)','Lemon slice'],method:['Boil water','Add hibiscus, simmer 5 min','Strain','Add honey + lemon when warm (not hot)','Drink twice daily — morning + evening'],benefits:['Lowers systolic BP','Rich in antioxidants','Cholesterol balance','Caffeine-free']},
+    qa:[{q:'Why hibiscus for BP?',options:['Looks nice','Polyphenols act as natural ACE inhibitor','Tastes good'],correct:1,why:'Studies show 7-13 mmHg systolic drop after 6 weeks of daily use.'},{q:'When to avoid?',options:['On BP-lowering medication (consult doctor)','In summer','With dinner'],correct:0,why:'Stacks with BP medicine — discuss with doctor first.'},{q:'Hot or cold?',options:['Only hot','Both work — cold is summer-friendly','Only cold'],correct:1,why:'Same benefits — temperature is preference.'}]
+  },
+  { id:'beetroot-juice', date:null, weekName:'High BP', type:'recipe', img:IMG.beetroot_juice,
+    title:'Beetroot Juice', short:'Lal chukandar — natural nitrate, gentle BP support.',
+    explanation:'Beetroot is high in dietary nitrates — the body converts these to nitric oxide which relaxes blood vessels. Fresh juice works fastest. Earthy taste — lemon and ginger balance it.',
+    reflection:'How did you feel an hour after the juice — calmer or just normal?',
+    nudge:'Aaj subah ek glass beetroot juice — bina cheeni ke.',
+    conditions:['bp','energy','endurance'],
+    recipe:{name:'Beetroot Juice',ingredients:['1 medium beetroot (peeled, chopped)','½ inch ginger','½ lemon (juice)','½ cup water','Pinch black salt'],method:['Add beetroot, ginger, water to blender','Blend smooth (2 min)','Strain if thick','Add lemon and black salt','Drink within 10 min'],benefits:['Lowers BP via nitric oxide','Boosts stamina','Liver support','Iron rich']},
+    qa:[{q:'Why drink it fresh?',options:['Tastes better','Nitrates degrade quickly','Tradition'],correct:1,why:'Active compounds break down within 15-20 min — drink soon after juicing.'},{q:'Best time?',options:['Empty stomach morning','Late night','With dinner only'],correct:0,why:'Empty stomach = maximum absorption.'},{q:'Side effect to know?',options:['Pink urine — totally harmless','Stomach pain','Headache'],correct:0,why:'Beeturia is normal — pigment passes through, not blood.'}]
+  },
+  { id:'nutmeg-milk', date:null, weekName:'Sleep', type:'recipe', img:IMG.nutmeg_milk,
+    title:'Nutmeg Warm Milk (Jaiphal Doodh)', short:'Daadi maa ka nuskha — gehri neend.',
+    explanation:'Warm milk with a pinch of nutmeg (jaiphal) is the classic Indian sleep aid. Nutmeg contains compounds (myristicin) that gently sedate. Tryptophan in milk does the rest. Works in 30-45 min.',
+    reflection:'Did you fall asleep faster after the jaiphal doodh?',
+    nudge:'Soney se 30 min pehle — garam doodh, 1 chutki jaiphal.',
+    conditions:['sleep','anxiety','stress'],
+    recipe:{name:'Nutmeg Warm Milk',ingredients:['1 cup warm milk','¼ tsp grated jaiphal (nutmeg)','Optional: 1 tsp honey','Optional: pinch of cardamom'],method:['Warm milk on low flame','Add grated nutmeg','Stir 2 min, don\'t boil','Pour, add honey if needed','Sip slowly before bed'],benefits:['Promotes deep sleep','Calms anxiety','Reduces overnight cortisol','Comforting evening ritual']},
+    qa:[{q:'Why nutmeg specifically?',options:['Just flavour','Myristicin is a mild sedative','Cheap'],correct:1,why:'Active compound calms the nervous system — used for centuries.'},{q:'How much is safe?',options:['Half a nutmeg','Tiny pinch — ¼ tsp max','As much as possible'],correct:1,why:'Large doses (over 1 tsp) can be toxic — stay small.'},{q:'When to drink?',options:['30-45 min before bed','Just before lying down','With dinner'],correct:0,why:'Gives time for absorption — sleep arrives gently.'}]
+  },
+  { id:'banana-smoothie', date:null, weekName:'Sleep', type:'recipe', img:IMG.banana_smoothie,
+    title:'Banana-Cinnamon Smoothie', short:'Magnesium + tryptophan = neend ka combo.',
+    explanation:'Bananas have magnesium and tryptophan — the exact pair the body needs to make melatonin. Add milk and cinnamon = sleep cocktail. Better than chai for evening.',
+    reflection:'Did this evening drink replace your chai habit?',
+    nudge:'Shaam ki chai ki jagah — banana cinnamon shake.',
+    conditions:['sleep','energy','muscle-recovery'],
+    recipe:{name:'Banana-Cinnamon Smoothie',ingredients:['1 ripe banana','1 cup warm milk','¼ tsp dalchini (cinnamon)','½ tsp honey','Optional: 4-5 almonds (soaked)'],method:['Blend banana with milk','Add cinnamon, honey','Add soaked almonds if using','Blend smooth','Drink 1 hour before bed'],benefits:['Magnesium relaxes muscles','Tryptophan helps melatonin','Naturally sweet','Light, easy to digest']},
+    qa:[{q:'Why bananas help sleep?',options:['Just full of sugar','Magnesium + tryptophan = melatonin precursors','Cold'],correct:1,why:'These two nutrients are the building blocks of the sleep hormone.'},{q:'Why cinnamon?',options:['Just flavour','Stabilises blood sugar overnight','Adds calories'],correct:1,why:'Prevents 3am sugar crashes that wake you up.'},{q:'Best timing?',options:['1 hour before bed','Right at bedtime','With dinner'],correct:0,why:'Time for digestion + nutrient uptake before lying down.'}]
+  },
+  { id:'brazil-trail', date:null, weekName:'Thyroid', type:'recipe', img:IMG.brazil_nut,
+    title:'Brazil Nut Trail Mix', short:'Thyroid ke liye selenium — 2 nuts kaafi hain.',
+    explanation:'Brazil nuts are the world\'s richest source of selenium — the mineral your thyroid needs most. Just 2 nuts a day = full daily requirement. Pair with seeds and a sweet dried fruit for a balanced snack.',
+    reflection:'Did the trail mix feel filling enough for an evening snack?',
+    nudge:'Roz 2 Brazil nuts — thyroid ka silent helper.',
+    conditions:['thyroid','immunity','antioxidants'],
+    recipe:{name:'Brazil Nut Trail Mix',ingredients:['2 Brazil nuts (chopped)','1 tbsp pumpkin seeds','1 tbsp sunflower seeds','3-4 walnut halves','5-6 raisins or 2 dates (chopped)'],method:['Mix all in a small jar','Store for 1 week','Take 1 small handful as evening snack','Keep portion small — calorie dense'],benefits:['Selenium for thyroid','Zinc for hormones','Healthy fats','Steady energy']},
+    qa:[{q:'Why only 2 Brazil nuts?',options:['They\'re expensive','Selenium is potent — too much is harmful','They\'re bitter'],correct:1,why:'2 nuts = 200% RDA. More than 4 daily can cause selenosis.'},{q:'When is selenium most important?',options:['Hyperthyroidism only','Both hyper and hypothyroid (consult doctor)','Never'],correct:1,why:'Supports thyroid hormone conversion — doctor guidance for thyroid patients.'},{q:'Other selenium sources?',options:['Only Brazil nuts','Sunflower seeds, eggs, fish','Only milk'],correct:1,why:'Variety helps — Brazil nuts are concentrated but not the only source.'}]
+  },
+  { id:'spearmint-tea', date:null, weekName:'PCOD', type:'recipe', img:IMG.spearmint,
+    title:'Spearmint Tea', short:'PCOD ke liye hormone balance — gentle, daily.',
+    explanation:'Studies show spearmint (pudina) tea taken twice daily reduces excess androgens in women with PCOD/PCOS. Helps with unwanted facial hair and acne over 4-6 weeks. Refreshing, easy, free.',
+    reflection:'Did the tea feel like a calm ritual or a chore?',
+    nudge:'Subah aur shaam — 2 cup pudina tea. 4 hafte baad farak dikhega.',
+    conditions:['pcod','hormones','women-health','acne'],
+    recipe:{name:'Spearmint Tea',ingredients:['10-12 fresh pudina (mint) leaves','2 cups boiling water','Optional: ½ tsp honey','Optional: lemon slice'],method:['Tear pudina leaves','Pour boiling water over','Cover, steep 5-7 min','Strain','Drink warm, twice daily (morning + evening)'],benefits:['Lowers free testosterone','Reduces hirsutism over weeks','Anti-inflammatory','Calms digestion']},
+    qa:[{q:'Why spearmint for PCOD?',options:['Tastes good','Reduces excess androgens (testosterone)','Just hydration'],correct:1,why:'Clinical trials show measurable testosterone reduction in PCOS women after 30 days.'},{q:'How long to see effects?',options:['Overnight','4-6 weeks of twice-daily use','Never'],correct:1,why:'Hormone shifts take time — consistency over weeks.'},{q:'Best paired with?',options:['Sugar','Lifestyle: balanced diet + 30 min walk','High-carb meals'],correct:1,why:'Tea alone helps but lifestyle is the main lever for PCOD.'}]
+  },
+  { id:'kadha-immunity', date:null, weekName:'Immunity', type:'recipe', img:IMG.kadha,
+    title:'Kadha (Immunity Tea)', short:'Daadi maa ka famous kadha — bina cough, bina cold.',
+    explanation:'The classic Indian kadha — tulsi, ginger, black pepper, cinnamon, mulethi. Each ingredient adds something different. Used for centuries during season change to keep colds and coughs away.',
+    reflection:'Did your throat feel clearer the next morning?',
+    nudge:'Mausam badle, kadha pee lo — week mein 2-3 baar.',
+    conditions:['immunity','cold','cough','throat','flu'],
+    recipe:{name:'Kadha',ingredients:['2 cups water','5-6 tulsi leaves','½ inch ginger (crushed)','4 black peppercorns','1 small piece dalchini (cinnamon)','1 small piece mulethi (liquorice)','1 clove (laung)','Optional: ½ tsp honey'],method:['Crush spices roughly','Add to water with tulsi','Boil on low flame 8-10 min','Reduce to about 1 cup','Strain, add honey if needed','Sip warm'],benefits:['Boosts immunity','Soothes throat','Anti-inflammatory','Helps recovery from cold/cough']},
+    qa:[{q:'Why all these ingredients together?',options:['Tradition only','Each adds different antioxidant + antimicrobial action','Just for flavour'],correct:1,why:'Synergistic — tulsi for immunity, ginger anti-viral, mulethi for throat, pepper for absorption.'},{q:'How often?',options:['Daily forever','2-3 times a week, more during season change','Never'],correct:1,why:'Strong — overuse can disturb gut. Cyclical works best.'},{q:'When to avoid?',options:['Pregnancy (consult doctor), high BP (mulethi)','Never','Summer only'],correct:0,why:'Mulethi raises BP in some — pregnant women + BP patients consult doctor.'}]
+  },
+  { id:'amla-shot', date:null, weekName:'Immunity', type:'recipe', img:IMG.amla_shot,
+    title:'Amla Shot', short:'Vitamin C bomb — sirf 30 ml roz.',
+    explanation:'Fresh amla (Indian gooseberry) has 20x more vitamin C than orange — and it survives heat unlike orange juice. A 30ml shot daily during cold-prone months is a low-effort immunity boost.',
+    reflection:'Did the daily shot feel manageable as a habit?',
+    nudge:'Subah ek chota shot amla juice — kal se shuru karein.',
+    conditions:['immunity','skin','hair','antioxidants','digestion'],
+    recipe:{name:'Amla Shot',ingredients:['2 fresh amla (Indian gooseberry)','¼ cup water','Pinch black salt','Optional: tiny piece ginger'],method:['Wash amla, deseed, chop','Blend with water + black salt','Strain through fine sieve','Pour 30 ml shot','Drink first thing morning','Refrigerate rest — use within 2 days']},
+    qa:[{q:'Why is amla\'s Vit C special?',options:['Stronger taste','Heat-stable — survives cooking','Cheaper'],correct:1,why:'Unlike orange Vit C which degrades, amla\'s tannin-bound C stays active.'},{q:'When during the year?',options:['Only summer','Winter when amla is in season + cold-prone months','Never'],correct:1,why:'Amla peaks Oct-Feb — also when immunity needs the most help.'},{q:'Side note?',options:['Sourness can erode teeth — rinse mouth after','Causes hair fall','Bad for digestion'],correct:0,why:'Acidic — quick water rinse protects enamel.'}]
+  }
+];
+
+const CONDITIONS = [
+  {id:'all', name:'Sabhi', desc:'All'},
+  {id:'diabetes', name:'Diabetes', desc:'Sugar control'},
+  {id:'bp', name:'High BP', desc:'Blood pressure'},
+  {id:'thyroid', name:'Thyroid', desc:'Hormone balance'},
+  {id:'pcod', name:'PCOD', desc:'Women\'s health'},
+  {id:'acidity', name:'Acidity', desc:'Heartburn'},
+  {id:'joint-pain', name:'Joint Pain', desc:'Anti-inflammatory'},
+  {id:'weight', name:'Weight', desc:'Balance'},
+  {id:'sleep', name:'Sleep', desc:'Better rest'},
+  {id:'digestion', name:'Digestion', desc:'Gut health'},
+  {id:'immunity', name:'Immunity', desc:'Stay strong'}
+];
+
+const CLUB = [
+  {id:'c1', name:'Ashalatha', loc:'Bengaluru', dish:'Ragi Laddoo', condition:'Diabetes',
+   note:'Mom\'s recipe — my kids fight for these. Energy + iron, no sugar.',
+   story:`I learned this from my mother in Mysuru. She made these every Saturday — never failed. Now my own kids fight over them, and 8 batchmates in our feedback group asked me for the recipe.\n\nThe trick is ragi roasting — slow flame, golden colour. If it goes brown, the bitterness comes in. Dates instead of sugar. Ghee for binding. Walnuts and makhana came in later — Kirti from Indore tried that version and now I make hers more than mine.\n\nHonestly, this is what I love about Habuild. A recipe doesn't stay one way. It travels.`,
+   tag:'diabetes', img:IMG.mem_ragi, initial:'A'},
+  {id:'c2', name:'Shubhada', loc:'Pune', dish:'Methi Dal for Grandson', condition:'Iron + Family',
+   note:'My 3-year-old grandson eats this — no sugar, full iron. Methi is bitter but he loves it cooked soft.',
+   story:`My grandson is 3. He's never tasted sugar — my daughter-in-law was firm about that and now we all follow it.\n\nThe challenge is iron. Kids need it but they reject anything green. So I cook methi very soft with moong dal, mash it slightly, add a little ghee at the end. He eats two katoris.\n\nHabuild taught me this — vegetable in the dal, not on the side. He doesn't see methi as methi. He sees it as dal.`,
+   tag:'kids', img:IMG.mem_methi, initial:'S'},
+  {id:'c3', name:'Kirti Sarmalkar', loc:'Indore', dish:'Ragi Laddu', condition:'Energy + Iron',
+   note:'Mom\'s ragi laddu — just follow this recipe. No sugar, full energy. Maine WhatsApp group mein share kiya tha aur sab ne maanga.',
+   story:`Yeh mom ki recipe hai — ragi flour, jaggery, ghee. Slow flame pe roast karna important hai — agar zyada bhura ho gaya toh bitterness aa jaata hai.\n\nMaine yeh recipe Habuild ke feedback group mein share ki thi. 8 batchmates ne recipe maangi — sab ne banaya, sab ne pasand kiya. Energy + iron, bina cheeni.\n\nMere kids har Saturday yeh maange hain. Mein chaahti hoon ki har Habuild member yeh try kare — daily routine mein kuch healthy, jo bachche bhi khaayein.`,
+   tag:'energy', img:IMG.mem_walnut_laddu, initial:'K'},
+  {id:'c4', name:'Madhavee', loc:'Chennai', dish:'Apple Carrot Crunch', condition:'Weight',
+   note:'My evening snack. Started with Habuild recipe, added pumpkin seeds.',
+   story:`I'm 54, working in an office, and the 5pm slump used to send me to biscuits. Then Habuild shared the apple-carrot crunch and I started keeping it ready in a box.\n\nGrate one carrot, one apple, lemon, salt, jeera. I added roasted pumpkin seeds for crunch. It travels. It doesn't go brown if you add lemon early.\n\nLost 4 kilos in 6 months. Not because of this alone — but because I stopped the biscuits.`,
+   tag:'weight', img:IMG.mem_apple_carrot, initial:'M'},
+  {id:'c5', name:'Supriya', loc:'Mumbai', dish:'OH Salad (year-old fav)', condition:'Summer',
+   note:'I still refer to this recipe a year later. Best summer salad.',
+   story:`Habuild shared an onion-herb salad about a year ago. I starred it on WhatsApp and I still go back to it every summer.\n\nOnion (red, finely sliced), coriander, mint, lemon, salt, a pinch of jeera. That's it. Cooling, light, takes 5 minutes. I make it for everyone when they come over.\n\nThis is the kind of recipe that doesn't go out of date. I just wish I didn't have to scroll WhatsApp for ages to find it again.`,
+   tag:'summer', img:IMG.mem_oh_salad, initial:'S'},
+  {id:'c6', name:'Geeta', loc:'Nagpur', dish:'Karela Sabzi (no bitterness)', condition:'Diabetes',
+   note:'My husband\'s sugar dropped 20 points in 3 months. Salt-soak trick.',
+   story:`My husband was diagnosed with diabetes 4 years ago. He hated karela — refused to eat it. The salt-soak trick changed everything.\n\nThin slices, rub with salt, leave 30 min, squeeze and rinse twice. The bitterness goes. He doesn't even know it's the same karela.\n\nWe eat it 2-3 times a week now. His fasting sugar dropped from 145 to 124 in 3 months. The doctor was surprised. I'm not — I trust the food.`,
+   tag:'diabetes', img:IMG.mem_karela, initial:'G'}
+];
+
+// Get today's recipe — date is pinned to 2026-05-14 (Cardamom Thu) for demo; safe from timezone drift
+function getTodayRecipe(){
+  // Dynamic — use actual local date so today's recipe changes daily.
+  const t = new Date();
+  const yyyy = t.getFullYear();
+  const mm = String(t.getMonth()+1).padStart(2,'0');
+  const dd = String(t.getDate()).padStart(2,'0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+  const match = DAYS.find(d=>d.date===todayStr);
+  if(match) return match;
+  // Fallback: nearest past dated entry, else nearest future, else first dated, else first overall
+  const dated = DAYS.filter(d=>d.date).sort((a,b)=>a.date.localeCompare(b.date));
+  if(!dated.length) return DAYS[0];
+  const past = dated.filter(d=>d.date<=todayStr);
+  if(past.length) return past[past.length-1];
+  return dated[0];
+}
+
+function getFeatured(){return CLUB.find(c=>c.id==='c3')||CLUB[0];} // Kirti Sarmalkar (real WhatsApp share)
+function getOtherMembers(){return CLUB.slice(1);}
+
+// =================== FAQ DATA ===================
+const FAQS = [
+  // Ambali troubleshooting (from PDF)
+  { id:'q-lumps', q:'Ambali mein lumps ban gaye, kya karein?',
+    a:'Lumps tab bante hain jab paste ko thik se mix nahi kiya. Solution: pehle ragi flour ko ½ cup paani mein bahut achhe se mix karein — completely lump-free hone ke baad hi 1 glass paani add karein. Smooth paste = smooth Ambali.',
+    tags:['lump','lumps','gutka','clump','paste']},
+  { id:'q-thick', q:'Ambali bahut gaadha ho gaya — kya karein?',
+    a:'Slowly thoda-thoda paani daalein aur mix karein. Texture chaas jaisi honi chahiye — patli, sip karne mein easy. Ek baar mein zyada paani mat daalein.',
+    tags:['thick','gaadha','heavy','consistency']},
+  { id:'q-sour', q:'Ambali bahut khatta ho gaya',
+    a:'Yeh tab hota hai jab overnight fermentation zyada ho gaya. Slight sourness normal hai. (1) Fermentation time kam karein — 6-8 ghante max. (2) Freshly made version try karein — turant pi sakte hain.',
+    tags:['sour','khatta','khattas','khatas','fermentation','khatta']},
+  { id:'q-bland', q:'Ambali bland lag raha hai',
+    a:'Ek chutki namak + ½ tsp bhuna jeera powder daalein. Chaas thoda zyada daalein — slight tang aayegi. Coriander chopped ya green chilli try karein. Apni taste find karein.',
+    tags:['bland','phika','feeka','tasteless','flat']},
+
+  // Timing & ritual
+  { id:'q-when-ambali', q:'Ambali kab piyena chahiye?',
+    a:'Morning, yoga ke baad, khaali pet — best time 7-9 AM. Lunch ya dinner ke saath avoid karein. Empty stomach pe digestion + absorption maximum hota hai.',
+    tags:['when','kab','timing','time','morning','subah']},
+  { id:'q-empty-stomach', q:'Khaali pet kya peena chahiye?',
+    a:'Subah uthte hi 1 glass paani (room temperature). 30 min baad — Ambali, herbal tea (fennel-cumin, CCF), ya nimbu paani. Chai/coffee se pehle paani — acidity bhi kam, hydration bhi.',
+    tags:['empty stomach','khaali pet','khali pet','morning drink','subah uthkar']},
+  { id:'q-chai', q:'Chai kab nahi peeni chahiye?',
+    a:'(1) Khaali pet — acidity karta hai. (2) Raat 4 PM ke baad — sleep affect hota hai. (3) Khaane ke turant pehle ya baad — iron absorption kam hota hai. Best: subah ka water/Ambali first, fir chai with breakfast.',
+    tags:['chai','tea','coffee','timing chai']},
+
+  // Health conditions
+  { id:'q-ghee', q:'Kya ghee diabetes mein theek hai?',
+    a:'Haan, limited amount mein — 1 chamach roz, sabzi ya dal mein. Pure desi ghee blood sugar spike nahi karta — actually GI lower karta hai. Refined oil se zyada healthy. Matra dhyan rakhein — 1 chamach kaafi hai.',
+    tags:['ghee','diabetes','sugar','desi ghee']},
+  { id:'q-joint', q:'Joint pain ke liye kya khayein?',
+    a:'Cumin-ginger-lemon tea daily. Haldi doodh raat ko (with pinch of pepper for absorption). Omega-3 — sabut alsi, akrod, chia. Anti-inflammatory diet — leafy greens, halki cooked sabzi, refined oil aur sugar kam.',
+    tags:['joint','jod','dard','knee','pain','arthritis']},
+  { id:'q-acidity', q:'Acidity ke liye gharelu nuskha?',
+    a:'Cardamom (elaichi) tea — pet ko thanda karta hai. Subah khaali pet 1 glass paani. CCF tea daily. Cold milk turant raahat. Spicy + masala + chai khaali pet avoid karein. Saunf chabaayein khaane ke baad.',
+    tags:['acidity','heartburn','jalan','gas','jalan','khatta dakar']},
+  { id:'q-bp', q:'BP control ke liye breakfast?',
+    a:'Magnesium-rich — moong dal chilla, sprouts salad, vegetable poha. Salt kam. Coconut water aur kele theek. Refined carb (white bread, biscuit) se bachein. Hibiscus tea daily — 6 hafte mein farak.',
+    tags:['bp','blood pressure','high bp','hypertension']},
+  { id:'q-thyroid', q:'Thyroid mein kya nahi khana chahiye?',
+    a:'Raw cruciferous veg (kacchi gobhi, broccoli, cabbage) zyada nahi — cook karke khaayein. Soya products limit. Refined sugar avoid. Iodine-rich (rock salt, dairy) aur selenium (Brazil nuts, sunflower seeds) helpful hain.',
+    tags:['thyroid','hypothyroid','tsh']},
+
+  // Ambali specific
+  { id:'q-overnight', q:'Overnight ya freshly made — kaunsa better?',
+    a:'Dono beneficial hain. Overnight (traditional): lighter taste, easier digestion. Freshly made: quick, light. Apni routine ke hisaab se choose karein. Consistency matters more than perfection.',
+    tags:['overnight','fresh','traditional','difference','dono']},
+  { id:'q-millet-choice', q:'Ragi ya jowar — kaunsa better?',
+    a:'Dono accha hain, alag benefits. Ragi: zyada calcium aur iron, slight body warming — sardi-bachhe ke liye accha. Jowar: cooling, summer-friendly, gluten-free. Garmi mein jowar, sardi mein ragi.',
+    tags:['ragi','jowar','millet','choice','difference']},
+  { id:'q-everyone', q:'Pure parivaar ke liye ek saath bana sakte hain?',
+    a:'Haan! Base recipe plain rakhein (ragi flour, paani, namak, chaas). Phir individual servings mein apne add-ons — kisi ko coriander, kisi ko green chilli, kisi ko sirf jeera. Sab apni pasand.',
+    tags:['family','joint family','parivaar','sab','everyone']}
+];
+
+function findFAQAnswer(query){
+  const q = (query||'').toLowerCase().trim();
+  if(q.length < 3) return null;
+  let best = null;
+  let bestScore = 0;
+  FAQS.forEach(faq => {
+    let score = 0;
+    // tag matches (strong signal)
+    faq.tags.forEach(t => {
+      const tl = t.toLowerCase();
+      if (q.includes(tl)) score += 3;
+    });
+    // question text word overlap (weaker)
+    const qWords = faq.q.toLowerCase().split(/[^a-zA-Zऀ-ॿ]+/).filter(w => w.length > 3);
+    qWords.forEach(w => { if (q.includes(w)) score += 1; });
+    if (score > bestScore) { bestScore = score; best = faq; }
+  });
+  return bestScore >= 3 ? { faq:best, score:bestScore } : null;
+}
+
+function openFAQ(){
+  // Clear any prior result
+  document.getElementById('faq-result').innerHTML = '';
+  document.getElementById('faq-input').value = '';
+  go('screen-faq');
+  track('FAQ View');
+}
+
+function submitFAQQuestion(){
+  const inp = document.getElementById('faq-input');
+  const q = inp.value.trim();
+  if (q.length < 3) {
+    showToast('Sawaal thoda detail mein likhein');
+    return;
+  }
+  const result = findFAQAnswer(q);
+  const resEl = document.getElementById('faq-result');
+  if (result) {
+    // Plain answer — no "Match mil gaya" label, no question echo
+    resEl.innerHTML = `
+      <div class="faq-result-card">
+        <div class="faq-result-a">${result.faq.a}</div>
+      </div>
+    `;
+    track('FAQ Auto Answered', { query:q, matched:result.faq.id, score:result.score });
+  } else {
+    // No match — escalate to support, 10 min reply promise
+    resEl.innerHTML = `
+      <div class="faq-result-card support-card">
+        <div class="faq-result-a">Aapka sawaal humne note kar liya hai. <strong>Hamari nutrition team 10 minute mein WhatsApp pe reply karegi</strong> — koi expert seedha aapko jawab dega.</div>
+        <div class="faq-result-meta">Ticket #HBL-${Date.now().toString().slice(-6)}</div>
+      </div>
+    `;
+    track('FAQ Sent to Support', { query:q });
+  }
+  inp.value = '';
+  resEl.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+document.getElementById('faq-submit').addEventListener('click', submitFAQQuestion);
+document.getElementById('faq-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submitFAQQuestion();
+});
+
+// =================== DETAIL SCREENS ===================
+// =================== TODAY DETAIL ===================
+function openTodayDetail(day){
+  STATE._currentDay=day;
+  document.getElementById('today-detail-title').textContent=day.weekName||'Recipe';
+  const isSaved=STATE.savedRecipes.includes(day.id);
+  const r=day.recipe||{};
+  const ingredients=(r.ingredients||[]).map(i=>`<li>${i}</li>`).join('');
+  const steps=(r.method||[]).map(s=>`<li>${s}</li>`).join('');
+  const benefits=(r.benefits||[]).map(b=>`<div class="benefit-pill">${b}</div>`).join('');
+  const mcqs=(day.qa||[]).map((q,qi)=>{
+    const opts=q.options.map((o,oi)=>`<div class="mcq-opt" data-q="${qi}" data-o="${oi}" data-correct="${q.correct}">${o}</div>`).join('');
+    return `<div class="mcq">
+      <div class="mcq-q">${q.q}</div>
+      ${opts}
+      <div class="mcq-why" id="why-${qi}">${q.why}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('today-detail-body').innerHTML=`
+    <div class="recipe-hero" style="background-image:url('${day.img}')">
+      <div class="recipe-hero-content">
+        <div class="recipe-tag">Hafta ${day.week||''} · ${day.weekName}</div>
+        <h1 class="recipe-h1">${day.title}</h1>
+        <div class="recipe-sub">${day.short}</div>
+      </div>
+    </div>
+    <div class="voice-card" id="voice-tip">
+      <div class="voice-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21a1 1 0 1 0 2 0v-3.08A7 7 0 0 0 19 11z"/></svg>
+      </div>
+      <div class="voice-card-body">
+        <div class="voice-card-title">SB ki raay</div>
+        <div class="voice-card-meta">0:28 · Yeh kyun zaroori hai</div>
+      </div>
+      <div class="voice-play">
+        <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20"/></svg>
+      </div>
+    </div>
+    <div class="block">
+      <div style="font-size:15px;color:var(--ink);line-height:1.65;padding:4px 0 8px;">${day.explanation}</div>
+    </div>
+    ${r.ingredients?`<div class="block">
+      <div class="block-title">Saamagri</div>
+      <ul class="ingredients">${ingredients}</ul>
+    </div>`:''}
+    ${r.method?`<div class="block">
+      <div class="block-title">Banane ka tarika</div>
+      <ol class="steps">${steps}</ol>
+    </div>`:''}
+    ${r.benefits?`<div class="block">
+      <div class="block-title">Faayde</div>
+      <div class="benefits">${benefits}</div>
+    </div>`:''}
+    <div class="block">
+      <div class="block-title">Sawaal ka jawab</div>
+      ${mcqs}
+    </div>
+    <div class="block">
+      <div class="block-title">Aaj ki seekh</div>
+      <div class="soft-card">
+        <div class="soft-card-label">Sochiyega</div>
+        <div class="soft-card-text">${day.reflection}</div>
+      </div>
+      <div class="wa-card">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.78 11.78 0 0 0 12 0 11.78 11.78 0 0 0 3.48 3.48 11.78 11.78 0 0 0 0 12c0 2.07.54 4.1 1.56 5.9L0 24l6.27-1.64A11.94 11.94 0 0 0 12 24a11.78 11.78 0 0 0 8.52-3.48A11.78 11.78 0 0 0 24 12a11.78 11.78 0 0 0-3.48-8.52z"/></svg>
+        <div class="wa-card-text">${day.nudge}</div>
+      </div>
+    </div>
+    <div style="height:24px;"></div>
+  `;
+
+  // MCQ bindings
+  document.querySelectorAll('.mcq-opt').forEach(opt=>{
+    opt.addEventListener('click',()=>{
+      const correct=parseInt(opt.getAttribute('data-correct'));
+      const chosen=parseInt(opt.getAttribute('data-o'));
+      const qi=opt.getAttribute('data-q');
+      const sibs=opt.parentElement.querySelectorAll('.mcq-opt');
+      sibs.forEach(s=>s.style.pointerEvents='none');
+      if(chosen===correct) opt.classList.add('correct');
+      else{
+        opt.classList.add('wrong');
+        sibs[correct].classList.add('correct');
+      }
+      document.getElementById('why-'+qi).classList.add('show');
+      track('MCQ Answered',{recipe:day.id,q:qi,correct:chosen===correct});
+    });
+  });
+
+  document.getElementById('voice-tip').addEventListener('click',()=>{
+    track('Voice Tip Tap',{recipe:day.id});
+    showToast('Voice tip · pretend audio playing');
+  });
+
+  // Save button
+  const saveBtn=document.getElementById('today-save-btn');
+  if(isSaved) saveBtn.classList.add('saved'); else saveBtn.classList.remove('saved');
+
+  go('screen-today');
+  track('Today Detail View',{recipe:day.id});
+}
+
+// =================== MEMBER DETAIL ===================
+function getAllMembers() {
+  // Combined: remote submissions (live) + local user submissions + seeded CLUB
+  return [].concat(STATE.remoteClubSubmissions || [], STATE.myClubSubmissions || [], CLUB);
+}
+
+function openMemberDetail(m){
+  document.getElementById('member-detail-title').textContent='Featured';
+  const all = getAllMembers();
+  const others = all.filter(c => c.id !== m.id).slice(0, 3);
+  const tilesHtml=others.map(o=>`<div class="tile" style="background-image:url('${o.img||''}')" data-mid="${o.id}"><div class="name">${o.name} · ${o.dish}</div></div>`).join('');
+  const uploadTile=`<div class="tile upload-tile" id="member-upload-tile">
+    <div class="upload-tile-inner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <div>Apni recipe<br/>add karein</div>
+    </div>
+  </div>`;
+  const storyHtml = (m.story || '').split('\n\n').map(p=>`<p>${p}</p>`).join('');
+  document.getElementById('member-detail-body').innerHTML=`
+    <div class="member-hero" style="background-image:url('${m.img||''}')"></div>
+    <div class="member-info">
+      <div class="member-avatar">${m.initial}</div>
+      <div>
+        <div class="member-name">${m.name}</div>
+        <div class="member-meta">${m.loc}</div>
+        <div class="member-tag">${m.condition||'Member dish'}</div>
+      </div>
+    </div>
+    <div class="member-dish-title">${m.dish}</div>
+    <div class="member-story">${storyHtml}</div>
+    <div class="block">
+      <div class="block-title">Aur members ki dishes</div>
+    </div>
+    <div class="member-grid">${tilesHtml}${uploadTile}</div>
+  `;
+  // Bind tile clicks — separate handler per element so upload tile is direct
+  document.querySelectorAll('.member-grid .tile[data-mid]').forEach(t=>{
+    t.addEventListener('click',()=>{
+      const id=t.getAttribute('data-mid');
+      const next=getAllMembers().find(c=>c.id===id);
+      if(next) openMemberDetail(next);
+    });
+  });
+  const uploadEl = document.getElementById('member-upload-tile');
+  if(uploadEl){
+    uploadEl.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      openAddRecipe();
+    });
+  }
+  go('screen-member');
+  track('Member Detail View',{member:m.id});
+}
+
+// =================== ADD RECIPE ===================
+let _arPhoto=null;
+let _arTag=null;
+function openAddRecipe(){
+  // reset fields each open
+  document.getElementById('ar-dish').value='';
+  document.getElementById('ar-note').value='';
+  _arPhoto=null;_arTag=null;
+  const zone=document.getElementById('ar-photo-zone');
+  zone.style.backgroundImage='';
+  zone.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Photo lagayein</span><div class="sub">Apni dish ki ek tasveer</div>`;
+  document.getElementById('ar-submit').disabled=true;
+  // render tag chips
+  const tagGrid=document.getElementById('ar-tags');
+  tagGrid.innerHTML=CONDITIONS.filter(c=>c.id!=='all').map(c=>`<div class="ar-tag" data-tid="${c.id}">${c.name}</div>`).join('');
+  tagGrid.querySelectorAll('.ar-tag').forEach(t=>{
+    t.addEventListener('click',()=>{
+      tagGrid.querySelectorAll('.ar-tag').forEach(x=>x.classList.remove('selected'));
+      t.classList.add('selected');
+      _arTag=t.getAttribute('data-tid');
+    });
+  });
+  go('screen-add-recipe');
+  track('Add Recipe View');
+}
+function arValidate(){
+  const dish=document.getElementById('ar-dish').value.trim();
+  const note=document.getElementById('ar-note').value.trim();
+  document.getElementById('ar-submit').disabled=!(dish && note);
+}
+document.getElementById('ar-dish').addEventListener('input',arValidate);
+document.getElementById('ar-note').addEventListener('input',arValidate);
+document.getElementById('ar-photo-zone').addEventListener('click',()=>document.getElementById('ar-photo-file').click());
+document.getElementById('ar-photo-file').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    _arPhoto=ev.target.result;
+    const zone=document.getElementById('ar-photo-zone');
+    zone.innerHTML='';
+    zone.style.backgroundImage=`url(${_arPhoto})`;
+  };
+  r.readAsDataURL(f);
+});
+document.getElementById('ar-submit').addEventListener('click', async () => {
+  const dish = document.getElementById('ar-dish').value.trim();
+  const note = document.getElementById('ar-note').value.trim();
+  if (!dish || !note) return;
+  const btn = document.getElementById('ar-submit');
+  btn.disabled = true;
+  btn.textContent = sb ? 'Bhej rahe hain...' : 'Save kar rahe hain...';
+
+  // Build photo blob (if any)
+  let photoBlob = null;
+  if (_arPhoto) {
+    try {
+      const res = await fetch(_arPhoto);
+      photoBlob = await res.blob();
+    } catch(e) { console.warn('photo blob convert failed', e); }
+  }
+
+  const submission = {
+    id: 'local-' + Date.now(),
+    name: STATE.user.name || 'You',
+    loc: STATE.user.city || 'India',
+    dish, note,
+    tag: _arTag,
+    img: _arPhoto || '',
+    initial: (STATE.user.name || 'Y')[0].toUpperCase(),
+    condition: _arTag || 'Member dish',
+    story: note,
+    isLocal: true
+  };
+
+  const result = await backendSubmit(submission, photoBlob);
+  // Always also keep a local copy so user sees their own dish immediately
+  STATE.myClubSubmissions.unshift(result.submission || submission);
+  saveState();
+  // Refresh remote list (so any new community submissions also appear)
+  refreshRemoteSubmissions();
+
+  track('Add Recipe Submitted', { dish, tag: _arTag, mode: result.local ? 'local' : 'remote' });
+  showToast(result.local
+    ? 'Aapki recipe save ho gayi (sirf aap ke device par)'
+    : 'Aapki recipe Club mein live ho gayi 🎉');
+
+  // Reset form
+  document.getElementById('ar-dish').value = '';
+  document.getElementById('ar-note').value = '';
+  _arPhoto = null; _arTag = null;
+  btn.textContent = 'Club mein add karein';
+
+  setTimeout(() => {
+    go('screen-home');
+    renderHome();
+  }, 900);
+});
+
+// =================== BROWSE ===================
+let BROWSE_FILTER='all';
+function openBrowse(){
+  renderConditions();
+  renderBrowseGrid();
+  syncFilterLabel();
+  go('screen-browse');
+  track('Browse View');
+}
+function syncFilterLabel(){
+  const lbl=document.getElementById('bottom-filter-label');
+  if(!lbl) return;
+  if(BROWSE_FILTER==='all'){ lbl.textContent='Filter karein'; }
+  else {
+    const c=CONDITIONS.find(x=>x.id===BROWSE_FILTER);
+    lbl.textContent=c?`${c.name} ✕`:'Filter karein';
+  }
+}
+function renderConditions(){
+  const strip=document.getElementById('cond-strip');
+  strip.innerHTML=CONDITIONS.map(c=>`<div class="cond-chip ${c.id===BROWSE_FILTER?'active':''}" data-cid="${c.id}">${c.name}</div>`).join('');
+  strip.querySelectorAll('.cond-chip').forEach(ch=>{
+    ch.addEventListener('click',()=>{
+      BROWSE_FILTER=ch.getAttribute('data-cid');
+      renderConditions();
+      renderBrowseGrid();
+      syncFilterLabel();
+      track('Condition Filter',{condition:BROWSE_FILTER,src:'top'});
+    });
+  });
+}
+// Bottom filter sheet
+function renderSheet(){
+  const grid=document.getElementById('sheet-grid');
+  if(!grid) return;
+  grid.innerHTML=CONDITIONS.map(c=>`<button class="sheet-opt ${c.id===BROWSE_FILTER?'active':''}" data-cid="${c.id}"><div class="nm">${c.name}</div><div class="ds">${c.desc}</div></button>`).join('');
+  grid.querySelectorAll('.sheet-opt').forEach(o=>{
+    o.addEventListener('click',()=>{
+      BROWSE_FILTER=o.getAttribute('data-cid');
+      renderConditions();
+      renderBrowseGrid();
+      syncFilterLabel();
+      closeFilterSheet();
+      track('Condition Filter',{condition:BROWSE_FILTER,src:'bottom-sheet'});
+      // scroll grid to top so they see results
+      const grid=document.getElementById('browse-grid');
+      if(grid) grid.scrollTop=0;
+      window.scrollTo(0,0);
+    });
+  });
+}
+function openFilterSheet(){
+  // If a filter is already active, tapping the bottom pill clears it (quick dismiss)
+  if(BROWSE_FILTER!=='all'){
+    BROWSE_FILTER='all';
+    renderConditions();
+    renderBrowseGrid();
+    syncFilterLabel();
+    track('Condition Filter',{condition:'all',src:'pill-clear'});
+    return;
+  }
+  renderSheet();
+  document.getElementById('sheet-backdrop').classList.add('open');
+  document.getElementById('filter-sheet').classList.add('open');
+  track('Filter Sheet Opened');
+}
+function closeFilterSheet(){
+  document.getElementById('sheet-backdrop').classList.remove('open');
+  document.getElementById('filter-sheet').classList.remove('open');
+}
+// Wire up once
+(function bindFilterSheet(){
+  const pill=document.getElementById('bottom-filter-pill');
+  if(pill) pill.addEventListener('click',openFilterSheet);
+  const bd=document.getElementById('sheet-backdrop');
+  if(bd) bd.addEventListener('click',closeFilterSheet);
+  const cl=document.getElementById('sheet-close');
+  if(cl) cl.addEventListener('click',closeFilterSheet);
+})();
+function matchCondition(day,cid){
+  if(cid==='all') return true;
+  const conds=day.conditions||[];
+  const map={
+    diabetes:['diabetes','blood-sugar','craving'],
+    bp:['bp','blood-pressure'],
+    thyroid:['thyroid'],
+    pcod:['pcod','hormones','women-health'],
+    acidity:['acidity'],
+    'joint-pain':['joint-pain'],
+    weight:['weight'],
+    sleep:['sleep'],
+    digestion:['digestion','bloating','constipation','gas'],
+    immunity:['immunity','cold','cough','throat','flu']
+  };
+  const targets=map[cid]||[cid];
+  return conds.some(c=>targets.includes(c));
+}
+function renderBrowseGrid(){
+  const grid=document.getElementById('browse-grid');
+  const filtered=DAYS.filter(d=>matchCondition(d,BROWSE_FILTER));
+  // Varied heights
+  const heights=['h-tall','h-square','h-medium','h-tall','h-medium','h-square'];
+  grid.innerHTML=filtered.map((d,i)=>{
+    const h=heights[i%heights.length];
+    const cond=(d.conditions&&d.conditions[0])||'';
+    return `<div class="browse-card ${h}" data-rid="${d.id}">
+      <div class="img" style="background-image:url('${d.img}')"></div>
+      <div class="voice-corner">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21a1 1 0 1 0 2 0v-3.08A7 7 0 0 0 19 11z"/></svg>
+      </div>
+      <div class="browse-card-body">
+        <div class="browse-card-title">${d.title}</div>
+        ${cond?`<div class="browse-card-chip">${cond.replace('-',' ')}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.browse-card').forEach(c=>{
+    c.addEventListener('click',()=>{
+      const id=c.getAttribute('data-rid');
+      const day=DAYS.find(d=>d.id===id);
+      if(day) openTodayDetail(day);
+    });
+  });
+}
+
+// =================== ONBOARDING ===================
+const nameInput=document.getElementById('name-input');
+const nameContinue=document.getElementById('name-continue');
+nameInput.addEventListener('input',()=>{
+  nameContinue.disabled=nameInput.value.trim().length<2;
+});
+nameContinue.addEventListener('click',()=>{
+  STATE.user.name=nameInput.value.trim();
+  saveState();
+  track('Onboarding Name Submitted');
+  go('screen-onb-phone');
+});
+
+const phoneInput=document.getElementById('phone-input');
+const phoneContinue=document.getElementById('phone-continue');
+const phonePrefix=document.getElementById('phone-prefix');
+phoneInput.addEventListener('input',()=>{
+  phoneContinue.disabled=phoneInput.value.trim().length<8;
+});
+phoneContinue.addEventListener('click',()=>{
+  STATE.user.phone=phoneInput.value.trim();
+  STATE.user.prefix=phonePrefix.value;
+  saveState();
+  track('Onboarding Phone Submitted');
+  track('Onboarding Completed');
+  go('screen-home');
+  renderHome();
+});
+
+// =================== Buttons ===================
+document.querySelectorAll('[data-back-home]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    go('screen-home');
+  });
+});
+document.getElementById('today-save-btn').addEventListener('click',()=>{
+  const d=STATE._currentDay;
+  if(!d) return;
+  const idx=STATE.savedRecipes.indexOf(d.id);
+  const btn=document.getElementById('today-save-btn');
+  if(idx>=0){
+    STATE.savedRecipes.splice(idx,1);
+    btn.classList.remove('saved');
+    showToast('Recipe hata di');
+    track('Recipe Unsaved',{recipe:d.id});
+  } else {
+    STATE.savedRecipes.push(d.id);
+    btn.classList.add('saved');
+    showToast('Recipe save ki');
+    track('Recipe Saved',{recipe:d.id});
+  }
+  saveState();
+});
+// =================== SHARE CARD (canvas → WhatsApp) ===================
+// Loads an image with CORS so canvas stays exportable. Returns null on failure.
+function loadImg(src){
+  return new Promise((resolve)=>{
+    const img=new Image();
+    // CORS only matters for remote URLs; local files don't taint same-origin canvases
+    if(/^https?:/.test(src)) img.crossOrigin='anonymous';
+    img.onload=()=>resolve(img);
+    img.onerror=()=>resolve(null);
+    img.src=src;
+  });
+}
+
+// Word-wrap helper for canvas text. Returns array of lines, max `maxLines`.
+function wrapText(ctx,text,maxWidth,maxLines){
+  const words=String(text||'').split(/\s+/);
+  const lines=[]; let line='';
+  for(let i=0;i<words.length;i++){
+    const test=line?line+' '+words[i]:words[i];
+    if(ctx.measureText(test).width>maxWidth && line){
+      lines.push(line);
+      line=words[i];
+      if(maxLines && lines.length>=maxLines-1){
+        // Pack the rest into final line, truncate with ellipsis if needed
+        let rest=words.slice(i).join(' ');
+        while(ctx.measureText(rest+'…').width>maxWidth && rest.length>0){
+          rest=rest.slice(0,-1);
+        }
+        lines.push(rest+(words.slice(i).join(' ').length>rest.length?'…':''));
+        return lines;
+      }
+    } else {
+      line=test;
+    }
+  }
+  if(line) lines.push(line);
+  return lines;
+}
+
+// Generate a 1080x1080 branded share card. Returns {blob, dataUrl} or {blob:null, dataUrl}.
+async function generateShareCard(day){
+  const SIZE=1080;
+  const canvas=document.createElement('canvas');
+  canvas.width=SIZE; canvas.height=SIZE;
+  const ctx=canvas.getContext('2d');
+
+  // ---- Background: cream wash fallback, then recipe image cover-style
+  ctx.fillStyle='#1f3a0e';
+  ctx.fillRect(0,0,SIZE,SIZE);
+  const bg=await loadImg(day.img);
+  if(bg){
+    // object-fit: cover
+    const ratio=Math.max(SIZE/bg.width,SIZE/bg.height);
+    const w=bg.width*ratio, h=bg.height*ratio;
+    ctx.drawImage(bg,(SIZE-w)/2,(SIZE-h)/2,w,h);
+  }
+
+  // ---- Bottom overlay (55% gradient: transparent → near-black)
+  const overlayStart=SIZE*0.45;
+  const grad=ctx.createLinearGradient(0,overlayStart,0,SIZE);
+  grad.addColorStop(0,'rgba(0,0,0,0)');
+  grad.addColorStop(0.35,'rgba(0,0,0,0.55)');
+  grad.addColorStop(1,'rgba(0,0,0,0.92)');
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,overlayStart,SIZE,SIZE-overlayStart);
+
+  // Subtle top scrim so eyebrow reads on any image
+  const topGrad=ctx.createLinearGradient(0,0,0,180);
+  topGrad.addColorStop(0,'rgba(0,0,0,0.45)');
+  topGrad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=topGrad;
+  ctx.fillRect(0,0,SIZE,180);
+
+  // ---- Top-left eyebrow: HABUILD · NUTRITION
+  ctx.fillStyle='#ffffff';
+  ctx.font='700 26px "Playfair Display", serif';
+  ctx.textBaseline='top';
+  ctx.textAlign='left';
+  // Manual letter-spacing via individual chars (approx)
+  const eyebrow='HABUILD  ·  NUTRITION';
+  let ex=64;
+  for(const ch of eyebrow){ ctx.fillText(ch,ex,60); ex+=ctx.measureText(ch).width+2; }
+
+  // ---- Top-right kicker: weekName or fallback
+  const dayNum=day.id&&day.id.startsWith('amb-d')?parseInt(day.id.replace('amb-d',''),10):null;
+  const kicker=dayNum?`${day.weekName||'Ambali'} · Day ${dayNum}`:(day.weekName||day.day||'Aaj ka Recipe');
+  ctx.fillStyle='#E8D5B7'; // sand
+  ctx.font='600 20px "Inter", sans-serif';
+  ctx.textAlign='right';
+  ctx.fillText(kicker,SIZE-64,64);
+
+  // ---- Title (bottom area, Playfair 60, max 2 lines, wraps)
+  ctx.textAlign='left';
+  ctx.fillStyle='#ffffff';
+  ctx.font='700 60px "Playfair Display", serif';
+  const titleLines=wrapText(ctx,day.title,SIZE-128,2);
+  const titleLineH=66;
+  // We'll lay out from a chosen Y; reserve room for teaser+ingredients+footer
+  const padBottom=58;
+  const footerLineH=26;
+  // Compute teaser/ingredients heights first, then position from bottom up
+  ctx.font='400 28px "Inter", sans-serif';
+  const teaserLines=wrapText(ctx,day.short||'',SIZE*0.82,2);
+  const teaserLineH=36;
+
+  const ingList=(day.recipe&&day.recipe.ingredients||[]).slice(0,4)
+    .map(s=>String(s).replace(/^STEP.*?—\s*/,'').replace(/^•\s*/,''));
+  const ingText=ingList.length?ingList.join('  ·  '):'';
+  ctx.font='500 24px "Inter", sans-serif';
+  const ingLines=ingText?wrapText(ctx,ingText,SIZE-128,2):[];
+  const ingLineH=30;
+
+  // Footer line
+  const footerText='Habuild app pe — har din ek choti seekh';
+
+  // Wordmark badge dims
+  const wmText='Habuild';
+  ctx.font='700 32px "Playfair Display", serif';
+  const wmW=ctx.measureText(wmText).width+44;
+  const wmH=58;
+
+  // Stack from bottom up
+  let y=SIZE-padBottom;
+  // Wordmark sits in bottom-right; we'll draw it last but leave room for footer line above
+  // Footer text
+  y-=footerLineH;
+  ctx.font='500 22px "Inter", sans-serif';
+  ctx.fillStyle='rgba(255,255,255,0.78)';
+  ctx.fillText(footerText,64,y);
+
+  // Ingredients
+  if(ingLines.length){
+    y-=18;
+    for(let i=ingLines.length-1;i>=0;i--){
+      y-=ingLineH;
+      ctx.font='500 24px "Inter", sans-serif';
+      ctx.fillStyle='rgba(255,255,255,0.85)';
+      ctx.fillText(ingLines[i],64,y);
+    }
+  }
+
+  // Teaser
+  if(teaserLines.length){
+    y-=14;
+    for(let i=teaserLines.length-1;i>=0;i--){
+      y-=teaserLineH;
+      ctx.font='400 28px "Inter", sans-serif';
+      ctx.fillStyle='rgba(255,255,255,0.92)';
+      ctx.fillText(teaserLines[i],64,y);
+    }
+  }
+
+  // Title
+  y-=18;
+  for(let i=titleLines.length-1;i>=0;i--){
+    y-=titleLineH;
+    ctx.font='700 60px "Playfair Display", serif';
+    ctx.fillStyle='#ffffff';
+    ctx.fillText(titleLines[i],64,y);
+  }
+
+  // ---- Wordmark badge bottom-right (over footer area, padded)
+  const wmX=SIZE-64-wmW;
+  const wmY=SIZE-padBottom-wmH+10;
+  ctx.fillStyle='rgba(245,240,232,0.96)'; // cream
+  // rounded rect
+  const r=12;
+  ctx.beginPath();
+  ctx.moveTo(wmX+r,wmY);
+  ctx.lineTo(wmX+wmW-r,wmY);
+  ctx.quadraticCurveTo(wmX+wmW,wmY,wmX+wmW,wmY+r);
+  ctx.lineTo(wmX+wmW,wmY+wmH-r);
+  ctx.quadraticCurveTo(wmX+wmW,wmY+wmH,wmX+wmW-r,wmY+wmH);
+  ctx.lineTo(wmX+r,wmY+wmH);
+  ctx.quadraticCurveTo(wmX,wmY+wmH,wmX,wmY+wmH-r);
+  ctx.lineTo(wmX,wmY+r);
+  ctx.quadraticCurveTo(wmX,wmY,wmX+r,wmY);
+  ctx.closePath();
+  ctx.fill();
+  ctx.font='700 32px "Playfair Display", serif';
+  ctx.fillStyle='#4A7C59'; // sage
+  ctx.textBaseline='middle';
+  ctx.fillText(wmText,wmX+22,wmY+wmH/2+2);
+
+  // ---- Export → blob (may throw on tainted canvas)
+  const dataUrl=(()=>{ try{ return canvas.toDataURL('image/jpeg',0.92); }catch(e){ return null; } })();
+  const blob=await new Promise((resolve)=>{
+    try{
+      canvas.toBlob((b)=>resolve(b),'image/jpeg',0.92);
+    }catch(e){ resolve(null); }
+  });
+  return {blob,dataUrl};
+}
+
+// Build the WhatsApp text payload that accompanies the share
+function buildShareText(day){
+  return `${day.title} — ${day.short||''}\n\nFull recipe Habuild app pe — har din ek choti seekh.`;
+}
+
+// Final fallback: download image + open WhatsApp Web with text
+function fallbackDownloadAndWA(day,blob){
+  const text=buildShareText(day);
+  if(blob){
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download=`habuild-${day.id||'recipe'}.jpg`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),4000);
+    showToast('Image download ho gayi · WhatsApp khulega — image attach karein');
+  } else {
+    showToast('WhatsApp khulega · text share hoga');
+  }
+  // Open WhatsApp with text (web on desktop, app on mobile)
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank','noopener');
+  track('Share Fallback Used',{recipe:day.id,hadImage:!!blob});
+}
+
+// Main share executor — given a day + generated artifacts, do the right thing per platform
+async function doShare(day,blob){
+  const text=buildShareText(day);
+  // Try Web Share API Level 2 (with file) first
+  if(blob && navigator.canShare){
+    try{
+      const file=new File([blob],`habuild-${day.id||'recipe'}.jpg`,{type:'image/jpeg'});
+      const data={title:day.title,text,files:[file]};
+      if(navigator.canShare(data)){
+        await navigator.share(data);
+        track('Share Completed',{recipe:day.id,mode:'file'});
+        return true;
+      }
+    }catch(err){
+      if(err && err.name==='AbortError'){
+        track('Share Cancelled',{recipe:day.id});
+        return false;
+      }
+      // fall through to fallbacks
+    }
+  }
+  // Text-only share (some browsers support this without files)
+  if(navigator.share){
+    try{
+      await navigator.share({title:day.title,text});
+      track('Share Completed',{recipe:day.id,mode:'text'});
+      return true;
+    }catch(err){
+      if(err && err.name==='AbortError'){
+        track('Share Cancelled',{recipe:day.id});
+        return false;
+      }
+    }
+  }
+  // Last resort: download + wa.me
+  fallbackDownloadAndWA(day,blob);
+  return true;
+}
+
+// Preview sheet controller
+const _shareSheet={
+  el:null,frame:null,loading:null,confirmBtn:null,cancelBtn:null,
+  _esc:null,_lastBlob:null,_lastDay:null,
+  init(){
+    if(this.el) return;
+    this.el=document.getElementById('share-overlay');
+    this.frame=document.getElementById('share-preview-frame');
+    this.loading=document.getElementById('share-loading');
+    this.confirmBtn=document.getElementById('share-confirm-btn');
+    this.cancelBtn=document.getElementById('share-cancel-btn');
+    this.cancelBtn.addEventListener('click',()=>this.close('cancel'));
+    this.el.addEventListener('click',(e)=>{ if(e.target===this.el) this.close('backdrop'); });
+    this.confirmBtn.addEventListener('click',async()=>{
+      if(!this._lastDay) return;
+      this.confirmBtn.disabled=true;
+      const ok=await doShare(this._lastDay,this._lastBlob);
+      // Close regardless; native sheet handles its own UI from here
+      this.close(ok?'shared':'cancelled');
+    });
+  },
+  open(day){
+    this.init();
+    this._lastDay=day; this._lastBlob=null;
+    // Reset preview to loading state
+    this.frame.innerHTML='<div class="share-loading" id="share-loading">Image bana rahe hain...</div>';
+    this.confirmBtn.disabled=true;
+    this.el.classList.add('show');
+    this._esc=(e)=>{ if(e.key==='Escape') this.close('esc'); };
+    document.addEventListener('keydown',this._esc);
+  },
+  setPreview(dataUrl,blob){
+    this._lastBlob=blob;
+    if(dataUrl){
+      this.frame.innerHTML=`<img src="${dataUrl}" alt="Share preview"/>`;
+    } else {
+      this.frame.innerHTML='<div class="share-loading">Text share ready</div>';
+    }
+    this.confirmBtn.disabled=false;
+  },
+  close(reason){
+    if(!this.el) return;
+    this.el.classList.remove('show');
+    if(this._esc){ document.removeEventListener('keydown',this._esc); this._esc=null; }
+    if(reason==='cancel'||reason==='backdrop'||reason==='esc'){
+      track('Share Cancelled',{recipe:this._lastDay&&this._lastDay.id,reason});
+    }
+    this._lastDay=null; this._lastBlob=null;
+  }
+};
+
+document.getElementById('today-share-btn').addEventListener('click',async()=>{
+  const day=STATE._currentDay;
+  if(!day) return;
+  const btn=document.getElementById('today-share-btn');
+  const originalLabel=btn.textContent;
+  btn.disabled=true;
+  btn.textContent='Image bana rahe hain...';
+  track('Share Initiated',{recipe:day.id});
+
+  // Open preview sheet immediately (with loading state) so user gets instant feedback
+  _shareSheet.open(day);
+
+  let result={blob:null,dataUrl:null};
+  try{
+    result=await generateShareCard(day);
+  }catch(e){
+    console.warn('Share card generation failed',e);
+  }
+  if(result.blob||result.dataUrl){
+    track('Share Image Generated',{recipe:day.id,bytes:result.blob?result.blob.size:0});
+  }
+  _shareSheet.setPreview(result.dataUrl,result.blob);
+
+  // Re-enable the underlying button so the user can re-trigger after sheet closes
+  btn.disabled=false;
+  btn.textContent=originalLabel;
+});
+document.getElementById('member-submit-btn').addEventListener('click',()=>{
+  track('Member Submit Tap');
+  openAddRecipe();
+});
+document.querySelectorAll('[data-fb]').forEach(r=>{
+  r.addEventListener('click',()=>{
+    const t=r.getAttribute('data-fb');
+    if(t==='today') openTodayDetail(getTodayRecipe());
+    else if(t==='featured') openMemberDetail(getFeatured());
+    else openBrowse();
+  });
+});
+
+// =================== Toast ===================
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+// =================== HOME ===================
+
+function renderHome(){
+  const t = getTodayRecipe();
+  const feat = getFeatured();
+  // Cover background switches to today's image
+  document.querySelector('.cover').style.backgroundImage = `url('${t.img}')`;
+  document.getElementById('mag-spine').textContent = `Recipes · Week ${t.week||''} · ${t.weekName}`;
+  // Eyebrow — "Aaj ka Recipe · Day 3 of 11" for Ambali journey, otherwise fall back to weekday
+  let eyebrowText = `Aaj ka Recipe · ${t.day||''}`;
+  if (t.id && t.id.startsWith('amb-')) {
+    const dayNum = parseInt(t.id.replace('amb-d',''), 10);
+    if (!isNaN(dayNum)) eyebrowText = `Aaj ka Recipe · Day ${dayNum} of 11`;
+  }
+  document.getElementById('mag-eyebrow').textContent = eyebrowText;
+  document.getElementById('mag-title').innerHTML = t.title.replace(' ', '<br/>');
+  document.getElementById('mag-lead').textContent = t.short;
+
+  // Feature
+  document.getElementById('mag-feature-img').style.backgroundImage = `url('${feat.img}')`;
+  document.getElementById('mag-feat-kicker').textContent = `From the Community · ${feat.condition}`;
+  document.getElementById('mag-feat-title').textContent = feat.dish;
+  document.getElementById('mag-feat-ava').textContent = feat.initial;
+  document.getElementById('mag-feat-byline').textContent = `${feat.name} · ${feat.loc}`;
+  document.getElementById('mag-feat-lead').textContent = `"${feat.note}"`;
+
+  document.getElementById('mag-cta').onclick = ()=>openTodayDetail(t);
+  document.querySelector('.cover-content').onclick = ()=>openTodayDetail(t);
+  document.getElementById('mag-feature-card').onclick = ()=>openMemberDetail(feat);
+  // mag-browse & mag-cover-voice & mag-spine elements were removed — skip if missing
+  const more=document.getElementById('bp-more'); if(more) more.onclick=()=>openBrowse();
+  const homeUp=document.getElementById('upload-cta-home'); if(homeUp) homeUp.onclick=()=>openAddRecipe();
+  const faqUp=document.getElementById('faq-cta-home'); if(faqUp) faqUp.onclick=()=>openFAQ();
+
+  // Inline browse preview — upcoming Ambali days + condition recipe favourites
+  const todayIdx=DAYS.findIndex(d=>d.id===t.id);
+  const upcoming=DAYS.filter((d,i)=>i>todayIdx && d.id && d.id.startsWith('amb-')).slice(0,2);
+  const condFav=['methi-water','hibiscus-tea','kadha-immunity','spearmint-tea'].map(id=>DAYS.find(d=>d.id===id)).filter(Boolean);
+  const previewRecipes=upcoming.concat(condFav).filter(d=>d.id!==t.id).slice(0,4);
+  const bp=document.getElementById('bp-grid');
+  if(bp){
+    bp.innerHTML=previewRecipes.map(d=>{
+      const cond=(d.conditions&&d.conditions[0])||'';
+      return `<div class="bp-card" data-rid="${d.id}">
+        <div class="vc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z"/></svg></div>
+        <div class="img" style="background-image:url('${d.img}')"></div>
+        <div class="overlay">
+          <div class="t">${d.title}</div>
+          ${cond?`<div class="c">${cond.replace('-',' ')}</div>`:''}
+        </div>
+      </div>`;
+    }).join('');
+    bp.querySelectorAll('.bp-card').forEach(c=>{
+      c.addEventListener('click',()=>{
+        const d=DAYS.find(x=>x.id===c.getAttribute('data-rid'));
+        if(d) openTodayDetail(d);
+      });
+    });
+  }
+}
+
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+
+function init(){
+  if(STATE.user.phone && STATE.user.name){
+    go('screen-home');
+    renderHome();
+  } else if(STATE.user.name){
+    go('screen-onb-phone');
+  } else {
+    go('screen-onb-name');
+  }
+}
+init();
+
+</script>
+</body>
+</html>
