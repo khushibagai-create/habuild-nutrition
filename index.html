@@ -429,6 +429,14 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .browse-top h1{font-family:'Playfair Display',serif;font-size:18px;color:var(--forest);font-weight:600;}
 .cond-strip{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .cond-strip::-webkit-scrollbar{display:none;}
+.empty-state{grid-column:1 / -1;column-span:all;-webkit-column-span:all;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;color:var(--muted);}
+.empty-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--forest);margin-bottom:6px;font-weight:600;}
+.empty-sub{font-size:13.5px;line-height:1.5;margin-bottom:18px;max-width:280px;}
+.empty-cta{background:var(--forest);color:white;border:none;border-radius:100px;padding:10px 20px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;}
+.empty-cta:active{transform:scale(0.97);}
+.saved-link{display:inline-flex;align-items:center;gap:6px;background:var(--cream-deep);color:var(--forest);border:none;border-radius:100px;padding:8px 14px 8px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;margin-left:auto;}
+.saved-link svg{flex-shrink:0;}
+.saved-link .count{background:var(--forest);color:white;border-radius:100px;padding:1px 7px;font-size:11px;font-weight:700;margin-left:2px;}
 .cond-chip{flex-shrink:0;padding:8px 14px;background:white;border:1.5px solid var(--sand);border-radius:100px;font-size:13px;color:var(--ink);font-weight:500;cursor:pointer;white-space:nowrap;}
 .cond-chip.active{background:var(--forest);color:white;border-color:var(--forest);}
 .browse-grid{padding:14px 16px 60px;columns:2;column-gap:10px;}
@@ -502,8 +510,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
         </a>
       </div>
     </div>
-    <div class="masthead">
+    <div class="masthead" style="display:flex;align-items:center;justify-content:space-between;">
       <div class="masthead-title">Browse Recipes</div>
+      <button class="saved-link" id="home-saved-link" data-track="CTA Clicked" data-track-prop-cta_label="View saved" data-track-prop-cta_location="home-masthead" style="display:none;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        Saved
+        <span class="count" id="home-saved-count">0</span>
+      </button>
     </div>
     <div class="bp-wrap">
       <div class="bp-grid" id="bp-grid"></div>
@@ -1336,6 +1349,7 @@ const DAYS = [
 
 const CONDITIONS = [
   {id:'all', name:'All', desc:'All recipes'},
+  {id:'saved', name:'Saved', desc:'Your bookmarked recipes'},
   {id:'diabetes', name:'Diabetes', desc:'Sugar control'},
   {id:'bp', name:'High BP', desc:'Blood pressure'},
   {id:'thyroid', name:'Thyroid', desc:'Hormone balance'},
@@ -2199,6 +2213,7 @@ function closeFilterSheet(){
 })();
 function matchCondition(day,cid){
   if(cid==='all') return true;
+  if(cid==='saved') return (STATE.savedRecipes||[]).indexOf(day.id) >= 0;
   const conds=day.conditions||[];
   const map={
     diabetes:['diabetes','blood-sugar','craving'],
@@ -2218,6 +2233,22 @@ function matchCondition(day,cid){
 function renderBrowseGrid(){
   const grid=document.getElementById('browse-grid');
   const filtered=DAYS.filter(d=>matchCondition(d,BROWSE_FILTER));
+  // Empty state — Saved filter with no saved recipes
+  if(filtered.length===0){
+    if(BROWSE_FILTER==='saved'){
+      grid.innerHTML=`<div class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;opacity:0.55;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <div class="empty-title">No saved recipes yet</div>
+        <div class="empty-sub">Tap the bookmark icon on any recipe to save it for later.</div>
+        <button class="empty-cta" data-empty-action="browse-all">Browse all recipes</button>
+      </div>`;
+      const cta=grid.querySelector('[data-empty-action]');
+      if(cta) cta.addEventListener('click',()=>{ BROWSE_FILTER='all'; renderConditions(); renderBrowseGrid(); syncFilterLabel(); });
+    } else {
+      grid.innerHTML=`<div class="empty-state"><div class="empty-title">No recipes here yet</div><div class="empty-sub">Try a different filter.</div></div>`;
+    }
+    return;
+  }
   // Varied heights
   const heights=['h-tall','h-square','h-medium','h-tall','h-medium','h-square'];
   grid.innerHTML=filtered.map((d,i)=>{
@@ -2295,8 +2326,8 @@ document.getElementById('today-save-btn').addEventListener('click',()=>{
   } else {
     STATE.savedRecipes.push(d.id);
     btn.classList.add('saved');
-    showToast('Recipe saved');
-    track('Recipe Saved',{recipe:d.id});
+    showToast('Saved · view in Saved tab');
+    track('Recipe Saved',{recipe:d.id,total:STATE.savedRecipes.length});
   }
   saveState();
 });
@@ -2688,6 +2719,19 @@ function renderHome(){
   const more=document.getElementById('bp-more'); if(more) more.onclick=()=>openBrowse();
   const homeUp=document.getElementById('upload-cta-home'); if(homeUp) homeUp.onclick=()=>openAddRecipe();
   const faqUp=document.getElementById('faq-cta-home'); if(faqUp) faqUp.onclick=()=>openFAQ();
+  // Saved link on home — only show when user has saved something
+  const savedLink=document.getElementById('home-saved-link');
+  const savedCount=document.getElementById('home-saved-count');
+  const n=(STATE.savedRecipes||[]).length;
+  if(savedLink && savedCount){
+    if(n>0){
+      savedLink.style.display='inline-flex';
+      savedCount.textContent=n;
+      savedLink.onclick=()=>{ BROWSE_FILTER='saved'; openBrowse(); track('Saved Recipes Opened',{from:'home',count:n}); };
+    } else {
+      savedLink.style.display='none';
+    }
+  }
 
   // Inline browse preview — upcoming Ambali days + condition recipe favourites
   const todayIdx=DAYS.findIndex(d=>d.id===t.id);
