@@ -369,6 +369,108 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .steps li::before{content:counter(step);position:absolute;left:0;top:9px;width:26px;height:26px;background:var(--sage);color:white;font-size:13px;font-weight:600;border-radius:50%;display:flex;align-items:center;justify-content:center;}
 .benefits{display:flex;flex-wrap:wrap;}
 .benefit-pill{display:inline-block;background:var(--cream-deep);color:var(--forest);padding:7px 14px;border-radius:100px;font-size:12.5px;font-weight:500;margin:4px 6px 4px 0;}
+
+/* ===== Servings selector ===== */
+.servings-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:0 2px;flex-wrap:wrap;}
+.servings-label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.6px;}
+.servings-segment{display:inline-flex;background:var(--cream-deep);border-radius:100px;padding:3px;gap:2px;}
+.servings-segment button{min-width:44px;min-height:36px;border:none;background:transparent;border-radius:100px;font-family:inherit;font-size:14.5px;font-weight:600;color:var(--muted);cursor:pointer;padding:0 12px;transition:background 0.15s,color 0.15s;}
+.servings-segment button.active{background:var(--forest);color:white;box-shadow:0 2px 8px rgba(45,80,22,0.28);}
+
+/* ===== Walkthrough screens (45+ moms — minimal, generous, easy to read) ===== */
+.wt{padding:0;background:var(--cream);}
+.wt-top{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 0;}
+.wt-dots{display:flex;gap:7px;align-items:center;}
+.wt-dot{width:8px;height:8px;border-radius:50%;background:var(--sand);transition:background 0.2s,width 0.2s;}
+.wt-dot.active{background:var(--forest);width:24px;border-radius:6px;}
+.wt-skip{background:transparent;border:none;font-family:inherit;font-size:15px;color:var(--muted);font-weight:600;cursor:pointer;padding:8px 4px;min-height:44px;}
+.wt-skip:active{opacity:0.6;}
+
+/* Screen 1: big clean hero photo */
+.wt-hero{margin:24px 22px 0;height:300px;border-radius:24px;background-size:cover;background-position:center;position:relative;box-shadow:0 18px 38px rgba(0,0,0,0.15);}
+.wt-hero-tag{position:absolute;top:18px;left:18px;background:var(--cream);color:var(--forest);padding:7px 13px;border-radius:100px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;box-shadow:0 4px 12px rgba(0,0,0,0.12);}
+
+/* Screens 2 & 3: stage for mock card */
+.wt-stage{margin:24px 22px 0;height:300px;display:flex;align-items:center;justify-content:center;background:var(--cream-deep);border-radius:24px;padding:20px;position:relative;}
+.wt-mock-card{background:white;border-radius:18px;padding:14px;box-shadow:0 14px 32px rgba(0,0,0,0.10);width:100%;max-width:300px;}
+.wt-ing-list{list-style:none;padding:0;margin:0;}
+.wt-ing-row{display:flex;align-items:center;gap:10px;padding:13px 12px;background:var(--cream);border-radius:10px;margin-bottom:7px;position:relative;font-size:15px;}
+.wt-ing-row.dim{opacity:0.5;}
+.wt-ing-row.wt-ing-highlight{background:var(--cream-deep);border:2px solid var(--gold);box-shadow:0 6px 14px rgba(139,105,20,0.18);}
+.wt-ing-qty{font-weight:700;color:var(--forest);min-width:60px;}
+.wt-ing-name{flex:1;color:var(--ink);}
+.wt-ing-grams{font-size:12px;color:var(--muted);}
+.wt-ing-info{width:22px;height:22px;border-radius:50%;background:var(--gold);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:serif;}
+.wt-tap-pulse{position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:42px;height:42px;border:3px solid var(--gold);border-radius:50%;animation:wtPulse 1.6s ease-out infinite;pointer-events:none;}
+@keyframes wtPulse {0%{transform:translate(0,-50%) scale(0.6);opacity:0.9;} 100%{transform:translate(0,-50%) scale(1.4);opacity:0;}}
+
+.wt-sheet-preview{margin-top:12px;background:var(--cream);border-radius:12px;padding:11px 12px;display:flex;align-items:center;gap:12px;border-left:3px solid var(--gold);}
+.wt-sheet-img{width:58px;height:58px;border-radius:10px;background-size:cover;background-position:center;background-color:#ddd;flex-shrink:0;}
+.wt-sheet-name{font-family:'Playfair Display',serif;font-size:16px;color:var(--forest);font-weight:700;margin-bottom:3px;line-height:1.1;}
+.wt-sheet-langs{font-size:12px;color:var(--muted);line-height:1.4;}
+
+/* Screen 4: share grid */
+.wt-share-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:300px;}
+.wt-share-tile{position:relative;aspect-ratio:1/1;border-radius:14px;background-size:cover;background-position:center;background-color:#ddd;overflow:hidden;box-shadow:0 6px 14px rgba(0,0,0,0.08);}
+.wt-share-cap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);color:white;padding:14px 9px 7px;font-size:10.5px;font-weight:600;line-height:1.25;}
+.wt-share-add{background:var(--cream);border:2px dashed var(--sand);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:none;color:var(--forest);}
+.wt-share-add-icon{font-size:30px;font-weight:300;line-height:1;margin-bottom:4px;}
+.wt-share-add-label{font-size:11.5px;font-weight:700;text-align:center;letter-spacing:0.2px;}
+
+/* Screen 5: have a question? mock */
+.wt-q-textarea{background:var(--cream);border-radius:11px;padding:14px;min-height:74px;font-size:14px;color:#888;line-height:1.5;margin-bottom:14px;font-style:normal;}
+.wt-q-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--forest);color:white;border:none;border-radius:13px;padding:15px;font-size:16px;font-weight:700;width:100%;font-family:inherit;cursor:pointer;min-height:50px;}
+.wt-q-btn svg{width:16px;height:16px;flex-shrink:0;}
+.wt-q-note{margin-top:11px;font-size:12.5px;color:var(--muted);text-align:center;}
+
+.wt-srv-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.wt-srv-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;}
+.wt-srv-seg{display:inline-flex;background:var(--cream);border-radius:100px;padding:4px;}
+.wt-srv-seg button{min-width:42px;min-height:36px;border:none;background:transparent;border-radius:100px;font-family:inherit;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;}
+.wt-srv-seg button.active{background:var(--forest);color:white;}
+
+.wt-body{padding:22px 26px 8px;flex:1;}
+.wt-title{font-family:'Playfair Display',serif;font-size:30px;line-height:1.15;color:var(--ink);margin-bottom:12px;font-weight:700;letter-spacing:-0.3px;}
+.wt-sub{font-size:17px;line-height:1.5;color:var(--muted);}
+
+.wt-cta-row{display:flex;gap:10px;padding:18px 22px max(env(safe-area-inset-bottom),20px);background:var(--cream);}
+.wt-cta-row .btn-primary{flex:1;padding:18px;font-size:17px;border-radius:14px;min-height:58px;font-weight:700;}
+.wt-cta-row .btn-secondary{padding:18px 24px;font-size:16px;border-radius:14px;background:transparent;color:var(--forest);border:1.5px solid var(--sand);font-weight:600;cursor:pointer;font-family:inherit;min-height:58px;}
+.wt-cta-row .btn-secondary:active{background:var(--cream-deep);}
+
+/* ===== Ingredient rows (tappable) ===== */
+.ingredients{list-style:none;padding:0;margin:0;}
+.ingredients li{display:flex;align-items:baseline;gap:10px;padding:13px 14px;background:white;border-radius:12px;margin-bottom:6px;min-height:44px;cursor:pointer;transition:background 0.12s,transform 0.08s;border:1px solid var(--cream-deep);}
+.ingredients li[data-slug]:active{background:var(--cream-deep);transform:scale(0.99);}
+.ingredients li:not([data-slug]){cursor:default;}
+.ingredients li.ing-static{padding:10px 14px;background:transparent;border:none;color:var(--muted);font-size:13.5px;min-height:36px;font-style:italic;}
+.ing-qty{font-weight:700;color:var(--forest);min-width:64px;font-size:14.5px;}
+.ing-name{flex:1;color:var(--ink);font-size:14.5px;line-height:1.4;}
+.ing-grams{font-size:11.5px;color:var(--muted);font-weight:500;}
+.ing-info{width:15px;height:15px;color:var(--gold);opacity:0.55;flex-shrink:0;}
+
+/* ===== Ingredient detail sheet (slides up inside .phone-wrap) ===== */
+.ing-sheet{position:absolute;left:0;right:0;bottom:0;background:var(--cream);border-radius:24px 24px 0 0;z-index:100;padding:8px 22px max(env(safe-area-inset-bottom),24px);transform:translateY(100%);transition:transform 0.32s cubic-bezier(0.16,1,0.3,1);max-height:82vh;overflow-y:auto;box-shadow:0 -18px 50px rgba(0,0,0,0.25);}
+.ing-sheet.open{transform:translateY(0);}
+.ing-sheet .sheet-handle{width:36px;height:4px;border-radius:100px;background:var(--cream-deep);margin:6px auto 14px;}
+.ing-sheet-img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;margin:4px 0 14px;background:var(--cream-deep);}
+.ing-sheet-name{font-family:'Playfair Display',serif;font-size:22px;color:var(--forest);margin-bottom:4px;font-weight:700;}
+.ing-sheet-names{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.65;}
+.ing-sheet-names span{display:inline-block;margin-right:10px;}
+.ing-sheet-names span b{color:var(--gold);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-right:4px;}
+.ing-sheet-about{font-size:14.5px;line-height:1.6;color:var(--ink);margin-bottom:18px;}
+.ing-sheet-subs-title{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--forest);margin-bottom:8px;}
+.ing-sheet-subs{list-style:none;padding:0;margin:0;}
+.ing-sheet-subs li{padding:10px 0;font-size:14px;line-height:1.5;color:var(--ink);border-bottom:1px dashed var(--cream-deep);}
+.ing-sheet-subs li:last-child{border-bottom:none;}
+
+/* ===== Family edition pill + card ===== */
+.family-pill{display:flex;align-items:center;gap:10px;min-height:48px;width:100%;background:var(--cream-deep);color:var(--forest);border:1.5px solid var(--sand);border-radius:14px;padding:12px 14px;margin-top:14px;font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;transition:background 0.15s,transform 0.08s;}
+.family-pill:active{transform:scale(0.99);background:var(--sand);}
+.family-pill svg{width:18px;height:18px;flex-shrink:0;color:var(--forest);}
+.family-pill-chev{width:14px;height:14px;transition:transform 0.2s;}
+.family-pill.open .family-pill-chev{transform:rotate(90deg);}
+.family-card{margin-top:10px;background:rgba(45,80,22,0.05);border-radius:14px;padding:14px 16px;font-size:14.5px;line-height:1.65;color:var(--ink);border-left:3px solid var(--forest);}
 .recipe-q-wrap{background:white;border:1.5px solid var(--sand);border-radius:16px;padding:14px;margin-top:6px;box-shadow:0 4px 14px rgba(0,0,0,0.05);}
 .recipe-q-input{width:100%;border:none;outline:none;background:transparent;font-family:inherit;font-size:15px;line-height:1.5;color:var(--ink);resize:none;margin-bottom:10px;}
 .recipe-q-input::placeholder{color:#888;}
@@ -628,6 +730,149 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     <button class="btn-primary" id="phone-continue" data-track="CTA Clicked" data-track-prop-cta_label="Get started (phone)" data-track-prop-cta_location="onboarding-phone" disabled>Get started</button>
   </div>
 </section>
+
+<!-- =================== WALKTHROUGH (5 screens — minimal, big visuals) =================== -->
+<section id="screen-wt-1" class="screen wt">
+  <div class="wt-top">
+    <div class="wt-dots"><span class="wt-dot active"></span><span class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot"></span></div>
+    <button class="wt-skip" data-wt-skip>Skip</button>
+  </div>
+  <div class="wt-hero" style="background-image:url('assets/recipes/methi_water.jpg')">
+    <div class="wt-hero-tag">Today · Wednesday</div>
+  </div>
+  <div class="wt-body">
+    <h1 class="wt-title">A new recipe<br/>every morning.</h1>
+    <p class="wt-sub">For your sugar, BP, joints, sleep — one a day, no overload.</p>
+  </div>
+  <div class="wt-cta-row">
+    <button class="btn-primary wt-next" id="wt-next-1">Next</button>
+  </div>
+</section>
+
+<section id="screen-wt-2" class="screen wt">
+  <div class="wt-top">
+    <div class="wt-dots"><span class="wt-dot"></span><span class="wt-dot active"></span><span class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot"></span></div>
+    <button class="wt-skip" data-wt-skip>Skip</button>
+  </div>
+  <div class="wt-stage">
+    <div class="wt-mock-card">
+      <ul class="wt-ing-list">
+        <li class="wt-ing-row wt-ing-highlight">
+          <span class="wt-ing-qty">2 tbsp</span>
+          <span class="wt-ing-name">jowar flour</span>
+          <span class="wt-ing-info">i</span>
+          <div class="wt-tap-pulse"></div>
+        </li>
+        <li class="wt-ing-row dim"><span class="wt-ing-qty">1 tsp</span><span class="wt-ing-name">jeera</span></li>
+      </ul>
+      <div class="wt-sheet-preview">
+        <div class="wt-sheet-img" style="background-image:url('assets/ingredients/jowar.jpg')"></div>
+        <div>
+          <div class="wt-sheet-name">Jowar (Sorghum)</div>
+          <div class="wt-sheet-langs">ज्वार · ज्वारी · சோளம்</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wt-body">
+    <h1 class="wt-title">Tap any ingredient<br/>to learn.</h1>
+    <p class="wt-sub">Photo, name in your language, and what to use if you don't have it.</p>
+  </div>
+  <div class="wt-cta-row">
+    <button class="btn-secondary wt-back" id="wt-back-2">Back</button>
+    <button class="btn-primary wt-next" id="wt-next-2">Next</button>
+  </div>
+</section>
+
+<section id="screen-wt-3" class="screen wt">
+  <div class="wt-top">
+    <div class="wt-dots"><span class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot active"></span><span class="wt-dot"></span><span class="wt-dot"></span></div>
+    <button class="wt-skip" data-wt-skip>Skip</button>
+  </div>
+  <div class="wt-stage">
+    <div class="wt-mock-card">
+      <div class="wt-srv-row">
+        <span class="wt-srv-label">Makes</span>
+        <div class="wt-srv-seg">
+          <button>1</button>
+          <button>2</button>
+          <button class="active">4</button>
+          <button>6</button>
+        </div>
+      </div>
+      <ul class="wt-ing-list">
+        <li class="wt-ing-row"><span class="wt-ing-qty">8 tbsp</span><span class="wt-ing-name">jowar flour</span><span class="wt-ing-grams">~72 g</span></li>
+        <li class="wt-ing-row"><span class="wt-ing-qty">4 glass</span><span class="wt-ing-name">water</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wt-body">
+    <h1 class="wt-title">Cook for one,<br/>or the whole family.</h1>
+    <p class="wt-sub">Tap a number — quantities update for you.</p>
+  </div>
+  <div class="wt-cta-row">
+    <button class="btn-secondary wt-back" id="wt-back-3">Back</button>
+    <button class="btn-primary wt-next" id="wt-next-3">Next</button>
+  </div>
+</section>
+
+<section id="screen-wt-4" class="screen wt">
+  <div class="wt-top">
+    <div class="wt-dots"><span class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot active"></span><span class="wt-dot"></span></div>
+    <button class="wt-skip" data-wt-skip>Skip</button>
+  </div>
+  <div class="wt-stage">
+    <div class="wt-share-grid">
+      <div class="wt-share-tile" style="background-image:url('assets/recipes/amb_d2_ragi_jeera.jpg')">
+        <div class="wt-share-cap">Ashalatha · Ragi Laddoo</div>
+      </div>
+      <div class="wt-share-tile" style="background-image:url('assets/recipes/methi_water.jpg')">
+        <div class="wt-share-cap">Shubhada · Methi Dal</div>
+      </div>
+      <div class="wt-share-tile" style="background-image:url('assets/recipes/microgreens_salad.jpg')">
+        <div class="wt-share-cap">Madhavee · Apple Carrot Crunch</div>
+      </div>
+      <div class="wt-share-tile wt-share-add">
+        <div class="wt-share-add-icon">+</div>
+        <div class="wt-share-add-label">Add your recipe</div>
+      </div>
+    </div>
+  </div>
+  <div class="wt-body">
+    <h1 class="wt-title">Share your dish<br/>with other Habuilders.</h1>
+    <p class="wt-sub">Your recipe, your story — inspire others in the community.</p>
+  </div>
+  <div class="wt-cta-row">
+    <button class="btn-secondary wt-back" id="wt-back-4">Back</button>
+    <button class="btn-primary wt-next" id="wt-next-4">Next</button>
+  </div>
+</section>
+
+<section id="screen-wt-5" class="screen wt">
+  <div class="wt-top">
+    <div class="wt-dots"><span class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot active"></span></div>
+    <button class="wt-skip" data-wt-skip>Skip</button>
+  </div>
+  <div class="wt-stage">
+    <div class="wt-mock-card">
+      <div class="wt-q-textarea">Ask about Perfectly Balanced Ragi — ingredients, method, your condition…</div>
+      <button class="wt-q-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Ask
+      </button>
+      <div class="wt-q-note">Team replies within 24 hrs.</div>
+    </div>
+  </div>
+  <div class="wt-body">
+    <h1 class="wt-title">Got a question?<br/>Just ask.</h1>
+    <p class="wt-sub">The Habuild team replies to every question, every time.</p>
+  </div>
+  <div class="wt-cta-row">
+    <button class="btn-secondary wt-back" id="wt-back-5">Back</button>
+    <button class="btn-primary wt-next" id="wt-next-5">Let's start</button>
+  </div>
+</section>
+
 <!-- =================== TODAY DETAIL =================== -->
 <section id="screen-today" class="screen">
   <div class="detail-head">
@@ -644,6 +889,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     </div>
     <button class="btn-primary" id="today-share-btn" data-track="Share Initiated" data-track-prop-share_target="family" data-track-prop-content_type="recipe">Share with family</button>
   </div>
+  <!-- Ingredient sheet is built and appended by openIngredientSheet() at runtime -->
 </section>
 <!-- =================== MEMBER DETAIL =================== -->
 <section id="screen-member" class="screen">
@@ -801,6 +1047,7 @@ const STATE = {
   savedRecipes:[],
   myClubSubmissions:[],  // local user submissions (for instant feedback + offline)
   remoteClubSubmissions:[], // pulled from Supabase if available (in-memory, refreshed)
+  walkthroughSeen:false,
   _currentDay:null
 };
 function track(event,props){
@@ -888,12 +1135,14 @@ function loadState(){
 function saveState(){
   try{
     // Only persist these — skip remoteClubSubmissions (memory-only)
-    const persisted = {user:STATE.user, savedRecipes:STATE.savedRecipes, myClubSubmissions:STATE.myClubSubmissions};
+    const persisted = {user:STATE.user, savedRecipes:STATE.savedRecipes, myClubSubmissions:STATE.myClubSubmissions, walkthroughSeen:STATE.walkthroughSeen};
     localStorage.setItem('habuild-nut-v2',JSON.stringify(persisted));
   }catch(e){}
 }
 if(new URLSearchParams(location.search).has('reset')){ try{ localStorage.removeItem('habuild-nut-v2'); }catch(e){} }
 loadState();
+// ?wt resets only the walkthrough flag (keeps name + phone) — handy for previewing the redesigned walkthrough
+if(new URLSearchParams(location.search).has('wt')){ STATE.walkthroughSeen=false; saveState(); }
 
 // ============ BACKEND HELPERS ============
 // All submissions go here. Each: { id, name, loc, dish, note, tag, img, initial, created_at }
@@ -1056,6 +1305,14 @@ const IMG = {
   tulsi_tea:'assets/recipes/tulsi_tea.jpg',
   cinnamon_tea:'assets/recipes/cinnamon_tea.jpg',
   ccf_tea:'assets/recipes/ccf_tea.jpg',
+  quinoa_pulao:'assets/recipes/quinoa_pulao.jpg',
+  quinoa_khichdi:'assets/recipes/quinoa_khichdi.jpg',
+  microgreens_salad:'assets/recipes/microgreens_salad.jpg',
+  microgreens_toast:'assets/recipes/microgreens_toast.jpg',
+  kodo_millet_khichdi:'assets/recipes/kodo_millet_khichdi.jpg',
+  little_millet_pongal:'assets/recipes/little_millet_pongal.jpg',
+  foxtail_millet_upma:'assets/recipes/foxtail_millet_upma.jpg',
+  ragi_dosa:'assets/recipes/ragi_dosa.jpg',
   // Legacy Ambali keys kept for back-compat (point to d2 default)
   amb_intro:'assets/recipes/amb_d2_ragi_jeera.jpg',
   amb_basic:'assets/recipes/amb_d2_ragi_jeera.jpg',
@@ -1070,7 +1327,383 @@ const IMG = {
   amb_favourite:'assets/recipes/amb_d2_ragi_jeera.jpg',
 };
 
-// MAY 2026 — Ambali 11-day millet drink journey (replaces previous multi-theme content)
+// =================== INGREDIENT DICTIONARY ===================
+// Used by the ingredient detail sheet — tappable rows in the ingredients
+// block of every recipe. Each entry: name, image, regional names (hi/mr/
+// ta/te/kn/kok/bn), 1-2 line "about", and 2-3 substitute suggestions.
+const INGREDIENTS = {
+  'methi': {
+    name:'Methi (Fenugreek)', img:'assets/ingredients/methi.jpg',
+    names:{hi:'मेथी',mr:'मेथी',ta:'வெந்தயம்',te:'మెంతులు',kn:'ಮೆಂತ್ಯ',kok:'मेथी',bn:'মেথি'},
+    about:'Tiny golden-brown seeds with a slightly bitter, nutty taste. Used as a digestive and blood-sugar regulator. Most grocery shops carry them with the spices.',
+    substitutes:['Ajwain (carom) seeds — similar warming effect','Kalonji (nigella) seeds — for digestion (skip the sugar benefit)']
+  },
+  'ragi': {
+    name:'Ragi (Finger Millet)', img:'assets/ingredients/ragi.jpg',
+    names:{hi:'रागी / नचनी',mr:'नाचणी',ta:'கேழ்வரகு',te:'రాగులు',kn:'ರಾಗಿ',kok:'नाचणी',bn:'রাগি'},
+    about:'A dark-brown small millet, very high in calcium and iron. Used as flour for ambali, dosa, roti. Especially good for kids and elderly.',
+    substitutes:['Jowar flour — less calcium but cooling','Bajra flour — warming, winter-friendly']
+  },
+  'jowar': {
+    name:'Jowar (Sorghum)', img:'assets/ingredients/jowar.jpg',
+    names:{hi:'ज्वार',mr:'ज्वारी',ta:'சோளம்',te:'జొన్నలు',kn:'ಜೋಳ',kok:'जोंदळो',bn:'জোয়ার'},
+    about:'A cream-coloured small millet, very cooling on the body. Best for summer ambali, roti, and porridge. Gluten-free.',
+    substitutes:['Ragi flour — denser, more iron-rich','Bajra flour — warming, use in winter']
+  },
+  'bajra': {
+    name:'Bajra (Pearl Millet)', img:'assets/ingredients/bajra.jpg',
+    names:{hi:'बाजरा',mr:'बाजरी',ta:'கம்பு',te:'సజ్జలు',kn:'ಸಜ್ಜೆ',kok:'बाजरो',bn:'বাজরা'},
+    about:'A dark-grey small millet, warming on the body. Used for roti, khichdi, and winter ambali. High in iron and protein.',
+    substitutes:['Jowar flour — cooling alternative','Ragi flour — more calcium']
+  },
+  'jeera': {
+    name:'Jeera (Cumin)', img:'assets/ingredients/jeera.jpg',
+    names:{hi:'जीरा',mr:'जिरे',ta:'சீரகம்',te:'జీలకర్ర',kn:'ಜೀರಿಗೆ',kok:'जिरें',bn:'জিরে'},
+    about:'Small brown oval seeds, gently warming and the #1 Indian digestive. Roast lightly before grinding to release the oils.',
+    substitutes:['Ajwain seeds — stronger taste','Fennel (saunf) — milder, sweeter']
+  },
+  'ajwain': {
+    name:'Ajwain (Carom Seeds)', img:'assets/ingredients/ajwain.jpg',
+    names:{hi:'अजवायन',mr:'ओवा',ta:'ஓமம்',te:'వాము',kn:'ಓಮ',kok:'ओवो',bn:'জোয়ান'},
+    about:'Tiny greenish-brown seeds with a sharp thyme-like flavour. Strong digestive — chew a pinch after a heavy meal or steep in hot water.',
+    substitutes:['Jeera — milder digestive','Saunf — gentler on the stomach']
+  },
+  'hibiscus': {
+    name:'Hibiscus (Gudhal)', img:'assets/ingredients/hibiscus.jpg',
+    names:{hi:'गुड़हल',mr:'जास्वंद',ta:'செம்பருத்தி',te:'మందారం',kn:'ಜಾಸವಂತಿ',kok:'जास्वंद',bn:'জবা'},
+    about:'Deep red flower petals brewed as a tart, ruby-coloured tea. Caffeine-free. Helps lower blood pressure when drunk daily.',
+    substitutes:['Rose petals (gulab) — milder taste','Pomegranate peel tea — different but also tart']
+  },
+  'beetroot': {
+    name:'Beetroot (Chukandar)', img:'assets/ingredients/beetroot.jpg',
+    names:{hi:'चुकंदर',mr:'बीट',ta:'பீட்ரூட்',te:'బీట్రూట్',kn:'ಬೀಟ್ರೂಟ್',kok:'बीट',bn:'বিট'},
+    about:'Deep red root vegetable. High in iron, folate, and natural nitrates that help blood pressure. Eaten raw, juiced, or in roti dough.',
+    substitutes:['Carrot — different but adds colour + sweetness','Pomegranate — for the iron + colour, raw only']
+  },
+  'karela': {
+    name:'Karela (Bitter Gourd)', img:'assets/ingredients/karela.jpg',
+    names:{hi:'करेला',mr:'कारलं',ta:'பாகற்காய்',te:'కాకరకాయ',kn:'ಹಾಗಲಕಾಯಿ',kok:'कारलें',bn:'উচ্ছে'},
+    about:'A bitter green vegetable with a bumpy ridged skin. The most studied vegetable for blood sugar. Salt-soak before cooking to reduce bitterness.',
+    substitutes:['Methi leaves — milder bitter alternative','Neem leaves — only for medicinal use']
+  },
+  'nutmeg': {
+    name:'Nutmeg (Jaiphal)', img:'assets/ingredients/nutmeg.jpg',
+    names:{hi:'जायफल',mr:'जायफळ',ta:'ஜாதிக்காய்',te:'జాజికాయ',kn:'ಜಾಯಿಕಾಯಿ',kok:'जायफळ',bn:'জায়ফল'},
+    about:'A small brown nut, grated for warmth and sleep support. A pinch in warm milk before bed helps you drift off. Use sparingly — too much is sedating.',
+    substitutes:['Cinnamon powder — for warmth (not sleep effect)','Cardamom — for warm milk flavour']
+  },
+  'banana': {
+    name:'Banana (Kela)', img:'assets/ingredients/banana.jpg',
+    names:{hi:'केला',mr:'केळं',ta:'வாழைப்பழம்',te:'అరటిపండు',kn:'ಬಾಳೆಹಣ್ಣು',kok:'केळें',bn:'কলা'},
+    about:'High in potassium, magnesium, and tryptophan — the trio that supports sleep and muscle recovery. Choose ripe (spotty) for sleep, slightly green for sugar control.',
+    substitutes:['Chikoo (sapota) — similar sweetness + magnesium','Dates — for sweetness, smaller portion']
+  },
+  'cinnamon': {
+    name:'Cinnamon (Dalchini)', img:'assets/ingredients/cinnamon.jpg',
+    names:{hi:'दालचीनी',mr:'दालचिनी',ta:'பட்டை',te:'దాల్చిన చెక్క',kn:'ದಾಲ್ಚಿನ್ನಿ',kok:'दालचिनी',bn:'দারচিনি'},
+    about:'Inner bark of the cinnamon tree, dried into curled sticks. Warming and one of the best spices for blood sugar control. Use Ceylon variety if available.',
+    substitutes:['Cardamom — for milk drinks','Star anise — for stews and teas']
+  },
+  'tulsi': {
+    name:'Tulsi (Holy Basil)', img:'assets/ingredients/tulsi.jpg',
+    names:{hi:'तुलसी',mr:'तुळस',ta:'துளசி',te:'తులసి',kn:'ತುಳಸಿ',kok:'तुळस',bn:'তুলসী'},
+    about:'A sacred herb with small dark green leaves. Caffeine-free. An adaptogen that helps the body manage stress and supports immunity.',
+    substitutes:['Mint (pudina) — different but refreshing','Ajwain leaves — for the herbal kick']
+  },
+  'spearmint': {
+    name:'Spearmint (Pudina)', img:'assets/ingredients/spearmint.jpg',
+    names:{hi:'पुदीना',mr:'पुदिना',ta:'புதினா',te:'పుదీనా',kn:'ಪುದೀನ',kok:'पुदिनो',bn:'পুদিনা'},
+    about:'Fresh green leaves with a clean cooling taste. The variety with PCOD research evidence. Brew leaves in hot water for a clear, light tea.',
+    substitutes:['Tulsi leaves — different benefits (stress not PCOD)','Lemongrass — for the cooling note only']
+  },
+  'amla': {
+    name:'Amla (Indian Gooseberry)', img:'assets/ingredients/amla.jpg',
+    names:{hi:'आंवला',mr:'आवळा',ta:'நெல்லிக்காய்',te:'ఉసిరికాయ',kn:'ನೆಲ್ಲಿಕಾಯಿ',kok:'आवळो',bn:'আমলকি'},
+    about:'Small round green fruit with vertical ridges. 20x more Vitamin C than orange, and heat-stable. In season Oct-Feb. Sour — usually drunk as a shot.',
+    substitutes:['Lemon — Vitamin C alternative (heat-sensitive)','Kiwi or guava — when amla is out of season']
+  },
+  'brazil-nut': {
+    name:'Brazil Nut', img:'assets/ingredients/brazil-nut.jpg',
+    names:{hi:'ब्राज़ील नट',mr:'ब्राझील नट',ta:'பிரேசில் கொட்டை',te:'బ్రెజిల్ గింజలు',kn:'ಬ್ರೆಜಿಲ್ ಕಾಯಿ',kok:'ब्राझील नट',bn:'ব্রাজিল বাদাম'},
+    about:'Large oval cream-coloured nut. The world\'s richest source of selenium — 2 nuts a day cover your full daily need. Especially good for thyroid health.',
+    substitutes:['Sunflower seeds + walnuts — combined selenium','Pumpkin seeds — for thyroid zinc support']
+  },
+  'walnut': {
+    name:'Walnut (Akhrot)', img:'assets/ingredients/walnut.jpg',
+    names:{hi:'अखरोट',mr:'अक्रोड',ta:'அக்ரூட்',te:'అక్రోటు',kn:'ಆಕ್ರೋಡು',kok:'अक्रोड',bn:'আখরোট'},
+    about:'Brain-shaped nuts, rich in omega-3 fats. Soak 2-4 overnight for easier digestion. Great for joint health and brain function.',
+    substitutes:['Whole flaxseed — for the omega-3','Almonds — different profile, easier to chew']
+  },
+  'pumpkin-seed': {
+    name:'Pumpkin Seeds', img:'assets/ingredients/pumpkin-seed.jpg',
+    names:{hi:'कद्दू के बीज',mr:'भोपळ्याच्या बिया',ta:'பூசணி விதைகள்',te:'గుమ్మడి గింజలు',kn:'ಕುಂಬಳಕಾಯಿ ಬೀಜ',kok:'दुदी बीं',bn:'কুমড়ার বীজ'},
+    about:'Green flat seeds. High in zinc, magnesium, and plant protein. Eat 1 tbsp daily — supports thyroid, sleep, and skin.',
+    substitutes:['Sunflower seeds — similar profile','Hemp seeds — for protein']
+  },
+  'sunflower-seed': {
+    name:'Sunflower Seeds', img:'assets/ingredients/sunflower-seed.jpg',
+    names:{hi:'सूरजमुखी के बीज',mr:'सूर्यफूल बिया',ta:'சூரியகாந்தி விதை',te:'పొద్దుతిరుగుడు గింజలు',kn:'ಸೂರ್ಯಕಾಂತಿ ಬೀಜ',kok:'सूर्यफूल बीं',bn:'সূর্যমুখী বীজ'},
+    about:'Cream-coloured seeds high in Vitamin E and selenium. Eat 1 tbsp daily as a snack or in salads.',
+    substitutes:['Pumpkin seeds — different mineral profile','Sesame (til) seeds — for calcium']
+  },
+  'almond': {
+    name:'Almond (Badam)', img:'assets/ingredients/almond.jpg',
+    names:{hi:'बादाम',mr:'बदाम',ta:'பாதாம்',te:'బాదం',kn:'ಬಾದಾಮಿ',kok:'बादाम',bn:'বাদাম'},
+    about:'Brown skinned, white cream inside. Soak 4-6 overnight, peel and eat for max calcium and easier digestion. The Indian classic.',
+    substitutes:['Walnuts — for omega-3 instead of protein','Cashews — softer but more carbs']
+  },
+  'raisin': {
+    name:'Raisin (Kishmish)', img:'assets/ingredients/raisin.jpg',
+    names:{hi:'किशमिश',mr:'मनुका',ta:'திராட்சை',te:'ఎండు ద్రాక్ష',kn:'ಒಣ ದ್ರಾಕ್ಷಿ',kok:'मनूको',bn:'কিশমিশ'},
+    about:'Dried grapes — natural sweetener with iron and fibre. Soak 10-12 overnight for easier digestion and gentler sugar release.',
+    substitutes:['Dates (chhuhara) — bigger sweetness hit','Dried figs — more fibre']
+  },
+  'chana': {
+    name:'Chana (Chickpea)', img:'assets/ingredients/chana.jpg',
+    names:{hi:'चना',mr:'चणे',ta:'கொண்டக்கடலை',te:'శనగలు',kn:'ಕಡಲೆ',kok:'चणो',bn:'ছোলা'},
+    about:'High-protein legume. Soak overnight + pressure cook. Use kala chana for stronger digestion benefit; white chana (kabuli) for milder taste.',
+    substitutes:['Rajma (kidney beans) — similar profile','Moong dal — easier to digest']
+  },
+  'moong': {
+    name:'Moong (Mung Bean)', img:'assets/ingredients/moong.jpg',
+    names:{hi:'मूंग',mr:'मूग',ta:'பாசிப்பயறு',te:'పెసర',kn:'ಹೆಸರು',kok:'मूग',bn:'মুগ'},
+    about:'Small green pulses, the easiest dal to digest. Soak overnight, sprout for 24-36 hrs, or cook as dal. Light + protein-rich.',
+    substitutes:['Matki — similar sprouting profile','Yellow moong dal — quicker cook']
+  },
+  'matki': {
+    name:'Matki (Moth Beans)', img:'assets/ingredients/matki.jpg',
+    names:{hi:'मटकी',mr:'मटकी',ta:'மட்கி',te:'మట్కి',kn:'ಮಟ್ಕಿ',kok:'मटकी',bn:'মটকি'},
+    about:'Tiny brown legumes, sprout beautifully in 24 hrs. Maharashtrian classic. Lighter than chana, more protein than moong.',
+    substitutes:['Moong — easier to find','Black-eyed peas (chowli)']
+  },
+  'cucumber': {
+    name:'Cucumber (Kheera)', img:'assets/ingredients/cucumber.jpg',
+    names:{hi:'खीरा',mr:'काकडी',ta:'வெள்ளரிக்காய்',te:'దోసకాయ',kn:'ಸೌತೆಕಾಯಿ',kok:'काकडी',bn:'শসা'},
+    about:'95% water, ideal for hydration. Cooling and light on digestion. Eat with skin for fibre. Best in summer.',
+    substitutes:['Lauki (bottle gourd) — for the hydration','Watermelon — sweeter alternative']
+  },
+  'carrot': {
+    name:'Carrot (Gajar)', img:'assets/ingredients/carrot.jpg',
+    names:{hi:'गाजर',mr:'गाजर',ta:'கேரட்',te:'క్యారెట్',kn:'ಕ್ಯಾರೆಟ್',kok:'गाजर',bn:'গাজর'},
+    about:'Sweet orange root, high in beta-carotene (becomes Vitamin A). Eat raw, grated, or as halwa. Especially good for eye health and skin.',
+    substitutes:['Sweet potato — similar beta-carotene','Pumpkin — for the same nutrient profile']
+  },
+  'sweet-potato': {
+    name:'Sweet Potato (Shakarkand)', img:'assets/ingredients/sweet-potato.jpg',
+    names:{hi:'शकरकंद',mr:'रताळं',ta:'சர்க்கரை வள்ளிக்கிழங்கு',te:'చిలగడ దుంప',kn:'ಗೆಣಸು',kok:'गोड कणगा',bn:'মিষ্টি আলু'},
+    about:'A starchy root with reddish-brown skin. Slow-release carbs, gentle on blood sugar. Boil, roast or steam. Especially warming in winter.',
+    substitutes:['Boiled raw banana — same warming profile','Pumpkin — softer texture, similar carbs']
+  },
+  'ghee': {
+    name:'Ghee', img:'assets/ingredients/ghee.jpg',
+    names:{hi:'घी',mr:'तूप',ta:'நெய்',te:'నెయ్యి',kn:'ತುಪ್ಪ',kok:'तूप',bn:'ঘি'},
+    about:'Clarified butter — Indian cooking\'s healthiest fat. 1 tsp a day in dal/sabzi/roti lowers the meal\'s glycemic index. Use desi cow ghee if possible.',
+    substitutes:['Cold-pressed coconut oil — for cooking','Olive oil — only for non-Indian cooking']
+  },
+  'atta': {
+    name:'Atta (Whole Wheat Flour)', img:'assets/ingredients/atta.jpg',
+    names:{hi:'आटा',mr:'गव्हाचे पीठ',ta:'கோதுமை மாவு',te:'గోధుమ పిండి',kn:'ಗೋಧಿ ಹಿಟ್ಟು',kok:'कनकाचें पीठ',bn:'আটা'},
+    about:'Whole wheat flour with the bran intact. The Indian roti base. Pair with veggie or millet flour (50/50) for extra nutrition.',
+    substitutes:['Multigrain atta — already has millets mixed','Jowar+atta 50/50 for cooling effect']
+  },
+  'ginger': {
+    name:'Ginger (Adrak)', img:'assets/ingredients/ginger.jpg',
+    names:{hi:'अदरक',mr:'आलं',ta:'இஞ்சி',te:'అల్లం',kn:'ಶುಂಠಿ',kok:'अद्रकें',bn:'আদা'},
+    about:'Knobby brown root with pale yellow flesh. The classic Indian digestive + anti-inflammatory. Use fresh; dried (sonth) is more warming.',
+    substitutes:['Dry ginger powder (sonth) — more warming','Galangal — only for the heat']
+  },
+  'lemon': {
+    name:'Lemon (Nimbu)', img:'assets/ingredients/lemon.jpg',
+    names:{hi:'नींबू',mr:'लिंबू',ta:'எலுமிச்சை',te:'నిమ్మ',kn:'ನಿಂಬೆ',kok:'लिंबू',bn:'লেবু'},
+    about:'Sour yellow citrus, high in Vitamin C. Add to warm water in the morning for digestion. The juice is best — peel adds bitterness.',
+    substitutes:['Amla — heat-stable Vitamin C','Lime (kagzi nimbu) — same effect']
+  },
+  'coriander': {
+    name:'Coriander (Dhaniya)', img:'assets/ingredients/coriander.jpg',
+    names:{hi:'धनिया',mr:'कोथिंबीर',ta:'மல்லி',te:'కొత్తిమీర',kn:'ಕೊತ್ತಂಬರಿ',kok:'कोथमिरि',bn:'ধনে'},
+    about:'Bright green herb with a fresh peppery taste. Use the leaves for garnish, the seeds for CCF tea, and the root for stocks.',
+    substitutes:['Parsley — milder flavour','Mint — for a different fresh kick']
+  },
+  'coconut': {
+    name:'Coconut (Nariyal)', img:'assets/ingredients/coconut.jpg',
+    names:{hi:'नारियल',mr:'नारळ',ta:'தேங்காய்',te:'కొబ్బరి',kn:'ತೆಂಗಿನಕಾಯಿ',kok:'नारळ',bn:'নারকেল'},
+    about:'Tender green coconut for water (electrolytes); brown mature coconut for flesh, milk, oil. Tender coconut water is one of nature\'s best hydration drinks.',
+    substitutes:['Coconut water from tetra-pack (less ideal)','ORS for the electrolytes when fresh unavailable']
+  },
+  'quinoa': {
+    name:'Quinoa', img:'assets/ingredients/quinoa.jpg',
+    names:{hi:'क्विनोआ',mr:'क्विनोआ',ta:'குயினோவா',te:'క్వినోవా',kn:'ಕ್ವಿನೋವಾ',kok:'क्विनोआ',bn:'কিনোয়া'},
+    about:'A South American pseudo-grain, tiny pale yellow seeds. Cooks like rice but has nearly twice the protein. Gluten-free. Best soaked + rinsed before cooking to remove its natural bitter coating.',
+    substitutes:['Foxtail millet — closest texture','Cracked dalia (broken wheat) — for non-GF kitchens','Cooked moong dal — protein-equivalent']
+  },
+  'microgreens': {
+    name:'Microgreens', img:'assets/ingredients/microgreens.jpg',
+    names:{hi:'माइक्रोग्रीन्स',mr:'मायक्रोग्रीन्स',ta:'மைக்ரோகிரீன்ஸ்',te:'మైక్రోగ్రీన్స్',kn:'ಮೈಕ್ರೋಗ್ರೀನ್ಸ್',kok:'मायक्रोग्रीन्स',bn:'মাইক্রোগ্রিনস'},
+    about:'Tiny young vegetable greens — moong, chana, methi, mooli, sarson — eaten 7-14 days after sprouting. Up to 40x more nutrients than the mature plant. High fibre. Grow easily on a kitchen towel.',
+    substitutes:['Regular sprouts (moong, matki) — 80% benefit','Fresh chopped methi or coriander leaves','Baby spinach leaves']
+  },
+  'kodo-millet': {
+    name:'Kodo Millet (Kodra)', img:'assets/ingredients/kodo-millet.jpg',
+    names:{hi:'कोदो / कोदरा',mr:'कोद्रा',ta:'வரகு',te:'అరికెలు',kn:'ಹಾರಕ',kok:'कोदरा',bn:'কোদো'},
+    about:'A small grey-brown millet, the most cooling of all millets. Very low GI — excellent for diabetes. Easy to digest. Cooks like rice in 20 minutes.',
+    substitutes:['Little millet (kutki) — easier to find','Foxtail millet — slightly heartier','Jowar — for the cooling effect']
+  },
+  'little-millet': {
+    name:'Little Millet (Kutki / Sama)', img:'assets/ingredients/little-millet.jpg',
+    names:{hi:'कुटकी / सामा',mr:'सावा',ta:'சாமை',te:'సామలు',kn:'ಸಾಮೆ',kok:'सावो',bn:'কুটকি'},
+    about:'The smallest, lightest, and easiest-to-digest millet. Used in fasting (vrat) dishes. Same family as fonio. Good for kids, elderly, and recovery diets.',
+    substitutes:['Kodo millet — same family','Foxtail millet — closest size','Broken rice (sona masuri) — only as last resort']
+  },
+  'foxtail-millet': {
+    name:'Foxtail Millet (Kangni / Thinai)', img:'assets/ingredients/foxtail-millet.jpg',
+    names:{hi:'कंगनी',mr:'कांगणी',ta:'திணை',te:'కొర్రలు',kn:'ನವಣೆ',kok:'कांगणी',bn:'কাঙনি'},
+    about:'A small pale-yellow millet, the most rice-like in texture. Slow-release carbs, very low GI. Great for upma, pongal, khichdi, idli. The most adaptable beginner millet.',
+    substitutes:['Little millet (kutki) — similar size','Kodo millet — cooler on the body','Daliya (broken wheat) — non-GF alternative']
+  }
+};
+
+// =================== INGREDIENT PARSER + SCALER ===================
+// recipe.ingredients in DAYS is a string array. We parse each string into
+// {qty, unit, name, slug, salt, optional} so we can scale + tag for taps.
+const ING_UNITS = ['tbsp','tablespoon','tablespoons','tsp','teaspoon','teaspoons','cup','cups','glass','glasses','piece','pieces','pinch','pinches','inch','cm','g','grams','gram','ml','small','medium','large'];
+const ING_GRAMS_PER_UNIT = { tsp:3, tbsp:9, cup:120, glass:240, pinch:0.3, inch:5, piece:30 };
+const FRAC = {'½':0.5,'¼':0.25,'¾':0.75,'⅓':1/3,'⅔':2/3,'⅛':0.125};
+
+function _toNum(s){
+  if(!s) return null;
+  s = String(s).trim();
+  if(FRAC[s]!=null) return FRAC[s];
+  // mixed like "1½"
+  let total = 0, m = s.match(/^(\d+)([½¼¾⅓⅔⅛])$/);
+  if(m){ total = parseInt(m[1]) + FRAC[m[2]]; return total; }
+  // range like "5-6" — take avg
+  m = s.match(/^(\d+)\s*[-–]\s*(\d+)$/);
+  if(m){ return (parseInt(m[1])+parseInt(m[2]))/2; }
+  // decimal like "1.5"
+  m = s.match(/^(\d+\.\d+)$/);
+  if(m){ return parseFloat(m[1]); }
+  // pure integer
+  m = s.match(/^(\d+)$/);
+  if(m){ return parseInt(m[1]); }
+  return null;
+}
+
+function _fmtQty(n){
+  if(n==null) return '';
+  // Round to 2 decimals max, prefer fractions for common values
+  if(n === 0.25) return '¼';
+  if(n === 0.5) return '½';
+  if(n === 0.75) return '¾';
+  if(n === 1/3) return '⅓';
+  if(n === 2/3) return '⅔';
+  // mixed integer + 0.5/0.25
+  const intP = Math.floor(n), fracP = n - intP;
+  if(intP>0){
+    if(fracP === 0) return String(intP);
+    if(Math.abs(fracP-0.5)<0.02) return `${intP}½`;
+    if(Math.abs(fracP-0.25)<0.02) return `${intP}¼`;
+    if(Math.abs(fracP-0.75)<0.02) return `${intP}¾`;
+  }
+  // fallback — round to 1 decimal
+  return n % 1 === 0 ? String(n) : n.toFixed(1).replace(/\.0$/,'');
+}
+
+const ING_UNIT_NORMALIZE = {
+  tbsp:'tbsp', tablespoon:'tbsp', tablespoons:'tbsp',
+  tsp:'tsp', teaspoon:'tsp', teaspoons:'tsp',
+  cup:'cup', cups:'cup',
+  glass:'glass', glasses:'glass',
+  piece:'piece', pieces:'piece',
+  pinch:'pinch', pinches:'pinch',
+  inch:'inch', cm:'cm', g:'g', grams:'g', gram:'g', ml:'ml',
+  small:'small', medium:'medium', large:'large'
+};
+function parseIngredient(line){
+  const original = line;
+  const l = line.trim();
+  const lower = l.toLowerCase();
+  // Optional / salt-to-taste / "to" lines: not scalable
+  if(/^(salt|optional|to taste|water as needed)/i.test(l) || /(to taste)$/i.test(l)){
+    return { qty:null, unit:null, name:l, slug:_detectSlug(lower), salt:true, scalable:false, raw:original };
+  }
+  // Parse: leading number/fraction, optional unit, then name
+  const m = l.match(/^([\d\.½¼¾⅓⅔⅛]+(?:[-–]\d+)?)\s*([a-zA-Z]+)?\s*(.*)$/);
+  if(!m) return { qty:null, unit:null, name:l, slug:_detectSlug(lower), scalable:false, raw:original };
+  const qtyStr = m[1], unitStr = (m[2]||'').toLowerCase(), namePart = (m[3]||'').trim();
+  const qty = _toNum(qtyStr);
+  let unit = null;
+  let name = namePart;
+  if(unitStr && ING_UNIT_NORMALIZE[unitStr]){
+    unit = ING_UNIT_NORMALIZE[unitStr];
+  } else if(unitStr) {
+    // unitStr is not a known unit — fold it back into name so slug detection sees the full ingredient name
+    name = (unitStr + ' ' + name).trim();
+  }
+  const slug = _detectSlug((name || namePart || lower).toLowerCase());
+  return { qty, unit, name: name || l, slug, scalable: qty!=null, raw:original };
+}
+
+function _detectSlug(text){
+  if(!text) return null;
+  const t = ' ' + text.toLowerCase().replace(/[(),]/g,' ') + ' ';
+  // Order matters — longer slugs first to avoid 'nut' matching 'brazil-nut' as just 'nut'
+  const order = ['kodo-millet','little-millet','foxtail-millet','microgreens','brazil-nut','pumpkin-seed','sunflower-seed','sweet-potato','spearmint','cinnamon','coriander','beetroot','coconut','walnut','almond','raisin','quinoa','tulsi','hibiscus','nutmeg','banana','ginger','cucumber','carrot','ghee','atta','lemon','amla','karela','jowar','bajra','jeera','ajwain','methi','ragi','chana','moong','matki'];
+  for(const slug of order){
+    const variants = [slug, slug.replace('-',' '), slug.replace('-','')];
+    if(slug==='methi') variants.push('fenugreek');
+    if(slug==='ragi') variants.push('nachni','finger millet');
+    if(slug==='jeera') variants.push('cumin');
+    if(slug==='ajwain') variants.push('carom');
+    if(slug==='hibiscus') variants.push('gudhal');
+    if(slug==='nutmeg') variants.push('jaiphal');
+    if(slug==='cinnamon') variants.push('dalchini');
+    if(slug==='tulsi') variants.push('holy basil');
+    if(slug==='spearmint') variants.push('mint','pudina');
+    if(slug==='banana') variants.push('kela');
+    if(slug==='atta') variants.push('whole wheat','wheat flour');
+    if(slug==='ghee') variants.push('clarified butter');
+    if(slug==='lemon') variants.push('nimbu','lime');
+    if(slug==='ginger') variants.push('adrak');
+    if(slug==='coriander') variants.push('dhaniya','cilantro');
+    if(slug==='cucumber') variants.push('kheera');
+    if(slug==='carrot') variants.push('gajar');
+    if(slug==='sweet-potato') variants.push('shakarkand');
+    if(slug==='coconut') variants.push('nariyal');
+    if(slug==='beetroot') variants.push('chukandar','beet');
+    if(slug==='karela') variants.push('bitter gourd');
+    if(slug==='amla') variants.push('gooseberry');
+    if(slug==='chana') variants.push('chickpea','chickpeas');
+    if(slug==='moong') variants.push('mung');
+    if(slug==='matki') variants.push('moth bean');
+    if(slug==='almond') variants.push('badam');
+    if(slug==='walnut') variants.push('akhrot');
+    if(slug==='raisin') variants.push('kishmish','kismis');
+    if(slug==='kodo-millet') variants.push('kodo','kodra','arikelu','varagu');
+    if(slug==='little-millet') variants.push('kutki','sama','samai','sava','kutaki');
+    if(slug==='foxtail-millet') variants.push('kangni','thinai','korralu','navane');
+    if(slug==='microgreens') variants.push('microgreen','micro greens','sprouts');
+    if(slug==='quinoa') variants.push('keenwa','kinwa');
+    for(const v of variants){
+      if(t.indexOf(' '+v+' ')>=0 || t.indexOf(' '+v+'s ')>=0) return slug;
+    }
+  }
+  return null;
+}
+
+function scaleIngredient(parsed, servings){
+  // Base servings = 1. So scaledQty = parsed.qty * servings.
+  if(!parsed.scalable || parsed.qty==null) return { qty:'', grams:'' };
+  const scaled = parsed.qty * servings;
+  const qtyText = _fmtQty(scaled) + (parsed.unit ? ' ' + parsed.unit : '');
+  let grams = '';
+  if(parsed.unit && ING_GRAMS_PER_UNIT[parsed.unit]!=null){
+    const g = scaled * ING_GRAMS_PER_UNIT[parsed.unit];
+    if(g >= 1) grams = `~${Math.round(g)} g`;
+  }
+  return { qty:qtyText, grams };
+}
+
+// =================== DAYS ===================
 const DAYS = [
 // ===== AMBALI 7-DAY JOURNEY — Mon May 18 → Sun May 24 (Week 2 from PDF + Sat/Sun extensions) =====
   { id:'amb-d1', date:'2026-05-18', weekName:'Ambali', day:'Mon', type:'recipe', img:IMG.amb_d1_jowar,
@@ -1079,6 +1712,7 @@ const DAYS = [
     explanation:'Week one begins. Try jowar flour — the texture is a little different and the taste is mild. Jowar is more cooling in summer — a perfect hot-weather drink.',
     reflection:'How did jowar feel — what was different in texture and taste?',
     nudge:'Today: jowar Ambali. New millet, same simple method.',
+    familyEdition:'For the whole family: scale by 4 — 8 tbsp jowar flour, 4 cups water for cooking, 2 cups buttermilk. Keep the base plain, then add jeera + coriander to each person\'s glass to taste.',
     conditions:['digestion','summer','women-health','protein','iron','calcium'],
     recipe:{name:'Jowar Ambali',ingredients:['2 tbsp jowar flour','½ cup water (for paste)','1 glass water (to cook)','½ glass water (to adjust)','½ cup chaas','½ tsp jeera, namak'],method:['Mix jowar flour with water into a smooth paste (work the lumps out carefully)','Add 1 glass water and cook on low flame (jowar takes 8-10 min)','Let it cool','Stir in chaas, namak and jeera, then drink'],benefits:['Cooling — ideal for summer','Gluten-free','High protein','Iron + calcium']},
     qa:[
@@ -1094,6 +1728,7 @@ const DAYS = [
     explanation:'Day 2 — ragi flour with jeera. This combination could become your go-to. Iron-rich ragi paired with digestion-friendly jeera.',
     reflection:'Ragi + jeera together — did your stomach feel light?',
     nudge:'Today: ragi Ambali with jeera. A comfort drink.',
+    familyEdition:'Family version: scale ragi + jeera ambali by 4. Add a copper kalash on the table; everyone pours their own glass and adjusts buttermilk + jeera to taste. Joint family wins together.',
     conditions:['digestion','energy','iron','calcium','bloating','anaemia','women-health'],
     recipe:{name:'Ragi Ambali + Jeera',ingredients:['2 tbsp ragi flour (nachni)','½ cup water (for paste)','1 glass water (to cook)','½ cup chaas (buttermilk)','½ tsp roasted jeera powder','Namak to taste'],method:['Mix ragi flour with ½ cup water into a smooth, lump-free paste','Add 1 glass water and cook on low flame 5-7 min, stirring continuously','Cool to room temperature','Stir in chaas, namak and roasted jeera, then drink'],benefits:['Iron-rich and calcium-dense','Anti-bloating','Familiar Indian taste','Easy daily habit']},
     qa:[
@@ -1109,6 +1744,7 @@ const DAYS = [
     explanation:'Day 3 — jowar Ambali with extra water, drink-style. The cooling effect doubles in summer: jowar\'s cooling plus extra hydration.',
     reflection:'Thin jowar vs thin ragi — which feels more refreshing?',
     nudge:'Today: thin jowar Ambali. The best summer drink.',
+    familyEdition:'Family version: make the thin jowar drink in a big steel pot, scaled by 4. Cool, then chill slightly. Pour into glass tumblers — kids love it summer afternoons.',
     conditions:['digestion','summer','hydration'],
     recipe:{name:'Thin Jowar Ambali',ingredients:['2 tbsp jowar flour','½ cup water (for paste)','1 glass water (to cook)','1 extra glass water (to thin)','½ cup chaas','½ tsp jeera, namak'],method:['Make the basic jowar Ambali (cook 8-10 min)','Let it cool','Add 1 extra glass of water','Stir in chaas, jeera and namak, then drink'],benefits:['Cooling and hydrating','Easy to sip in hot weather','Light on digestion','Travel-friendly']},
     qa:[
@@ -1124,6 +1760,7 @@ const DAYS = [
     explanation:'Day 4 — balance the ragi Ambali perfectly. Namak, water, chaas, jeera — every proportion just right. This could become your signature Ambali.',
     reflection:'After 4 days — what have you learned about making Ambali?',
     nudge:'Your perfect ragi Ambali — right balance, right taste.',
+    familyEdition:'Family version: ragi ambali base × 4. Garnish each glass differently — chopped coriander for the kids, green chilli + jeera for the elders, just salt for newcomers.',
     conditions:['digestion','iron','calcium','women-health','daily-habit','anaemia'],
     recipe:{name:'Perfectly Balanced Ragi Ambali',ingredients:['2 tbsp ragi flour','½ cup water (for paste)','1 glass water (to cook)','½ glass water (to adjust)','½ cup chaas','½ tsp roasted jeera','¼-½ tsp namak (to your taste)','Optional: 1 tbsp chopped coriander'],method:['Make a smooth paste (this matters most)','Cook 5-7 min, stirring throughout','Cool completely','Add chaas, jeera and namak','Taste and adjust','Top with coriander'],benefits:['Your signature recipe','A long-term habit format','Daily-ready','Balanced nutrition']},
     qa:[
@@ -1139,6 +1776,7 @@ const DAYS = [
     explanation:'Day 5 — the week is closing. Make whichever style you liked best — ragi or jowar, thick or thin, plain or garnished. This is your Ambali.',
     reflection:'After 5 days — is Ambali a choice or has it become a habit?',
     nudge:'Today: your favourite Ambali. Your call.',
+    familyEdition:'Family version: each person picks their favourite millet (ragi/jowar/bajra). Cook a small batch of each in parallel — 15 min total. Everyone gets their preference, no separate meals.',
     conditions:['digestion','daily-habit','women-health','calcium','iron','energy'],
     recipe:{name:'Your Signature Ambali',ingredients:['Choose your millet (ragi/jowar)','2 tbsp flour','½ cup water (for paste)','1 glass water (to cook)','Extra water (to taste)','½ cup chaas','Add-ons of your choice (jeera, coriander, chilli, namak)'],method:['Make a smooth paste','Cook until glossy','Cool','Add chaas plus your add-ons','Make it yours'],benefits:['A sustainable habit','A personal recipe','Daily nourishment','The week\'s outcome']},
     qa:[
@@ -1169,6 +1807,8 @@ const DAYS = [
     explanation:'Soaked methi (fenugreek) seeds drunk on empty stomach are a tested folk remedy for blood sugar. Bitter, but effective. The mucilage from soaking is what helps slow sugar absorption.',
     reflection:'Did methi water feel easier after a few days?',
     nudge:'Soak 1 tsp methi seeds overnight. In the morning, drink the water on an empty stomach.',
+    familyEdition:'For the whole family: soak 4 tsp methi seeds overnight in a 1-litre jar. Everyone takes ½ glass in the morning. Or make methi paratha at breakfast — same fenugreek, eaten together.',
+    familyEdition:'This IS the family version — scaled for 4. Keep the base plain (ragi flour + water + salt + chaas) and let each person add their own coriander, jeera, or chilli at the table.',
     conditions:['diabetes','weight','blood-sugar'],
     recipe:{name:'Methi Water',ingredients:['1 tsp methi seeds (fenugreek)','1 glass water (250ml)','Optional: half a lemon'],method:['Night: soak methi seeds in water','Cover and leave overnight','Morning: strain — drink the water on empty stomach','Optional: chew the soaked seeds too'],benefits:['Helps lower fasting sugar','Slows glucose absorption','Supports digestion','Reduces sugar cravings']},
     qa:[{q:'Why soak overnight specifically?',options:['Tradition only','Mucilage releases — that\'s what slows sugar','Tastes better'],correct:1,why:'The slimy gel that forms is soluble fibre — exactly what blunts sugar spikes.'},{q:'When to drink methi water?',options:['Anytime','First thing morning, empty stomach','With meals'],correct:1,why:'Empty stomach absorption is maximum — before tea, before food.'},{q:'How long to see results?',options:['1 day','3-4 weeks of daily use','Never'],correct:1,why:'Like all dietary remedies — consistency over weeks shows fasting sugar drop.'}]
@@ -1178,6 +1818,7 @@ const DAYS = [
     explanation:'Karela is one of the most studied vegetables for blood sugar. The salt-soak trick removes the harsh bitterness so even joint family eats it. Geeta from Nagpur shared this — her husband\'s sugar dropped 20 points in 3 months.',
     reflection:'Was the karela actually edible after the salt soak?',
     nudge:'Slice the karela, rub with salt and rest for 30 min. Rinse with water, then cook.',
+    familyEdition:'Family version: scale by 4. Pair with phulkas and dal — even kids eat karela when it\'s part of the full thali, not a standalone bitter side. Add 1 tsp jaggery at the end if the family resists.',
     conditions:['diabetes','blood-sugar','liver'],
     recipe:{name:'Karela Sabzi',ingredients:['2 medium karela (bitter gourd)','1 onion sliced','1 tomato chopped','½ tsp haldi, ½ tsp jeera','Salt for soak + cooking','1 tsp oil'],method:['Slice karela thin, remove seeds','Rub with 1 tsp salt, leave 30 min','Squeeze and rinse 2-3 times','Heat oil, add jeera, onion','Add karela, haldi, cook 10 min covered','Add tomato, salt, cook 5 more min'],benefits:['Charantin lowers blood sugar','Improves insulin sensitivity','Liver detox','High in fibre']},
     qa:[{q:'Why salt-soak karela?',options:['Adds flavour','Draws out the bitter compounds (momordicin)','Makes it crunchy'],correct:1,why:'Salt extracts the bitter cucurbitacins through osmosis — squeeze and rinse to remove.'},{q:'Best frequency?',options:['Daily','2-3 times a week','Once a month'],correct:1,why:'Karela is potent — too much can drop sugar too low especially if on medication.'},{q:'Who should be cautious?',options:['Children only','People on diabetes medication (consult doctor)','Vegetarians'],correct:1,why:'Karela + medicine can stack and cause hypoglycaemia — coordinate with doctor.'}]
@@ -1214,6 +1855,7 @@ const DAYS = [
     explanation:'Bananas have magnesium and tryptophan — the exact pair the body needs to make melatonin. Add milk and cinnamon = sleep cocktail. Better than chai for evening.',
     reflection:'Did this evening drink replace your chai habit?',
     nudge:'Instead of evening chai — a banana cinnamon shake.',
+    familyEdition:'Family version: blend 4 bananas + 4 cups milk + cinnamon + honey. Serves the whole family as a 6 PM filling drink before dinner. Calms kids before bed.',
     conditions:['sleep','energy','muscle-recovery'],
     recipe:{name:'Banana-Cinnamon Smoothie',ingredients:['1 ripe banana','1 cup warm milk','¼ tsp dalchini (cinnamon)','½ tsp honey','Optional: 4-5 almonds (soaked)'],method:['Blend banana with milk','Add cinnamon, honey','Add soaked almonds if using','Blend smooth','Drink 1 hour before bed'],benefits:['Magnesium relaxes muscles','Tryptophan helps melatonin','Naturally sweet','Light, easy to digest']},
     qa:[{q:'Why bananas help sleep?',options:['Just full of sugar','Magnesium + tryptophan = melatonin precursors','Cold'],correct:1,why:'These two nutrients are the building blocks of the sleep hormone.'},{q:'Why cinnamon?',options:['Just flavour','Stabilises blood sugar overnight','Adds calories'],correct:1,why:'Prevents 3am sugar crashes that wake you up.'},{q:'Best timing?',options:['1 hour before bed','Right at bedtime','With dinner'],correct:0,why:'Time for digestion + nutrient uptake before lying down.'}]
@@ -1241,6 +1883,7 @@ const DAYS = [
     explanation:'The classic Indian kadha — tulsi, ginger, black pepper, cinnamon, mulethi. Each ingredient adds something different. Used for centuries during season change to keep colds and coughs away.',
     reflection:'Did your throat feel clearer the next morning?',
     nudge:'When the seasons change, drink kadha — 2-3 times a week.',
+    familyEdition:'Family version: scale by 4. Simmer in a big pot. Strain, pour into steel tumblers, add ½ tsp honey to each. Serve during season change — everyone takes a small cup before bed.',
     conditions:['immunity','cold','cough','throat','flu'],
     recipe:{name:'Kadha',ingredients:['2 cups water','5-6 tulsi leaves','½ inch ginger (crushed)','4 black peppercorns','1 small piece dalchini (cinnamon)','1 small piece mulethi (liquorice)','1 clove (laung)','Optional: ½ tsp honey'],method:['Crush spices roughly','Add to water with tulsi','Boil on low flame 8-10 min','Reduce to about 1 cup','Strain, add honey if needed','Sip warm'],benefits:['Boosts immunity','Soothes throat','Anti-inflammatory','Helps recovery from cold/cough']},
     qa:[{q:'Why all these ingredients together?',options:['Tradition only','Each adds different antioxidant + antimicrobial action','Just for flavour'],correct:1,why:'Synergistic — tulsi for immunity, ginger anti-viral, mulethi for throat, pepper for absorption.'},{q:'How often?',options:['Daily forever','2-3 times a week, more during season change','Never'],correct:1,why:'Strong — overuse can disturb gut. Cyclical works best.'},{q:'When to avoid?',options:['Pregnancy (consult doctor), high BP (mulethi)','Never','Summer only'],correct:0,why:'Mulethi raises BP in some — pregnant women + BP patients consult doctor.'}]
@@ -1269,6 +1912,8 @@ const DAYS = [
     explanation:'Boiled chana with fresh herbs gives slow-release fibre, plant protein, and keeps you full longer. Drink water alongside — fibre works best with hydration.',
     reflection:'Did you remember to sip water along with this salad?',
     nudge:'Sip water with your fibre today — it helps fibre work, not feel heavy.',
+    familyEdition:'Family version: scale by 4. Whisk a big bowl of curd with chopped cucumber, jeera, and black salt — serve as a cooling side at lunch. Doubles as raita.',
+    familyEdition:'Family version: scale by 4. Serve as a side at lunch or a 5 PM family snack. Keep extra lemon and chaat masala on the table — let everyone adjust to their taste.',
     conditions:['digestion','protein','weight','energy'],
     recipe:{name:'Chickpea Herb Salad',ingredients:['1 cup boiled chana (chickpeas)','½ onion, finely chopped','1 tomato, chopped','Handful coriander + mint','½ lemon (juice)','½ tsp chaat masala','Salt to taste'],method:['Boil chickpeas till soft (or use canned, rinsed)','Mix with chopped onion + tomato','Add herbs, lemon, chaat masala','Toss well','Eat fresh — keeps 1 day in fridge'],benefits:['Plant protein','Steady energy','High fibre','Beats packaged snacks']},
     qa:[{q:'Why drink water with fibre?',options:['Just for thirst','Fibre swells in water and prevents heaviness','To dilute taste'],correct:1,why:'Without water, fibre can feel heavy or constipating — water makes it work.'},{q:'Best time?',options:['Late dinner','Lunch or evening snack','Only mornings'],correct:1,why:'Slow-digesting protein + fibre keeps you full till next meal.'},{q:'Why add herbs?',options:['Colour only','More micronutrients + flavour without salt','Tradition'],correct:1,why:'Coriander and mint add iron, antioxidants, and natural digestive support.'}]
@@ -1278,6 +1923,7 @@ const DAYS = [
     explanation:'Today\'s habit is not what you eat — but how. Chew fibre slowly. Eating fast causes gas and bloating. Saliva and gut both need time. Bonus: jaw muscles work too.',
     reflection:'Did slowing down change how full you felt?',
     nudge:'Today, chew each bite of fibre slowly — count 15-20 chews.',
+    familyEdition:'Family version: grate 2 beetroots + 2 carrots. Mix only just before serving (beetroot stains carrot). Serve as a starter — kids love the bright magenta + orange colours.',
     conditions:['digestion','iron','blood-sugar','skin'],
     recipe:{name:'Beetroot & Carrot Salad',ingredients:['1 small beetroot, grated','1 carrot, grated','1 tbsp roasted peanuts (crushed)','½ lemon (juice)','½ tsp roasted jeera powder','Salt + pepper','Fresh coriander'],method:['Grate beetroot + carrot raw','Toss with peanuts','Squeeze lemon, sprinkle jeera + salt','Top with coriander','Eat slowly — chew each bite well'],benefits:['Iron + folate (beetroot)','Beta-carotene (carrot)','Crunch slows down eating','Natural sweetness']},
     qa:[{q:'Why eat fibre slowly?',options:['For taste','Fast eating causes gas + bloating','It saves time'],correct:1,why:'Saliva starts digestion in the mouth — chewing well prevents heaviness later.'},{q:'Side benefit of crunchy salads?',options:['Better jawline + fullness signal','Fewer calories','None'],correct:0,why:'More chewing also gives the brain time to register fullness.'},{q:'Best season?',options:['Only summer','Cooler months — beetroot is at its sweetest','Only winter'],correct:1,why:'Winter beetroot is naturally sweeter and more vibrant.'}]
@@ -1287,6 +1933,7 @@ const DAYS = [
     explanation:'Today\'s habit is about order — eat a little fibre before the main meal. Just a few bites: fruit, salad, sabzi. Stomach prepares, sugar spikes gentle, no overeating. Same food, same plate, just different sequence.',
     reflection:'Did eating fibre first change how much rice/roti you ate after?',
     nudge:'Try fibre before your main meal today — even 3-4 bites help.',
+    familyEdition:'Family version: boil 4 sweet potatoes. Make the ghee + jeera tempering in a wider pan. Serve as a starter before dinner — kids and elders both eat 3-4 bites without fuss.',
     conditions:['digestion','blood-sugar','weight','energy'],
     recipe:{name:'Ayurvedic Sweet Potato Salad',ingredients:['1 boiled sweet potato (cubed)','1 tsp ghee','½ tsp jeera','Pinch hing (asafoetida)','½ tsp chaat masala','½ lemon (juice)','Black salt','Coriander leaves'],method:['Boil sweet potato, peel, cube','Heat ghee, splutter jeera + hing','Toss sweet potato in this','Add chaat masala, lemon, black salt','Top with coriander','Eat warm — 3-4 bites before main meal'],benefits:['Slow-release carbs','Vitamin A + fibre','Warming for cool months','Stops overeating later']},
     qa:[{q:'Why fibre BEFORE the main meal?',options:['Saves time','Helps portion control + slows sugar spikes','Tradition only'],correct:1,why:'Even a few bites of fibre first signals fullness — body eats less after.'},{q:'Why ghee + jeera?',options:['Just flavour','Ghee carries fat-soluble nutrients, jeera aids digestion','Tradition'],correct:1,why:'A small spoon of ghee actually helps absorption of vitamin A from sweet potato.'},{q:'Same food, different order?',options:['No difference','Order changes how sugar enters blood + how full you feel','Order makes no sense'],correct:1,why:'Sequence matters — fibre first, then protein, then carbs is the gentlest order.'}]
@@ -1296,6 +1943,7 @@ const DAYS = [
     explanation:'Sprouts or soaked chana once a day — no big bowl needed. Even a small portion gives fibre, plant protein, and keeps you full longer. Better than packaged snacks. Morning, afternoon, evening — any time works.',
     reflection:'Did the sprout bowl actually replace a packet snack today?',
     nudge:'Add one small bowl of sprouts today — anytime, any way.',
+    familyEdition:'Family version: soak + sprout 1 cup mixed dals overnight (gives ~3-4 cups sprouts). Steam, then mix with onion-tomato-lemon. A small bowl per family member as a 4 PM snack.',
     conditions:['digestion','protein','weight','iron'],
     recipe:{name:'Mixed Sprouts Salad',ingredients:['½ cup mixed sprouts (moong + chana + matki)','½ onion, chopped','1 tomato, chopped','½ green chilli','½ lemon (juice)','½ tsp chaat masala','Salt + coriander'],method:['Soak whole moong + chana overnight','Drain, tie in muslin, sprout 24 hrs','Steam sprouts 3-4 min (easier on digestion)','Mix with onion, tomato, chilli','Squeeze lemon, season, top with coriander'],benefits:['High plant protein','Easy digestion (sprouting helps)','Nutrient absorption','Replaces packet snacks']},
     qa:[{q:'Why sprout the dals?',options:['Looks pretty','Soaking + sprouting reduces heaviness + boosts nutrients','Saves time'],correct:1,why:'Sprouting unlocks nutrients and makes pulses easier on the gut.'},{q:'How much is enough?',options:['Big bowl','A small bowl — consistency over quantity','Two bowls'],correct:1,why:'Small + daily beats big + occasional.'},{q:'Why steam sprouts?',options:['Better taste','Easier on the stomach, especially for sensitive guts','Tradition only'],correct:1,why:'Light steaming makes sprouts digestible while keeping the nutrients.'}]
@@ -1314,6 +1962,8 @@ const DAYS = [
     explanation:'Plain water alone isn\'t enough — the body also needs minerals to hold onto water. Coconut water is nature\'s electrolyte drink — sodium, potassium, magnesium. One glass gives steady hydration, not the "drink and go to the bathroom" feeling.',
     reflection:'Did your energy feel steadier with coconut water vs plain water?',
     nudge:'Today, swap one glass of plain water for coconut water (or add fruits/veggies).',
+    familyEdition:'Family version: open 2-3 tender coconuts for everyone. Pour into glasses, add a pinch of black salt and lemon. Best after yoga or in summer afternoons.',
+    familyEdition:'Family version: 4 cups atta + 2 grated beetroots. Make 12-15 rotis for breakfast — kids eat them more readily because of the pretty pink colour. Pair with dal or sabzi.',
     conditions:['hydration','energy','minerals','summer'],
     recipe:{name:'Coconut Water',ingredients:['1 fresh tender coconut (or 1 glass packaged unsweetened)','Optional: pinch of black salt','Optional: squeeze of lemon'],method:['Crack open fresh tender coconut','Pour out the water','Drink fresh — within 30 min of opening','Optional: pinch of black salt + lemon for extra minerals'],benefits:['Natural electrolytes','Better cellular hydration','Light on stomach','Cooling']},
     qa:[{q:'Why plain water alone is not enough?',options:['It is enough','Body needs minerals to hold water properly','Cold water works better'],correct:1,why:'Without minerals, kidneys flush out the water — you pee more without feeling hydrated.'},{q:'Why coconut water specifically?',options:['Tastes good','Natural electrolytes — sodium, potassium, magnesium','Cheap'],correct:1,why:'It\'s close to your body\'s own mineral balance — hydrates at the cellular level.'},{q:'When is coconut water best?',options:['Only summer','After yoga, in summer, or after sweating','Only winter'],correct:1,why:'Anytime the body has lost minerals — post-workout, summer, or after illness.'}]
@@ -1344,6 +1994,95 @@ const DAYS = [
     conditions:['digestion','bloating','gas','women-health'],
     recipe:{name:'CCF Tea',ingredients:['½ tsp jeera (cumin)','½ tsp dhaniya seeds (coriander)','½ tsp saunf (fennel)','2 cups water'],method:['Lightly crush the seeds (releases oils)','Add to boiling water','Simmer 5 min','Cover, rest 2 min','Strain','Sip warm — after meals or in the evening'],benefits:['Reduces bloating + gas','Cools the gut','Mild diuretic — flushes excess water','Calms post-meal heaviness']},
     qa:[{q:'Why crush the seeds?',options:['Looks nice','Releases essential oils into the tea','Tradition only'],correct:1,why:'Whole seeds give weak tea — crushing unlocks the digestive compounds.'},{q:'When is CCF tea most useful?',options:['Before sleep','After meals or when bloated','First thing morning'],correct:1,why:'After eating is when the digestive support helps most.'},{q:'Why these 3 specifically?',options:['Common in kitchens','Each calms a different part of digestion — they work as a trio','Just for flavour'],correct:1,why:'Cumin warms, coriander cools, fennel relaxes — together they balance.'}]
+  },
+
+  // ===== Millets — Week 3 extensions (jowar/ragi/bajra in Ambali, others as full recipes) =====
+  { id:'kodo-millet-khichdi', date:null, weekName:'Millets', type:'recipe', img:IMG.kodo_millet_khichdi,
+    title:'Kodo Millet Khichdi', short:'The most cooling millet — diabetes-friendly khichdi.',
+    explanation:'Kodo millet (kodra) has the lowest glycemic index of all millets — gentle on blood sugar and very cooling on the body. Cooks like rice in 20 min. The everyday khichdi that fits into any thali.',
+    reflection:'Did the kodo khichdi feel lighter than rice khichdi?',
+    nudge:'Today, swap rice with kodo millet in your khichdi — same method.',
+    familyEdition:'Family version: 2 cups kodo millet + 1 cup moong dal feeds a family of 4. Serve with ghee, papad, and chaas. Even kids accept it when called "special rice".',
+    conditions:['diabetes','blood-sugar','digestion','weight'],
+    recipe:{name:'Kodo Millet Khichdi',ingredients:['½ cup kodo millet','¼ cup moong dal','3 cups water','½ tsp haldi','1 tsp ghee','½ tsp jeera','Salt to taste','Optional: ginger, coriander'],method:['Wash kodo millet + dal together 2-3 times','Soak 30 min (cuts cooking time)','Pressure cook with water, haldi, salt — 3 whistles','In a pan: heat ghee, add jeera, ginger','Pour the tempering into the khichdi','Garnish with coriander, serve with ghee on top'],benefits:['Lowest-GI millet — best for diabetes','Naturally cooling','High fibre — gut-friendly','Easy to digest']},
+    qa:[{q:'Why kodo over rice in khichdi?',options:['Cheaper','Much lower GI — gentler on blood sugar','Cooks faster'],correct:1,why:'Kodo has ~40 GI vs rice ~70 — kinder to blood sugar over the long run.'},{q:'How often is safe?',options:['Once a month','3-4 times a week — rotate with other grains','Every meal'],correct:1,why:'Rotation gives variety of nutrients — don\'t over-rely on any one millet.'},{q:'Best pairing?',options:['Pickle alone','Dal + sabzi + chaas — like normal thali','Sweet dish'],correct:1,why:'Treat kodo khichdi exactly like rice khichdi in your meal plan.'}]
+  },
+
+  { id:'little-millet-pongal', date:null, weekName:'Millets', type:'recipe', img:IMG.little_millet_pongal,
+    title:'Little Millet Pongal', short:'Soft, comforting — the easiest millet to digest.',
+    explanation:'Little millet (kutki, sama) is the lightest and softest of all millets — used in fasting (vrat) meals because it is so easy on the gut. Cooked like pongal with moong dal and pepper, it tastes like a comforting upma-khichdi hybrid.',
+    reflection:'Did the little millet pongal feel as filling as a rice one?',
+    nudge:'Make pongal with little millet today — same method, lighter result.',
+    familyEdition:'Family version: 2 cups little millet + 1 cup moong dal makes pongal for 4. Top with extra ghee + crushed pepper. Older folks especially love it (easy on teeth + tummy).',
+    conditions:['digestion','weight','fasting','energy','women-health'],
+    recipe:{name:'Little Millet Pongal',ingredients:['½ cup little millet (kutki)','¼ cup moong dal','3 cups water','1 tsp ghee','½ tsp pepper, coarsely crushed','½ tsp jeera','¼ inch ginger, grated','Salt to taste','Optional: cashews + curry leaves'],method:['Wash little millet + dal together','Pressure cook with water + salt — 3 whistles','In a small pan: heat ghee, add pepper, jeera, ginger','Add cashews + curry leaves, sauté 1 min','Pour tempering into pongal, mix','Serve hot — with coconut chutney or just ghee'],benefits:['Easiest millet to digest','High in iron + B vitamins','Gentle on the gut — fasting-friendly','Steady energy']},
+    qa:[{q:'Why little millet for sensitive digestion?',options:['Tastes mild','Smallest grain — easiest to break down','Cooks fastest'],correct:1,why:'Tiny grain size + gentle fibre means even sensitive guts handle it well.'},{q:'Best time to eat?',options:['Heavy dinner','Light breakfast or lunch','Late night'],correct:1,why:'Light + filling — perfect morning meal that keeps you going till lunch.'},{q:'Why pair with moong dal?',options:['Tradition only','Complete protein + better digestibility','Looks pretty'],correct:1,why:'Millet + dal together = full amino acid profile, like rice-dal.'}]
+  },
+
+  { id:'foxtail-millet-upma', date:null, weekName:'Millets', type:'recipe', img:IMG.foxtail_millet_upma,
+    title:'Foxtail Millet Upma', short:'The beginner millet — tastes like upma, low-GI.',
+    explanation:'Foxtail millet (kangni, thinai) is the most rice-like of all millets — same texture, same look, much lower GI. The easiest way to swap rice or rava in upma. Slow-release carbs keep you full till lunch.',
+    reflection:'Did the foxtail upma feel as satisfying as rava upma?',
+    nudge:'For breakfast today, make upma with foxtail millet instead of rava.',
+    familyEdition:'Family version: 2 cups foxtail millet upma feeds 4 with veggies. Add carrot, beans, peas — the kids won\'t notice the millet swap if you add their favourite veggies.',
+    conditions:['diabetes','weight','breakfast','energy','blood-sugar'],
+    recipe:{name:'Foxtail Millet Upma',ingredients:['½ cup foxtail millet','1 cup water','1 tsp ghee or oil','½ tsp mustard seeds','½ tsp urad dal','1 green chilli, slit','½ onion, chopped','½ carrot, grated','5-6 curry leaves','Salt + lemon to finish'],method:['Dry roast foxtail millet 2-3 min — releases nutty aroma','Heat ghee, add mustard, urad dal','Add chilli, onion, curry leaves — sauté 2 min','Add carrot, salt, sauté 1 min','Add water + roasted millet','Cover and cook 8-10 min on low','Fluff with fork, squeeze lemon, serve hot'],benefits:['Slow-release carbs — steady energy','High fibre + iron','Lower GI than rava','Beginner-friendly millet']},
+    qa:[{q:'Why roast the millet first?',options:['Looks pretty','Releases the nutty flavour + makes it fluffier','Faster cooking'],correct:1,why:'Dry roasting unlocks the aroma and stops the grains sticking together.'},{q:'Why foxtail for beginners?',options:['Cheapest','Tastes most like rice — easiest swap','Cooks fastest'],correct:1,why:'Same texture, same colour, same dish — only the GI changes.'},{q:'Best paired with?',options:['Sweet curd','Coconut chutney + a small cup of coffee/tea','Pickle alone'],correct:1,why:'Just like rava upma — chutney + filter coffee is the classic match.'}]
+  },
+
+  { id:'ragi-dosa', date:null, weekName:'Bone Health', type:'recipe', img:IMG.ragi_dosa,
+    title:'Ragi Dosa', short:'Daily calcium + iron in a crispy dosa.',
+    explanation:'Ragi (nachni / finger millet) has 10x more calcium than rice. Made into a dosa, it is crisp, savoury, and an easy daily way to add calcium + iron — especially important for women 40+ and growing kids. No fermenting needed.',
+    reflection:'Did the ragi dosa feel as crisp as your regular dosa?',
+    nudge:'Make one ragi dosa today — instant batter, no fermenting needed.',
+    familyEdition:'Family version: 2 cups ragi flour + 1 cup atta + curd makes 12-15 dosas. Pair with coconut chutney + sambar. The crisp version even non-millet-eaters enjoy.',
+    conditions:['bone','calcium','iron','women-health','anaemia','weight'],
+    recipe:{name:'Instant Ragi Dosa',ingredients:['1 cup ragi flour','½ cup rice flour (or atta)','½ cup curd','2 cups water (to thin)','1 chopped onion','1 green chilli','½ tsp jeera','Salt + coriander','Ghee for cooking'],method:['Mix ragi flour, rice flour, curd, salt','Whisk with water — thin pouring batter (like buttermilk)','Add onion, chilli, jeera, coriander','Heat tawa hot, drizzle batter from outside in (like rava dosa)','Drizzle ghee around edges','Cook 2-3 min till crisp — flip if needed','Serve hot with chutney'],benefits:['10x more calcium than rice','High iron — supports haemoglobin','Crisp texture — kids accept','Daily-doable']},
+    qa:[{q:'Why ragi for women 40+?',options:['Just tradition','High calcium + iron — exactly what bones + blood need','Tastes nice'],correct:1,why:'Calcium for bone density, iron for energy — both critical post-40.'},{q:'Why no fermenting needed?',options:['Saves time','Curd does the same job — gives the slight tang','Tradition'],correct:1,why:'Curd + water hydrates the flour AND gives mild fermentation — instant.'},{q:'How often is good?',options:['Once a year','3-4 times a week — rotate with rice dosa','Daily for life'],correct:1,why:'Rotation gives variety, but ragi can absolutely be a 3-4x weekly staple.'}]
+  },
+
+  { id:'quinoa-pulao', date:null, weekName:'Protein', type:'recipe', img:IMG.quinoa_pulao,
+    title:'Quinoa Veg Pulao', short:'Pulao swap — double the protein, lower GI.',
+    explanation:'Quinoa cooks like rice but has nearly twice the protein and a complete amino acid profile. Used as a pulao base with Indian spices, it tastes familiar — your usual veg pulao, just lighter and more protein-rich. Rinse well to remove the natural bitter coating.',
+    reflection:'Did the quinoa pulao feel as filling as your usual rice one?',
+    nudge:'Make pulao with quinoa today — same method, swap rice 1:1.',
+    familyEdition:'Family version: 2 cups quinoa + mixed veggies feeds 4. Add cashews + a small piece of cinnamon stick for the warm aroma. Pair with raita.',
+    conditions:['protein','weight','blood-sugar','women-health','energy'],
+    recipe:{name:'Quinoa Veg Pulao',ingredients:['1 cup quinoa, rinsed 3 times','1¾ cup water','1 tsp ghee','½ tsp jeera','1 small piece dalchini','2 cloves','1 onion, sliced','½ cup mixed veggies (carrot, peas, beans)','½ tsp garam masala','Salt to taste','Coriander to finish'],method:['Rinse quinoa 3 times — removes saponin (bitter coating)','Heat ghee, add jeera, dalchini, cloves','Add onion, sauté till translucent','Add veggies, sauté 2 min','Add quinoa, salt, garam masala','Add water, bring to boil','Cover and simmer 12-15 min till water absorbs','Rest 5 min, fluff, garnish with coriander'],benefits:['Complete protein (all 9 amino acids)','Gluten-free','Lower GI than rice','High iron + magnesium']},
+    qa:[{q:'Why rinse quinoa 3 times?',options:['For colour','Removes the natural bitter coating (saponin)','Faster cooking'],correct:1,why:'Saponin gives a soapy bitter taste — rinsing fixes it completely.'},{q:'Best ratio for cooking?',options:['1:1 quinoa:water','1:1¾ — like rice','1:3 — very wet'],correct:1,why:'Slightly less water than rice — quinoa is small and absorbs less.'},{q:'Best for which goals?',options:['Only weight loss','Protein, blood sugar, women\'s health — broad benefits','Only diabetes'],correct:1,why:'Quinoa is one of the few plant foods with complete protein — wide application.'}]
+  },
+
+  { id:'quinoa-khichdi', date:null, weekName:'Protein', type:'recipe', img:IMG.quinoa_khichdi,
+    title:'Quinoa Moong Khichdi', short:'High-protein khichdi — comfort food, upgraded.',
+    explanation:'Replace rice with quinoa in your regular khichdi — same ghee-tempered comfort, much more protein. Especially good for women 40+, vegetarians, and anyone recovering from illness who needs protein in an easy-to-digest form.',
+    reflection:'Did you feel less hungry between meals after the quinoa khichdi?',
+    nudge:'Try khichdi with quinoa today — same method, swap rice 1:1.',
+    familyEdition:'Family version: 2 cups quinoa + 1 cup moong dal feeds 4. Add bottle gourd (lauki) or palak for hidden veggies. Serve with chaas + papad.',
+    conditions:['protein','digestion','recovery','women-health','weight'],
+    recipe:{name:'Quinoa Moong Khichdi',ingredients:['½ cup quinoa, rinsed 3 times','¼ cup yellow moong dal','3 cups water','½ tsp haldi','1 tsp ghee','½ tsp jeera','½ inch ginger, grated','½ tsp hing','Salt to taste','Coriander to finish'],method:['Rinse quinoa 3 times + wash moong dal','Soak together 20 min','Pressure cook with water, haldi, salt — 3 whistles','Heat ghee in a pan, add jeera, hing, ginger','Pour tempering into khichdi, mix','Garnish with coriander, serve with extra ghee'],benefits:['Complete protein + lysine','Easy to digest','Great for recovery + post-illness','Light on the gut']},
+    qa:[{q:'Why quinoa instead of rice here?',options:['Trend','2x protein + complete amino acids','Looks pretty'],correct:1,why:'Khichdi is daily food — upgrading rice to quinoa doubles the daily protein quietly.'},{q:'For recovery — why khichdi?',options:['Bland','Easy to digest + nourishing + cooling','Cheap'],correct:1,why:'Soft texture + gentle spices + complete protein = ideal during recovery.'},{q:'How does the texture compare?',options:['Crunchy','Soft, slightly fluffy — like normal khichdi','Hard'],correct:1,why:'Pressure-cooked quinoa breaks down like rice — same comfort, more protein.'}]
+  },
+
+  { id:'microgreens-salad', date:null, weekName:'Microgreens', type:'recipe', img:IMG.microgreens_salad,
+    title:'Microgreens Salad Bowl', short:'40x the nutrients of mature greens, in one bowl.',
+    explanation:'Microgreens are baby vegetable greens — moong, methi, mooli, sarson, eaten 7-14 days after sprouting. They pack up to 40x the nutrients of the mature plant. Grow them on a damp kitchen towel — no soil, no garden, just 5 minutes a day.',
+    reflection:'Did the microgreens feel fresher than store-bought greens?',
+    nudge:'Sprinkle a handful of microgreens on today\'s lunch — that\'s it.',
+    familyEdition:'Family version: grow one tray of moong + one of methi microgreens. Snip a handful at every meal — top dal, sabzi, roti, even chaas. Kids love the "small leaves they grew".',
+    conditions:['nutrition','vitamins','iron','digestion','daily-habit','women-health'],
+    recipe:{name:'Microgreens Salad Bowl',ingredients:['1 cup mixed microgreens (moong, methi, mooli)','½ cucumber, cubed','½ tomato, chopped','¼ onion, chopped','1 boiled egg or ½ cup boiled chana (optional protein)','½ lemon (juice)','1 tsp olive or cold-pressed oil','½ tsp roasted jeera powder','Salt + black pepper'],method:['Wash microgreens gently in cold water — pat dry','Mix cucumber, tomato, onion in a bowl','Top with microgreens + protein','Whisk oil + lemon + jeera + salt','Drizzle dressing, toss gently — serve fresh','Tip: eat within 30 min of dressing'],benefits:['Up to 40x nutrients of mature greens','High fibre + Vitamin K','Iron + magnesium','Easy at-home growing — daily fresh']},
+    qa:[{q:'Why microgreens over mature greens?',options:['Look pretty','Highest nutrient density per gram','Cheaper'],correct:1,why:'Studies show 4-40x nutrient concentration in microgreens vs mature leaves.'},{q:'How to grow at home?',options:['Need a garden','Damp kitchen towel + seeds — 7-14 days','Only commercial setup'],correct:1,why:'Soak seeds 8 hrs, spread on damp towel, rinse twice daily — harvest in a week.'},{q:'Best way to eat?',options:['Cook them long','Eat raw or just-wilted — to preserve nutrients','Deep fry'],correct:1,why:'Heat destroys the delicate nutrients — raw or barely warm is best.'}]
+  },
+
+  { id:'microgreens-toast', date:null, weekName:'Microgreens', type:'recipe', img:IMG.microgreens_toast,
+    title:'Microgreens Avocado Toast', short:'5-min breakfast — fibre + healthy fats.',
+    explanation:'The easiest way to eat microgreens daily — pile them on top of avocado toast. The healthy fats from avocado help the body absorb the fat-soluble vitamins (A, E, K) in the greens. Ready in 5 minutes.',
+    reflection:'Did the toast feel filling till lunch?',
+    nudge:'Toast + avocado + handful of microgreens. That\'s breakfast today.',
+    familyEdition:'Family version: 4 slices of multigrain bread + 2 avocados + handful of microgreens each. Add a boiled egg or paneer for protein. Quick weekend breakfast.',
+    conditions:['breakfast','daily-habit','fibre','healthy-fats','women-health'],
+    recipe:{name:'Microgreens Avocado Toast',ingredients:['1 slice multigrain or sourdough bread','½ ripe avocado','½ cup mixed microgreens','Few drops lemon juice','Pinch of salt + black pepper','Optional: 1 boiled egg or paneer for protein','Optional: chilli flakes'],method:['Toast bread till crisp','Mash avocado with lemon, salt, pepper','Spread on toast','Top with a thick layer of microgreens','Add egg/paneer if using','Sprinkle chilli flakes, serve immediately'],benefits:['Fibre + healthy fats together','Better absorption of fat-soluble vitamins','Long-lasting fullness','Easy daily habit']},
+    qa:[{q:'Why pair greens with avocado?',options:['Looks Instagrammable','Healthy fats help absorb fat-soluble vitamins','Cheap combo'],correct:1,why:'Vitamins A, E, K in greens need fat to absorb — avocado is the perfect carrier.'},{q:'Best bread choice?',options:['White bread','Multigrain or sourdough','Garlic bread'],correct:1,why:'Fibre + slow carbs to match the rest of the toast — keeps blood sugar steady.'},{q:'Why not cook the microgreens?',options:['Tradition','Heat destroys the delicate nutrients','Looks better'],correct:1,why:'Eat raw or just-warm — that\'s how you keep the nutrient density intact.'}]
   }
 ];
 
@@ -1816,17 +2555,26 @@ function openTodayDetail(day){
   document.getElementById('today-detail-title').textContent=day.weekName||'Recipe';
   const isSaved=STATE.savedRecipes.includes(day.id);
   const r=day.recipe||{};
-  const ingredients=(r.ingredients||[]).map(i=>`<li>${i}</li>`).join('');
+  // Parse + tag ingredients so each row is scalable + tappable for the ingredient sheet
+  const parsedIngs = (r.ingredients||[]).map(parseIngredient);
+  const currentSrv = (STATE.currentServings && [1,2,4,6].indexOf(STATE.currentServings)>=0) ? STATE.currentServings : 2;
+  function _ingLi(p){
+    const slug = p.slug;
+    const scaled = scaleIngredient(p, currentSrv);
+    if(!p.scalable){
+      return `<li class="ing-static"${slug?` data-slug="${slug}"`:''}><span class="ing-name">${p.raw}</span>${slug?'<svg class="ing-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>':''}</li>`;
+    }
+    return `<li data-slug="${slug||''}" data-base-qty="${p.qty}" data-unit="${p.unit||''}" data-name="${escapeHtml(p.name)}">
+      <span class="ing-qty">${scaled.qty}</span>
+      <span class="ing-name">${escapeHtml(p.name)}</span>
+      ${scaled.grams?`<span class="ing-grams">${scaled.grams}</span>`:''}
+      ${slug?'<svg class="ing-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>':''}
+    </li>`;
+  }
+  const ingredients = parsedIngs.map(_ingLi).join('');
+  STATE._parsedIngs = parsedIngs;
   const steps=(r.method||[]).map(s=>`<li>${s}</li>`).join('');
   const benefits=(r.benefits||[]).map(b=>`<div class="benefit-pill">${b}</div>`).join('');
-  const mcqs=(day.qa||[]).map((q,qi)=>{
-    const opts=q.options.map((o,oi)=>`<div class="mcq-opt" data-q="${qi}" data-o="${oi}" data-correct="${q.correct}">${o}</div>`).join('');
-    return `<div class="mcq">
-      <div class="mcq-q">${q.q}</div>
-      ${opts}
-      <div class="mcq-why" id="why-${qi}">${q.why}</div>
-    </div>`;
-  }).join('');
 
   document.getElementById('today-detail-body').innerHTML=`
     <div class="recipe-hero" style="background-image:url('${day.img}')">
@@ -1853,7 +2601,22 @@ function openTodayDetail(day){
     </div>
     ${r.ingredients?`<div class="block">
       <div class="block-title">Ingredients</div>
-      <ul class="ingredients">${ingredients}</ul>
+      <div class="servings-row">
+        <div class="servings-label">Makes</div>
+        <div class="servings-segment" id="servings-segment">
+          <button data-srv="1" class="${currentSrv===1?'active':''}">1</button>
+          <button data-srv="2" class="${currentSrv===2?'active':''}">2</button>
+          <button data-srv="4" class="${currentSrv===4?'active':''}">4</button>
+          <button data-srv="6" class="${currentSrv===6?'active':''}">6</button>
+        </div>
+      </div>
+      <ul class="ingredients" id="ingredients-list">${ingredients}</ul>
+      ${day.familyEdition?`<button class="family-pill" id="family-pill-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Family edition</span>
+        <svg class="family-pill-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto;"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <div class="family-card" id="family-card" hidden>${day.familyEdition}</div>`:''}
     </div>`:''}
     ${r.method?`<div class="block">
       <div class="block-title">Method</div>
@@ -1875,10 +2638,6 @@ function openTodayDetail(day){
       </div>
     </div>
     <div class="block">
-      <div class="block-title">Quick quiz</div>
-      ${mcqs}
-    </div>
-    <div class="block">
       <div class="block-title">Today\'s reflection</div>
       <div class="soft-card">
         <div class="soft-card-label">Reflect</div>
@@ -1891,24 +2650,6 @@ function openTodayDetail(day){
     </div>
     <div style="height:110px;"></div>
   `;
-
-  // MCQ bindings
-  document.querySelectorAll('.mcq-opt').forEach(opt=>{
-    opt.addEventListener('click',()=>{
-      const correct=parseInt(opt.getAttribute('data-correct'));
-      const chosen=parseInt(opt.getAttribute('data-o'));
-      const qi=opt.getAttribute('data-q');
-      const sibs=opt.parentElement.querySelectorAll('.mcq-opt');
-      sibs.forEach(s=>s.style.pointerEvents='none');
-      if(chosen===correct) opt.classList.add('correct');
-      else{
-        opt.classList.add('wrong');
-        sibs[correct].classList.add('correct');
-      }
-      document.getElementById('why-'+qi).classList.add('show');
-      track('MCQ Answered',{recipe:day.id,q:qi,correct:chosen===correct});
-    });
-  });
 
   document.getElementById('voice-tip').addEventListener('click',()=>{
     track('Voice Tip Tap',{recipe:day.id});
@@ -1976,8 +2717,128 @@ function openTodayDetail(day){
   const saveBtn=document.getElementById('today-save-btn');
   if(isSaved) saveBtn.classList.add('saved'); else saveBtn.classList.remove('saved');
 
+  // ===== Servings segment — re-scale ingredient quantities + grams on tap =====
+  const seg=document.getElementById('servings-segment');
+  if(seg){
+    seg.addEventListener('click',(e)=>{
+      const btn=e.target.closest('button[data-srv]');
+      if(!btn) return;
+      const from = (STATE.currentServings||2);
+      const to = parseInt(btn.getAttribute('data-srv'),10);
+      if(from===to) return;
+      STATE.currentServings = to;
+      seg.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
+      // Re-render every <li>'s qty + grams cells, in place
+      const list=document.getElementById('ingredients-list');
+      const lis = list ? list.querySelectorAll('li') : [];
+      lis.forEach((li,idx)=>{
+        const p = STATE._parsedIngs && STATE._parsedIngs[idx];
+        if(!p || !p.scalable) return;
+        const scaled = scaleIngredient(p, to);
+        const qEl = li.querySelector('.ing-qty'); if(qEl) qEl.textContent = scaled.qty;
+        let gEl = li.querySelector('.ing-grams');
+        if(scaled.grams){
+          if(!gEl){
+            gEl = document.createElement('span'); gEl.className='ing-grams';
+            const infoSvg = li.querySelector('.ing-info');
+            li.insertBefore(gEl, infoSvg || null);
+          }
+          gEl.textContent = scaled.grams;
+        } else if(gEl){ gEl.remove(); }
+      });
+      track('Servings Changed',{recipe:day.id,from,to});
+    });
+  }
+
+  // ===== Ingredient sheet — tap a row to open =====
+  const list=document.getElementById('ingredients-list');
+  if(list){
+    list.addEventListener('click',(e)=>{
+      const li=e.target.closest('li[data-slug]');
+      if(!li) return;
+      const slug=li.getAttribute('data-slug');
+      if(!slug) return;
+      openIngredientSheet(slug, day.id);
+    });
+  }
+
+  // ===== Family edition accordion =====
+  const familyBtn = document.getElementById('family-pill-btn');
+  const familyCard = document.getElementById('family-card');
+  if(familyBtn && familyCard){
+    familyBtn.addEventListener('click',()=>{
+      const opening = familyCard.hasAttribute('hidden');
+      if(opening){
+        familyCard.removeAttribute('hidden');
+        familyBtn.classList.add('open');
+        track('Family Edition Opened',{recipe:day.id});
+      } else {
+        familyCard.setAttribute('hidden','');
+        familyBtn.classList.remove('open');
+        track('Family Edition Closed',{recipe:day.id});
+      }
+    });
+  }
+
   go('screen-today');
   track('Today Detail View',{recipe:day.id});
+}
+
+// =================== INGREDIENT SHEET ===================
+// Sheet is built fresh in JS each open. Lives inside .phone-wrap so it stays in the simulated phone frame.
+const LANG_LABEL = {hi:'हिं',mr:'मरा',ta:'தமி',te:'తెల',kn:'ಕನ್ನ',kok:'कोंक',bn:'বাং'};
+
+function _ensureIngSheet(){
+  let host = document.getElementById('ing-sheet-host');
+  if(host) return host;
+  const wrap = document.querySelector('.phone-wrap') || document.body;
+  host = document.createElement('div');
+  host.id = 'ing-sheet-host';
+  host.innerHTML = `
+    <div class="sheet-backdrop" id="ing-sheet-backdrop"></div>
+    <div class="ing-sheet" id="ing-sheet" role="dialog" aria-modal="true">
+      <div class="sheet-handle"></div>
+      <button class="sheet-close" id="ing-sheet-close" aria-label="Close" style="position:absolute;top:14px;right:14px;background:transparent;border:none;cursor:pointer;color:var(--forest);padding:6px;z-index:2;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="ing-sheet-body"></div>
+    </div>
+  `;
+  wrap.appendChild(host);
+  host.querySelector('#ing-sheet-backdrop').addEventListener('click', closeIngredientSheet);
+  host.querySelector('#ing-sheet-close').addEventListener('click', closeIngredientSheet);
+  return host;
+}
+
+function openIngredientSheet(slug, recipeId){
+  const ing = (typeof INGREDIENTS !== 'undefined') ? INGREDIENTS[slug] : null;
+  if(!ing){ console.warn('[ing-sheet] no entry for', slug); return; }
+  const host = _ensureIngSheet();
+  const body = host.querySelector('.ing-sheet-body');
+  const namesHtml = Object.keys(ing.names||{})
+    .map(k => `<span><b>${LANG_LABEL[k]||k}</b>${ing.names[k]}</span>`).join('');
+  const subs = ing.substitutes || [];
+  const subsHtml = subs.length
+    ? `<div class="ing-sheet-subs-title">If you don't have it, try</div>
+       <ul class="ing-sheet-subs">${subs.map(s => `<li>${s}</li>`).join('')}</ul>`
+    : '';
+  body.innerHTML = `
+    <img class="ing-sheet-img" alt="${ing.name||''}" src="${ing.img||''}" onerror="this.style.display='none'"/>
+    <h3 class="ing-sheet-name">${ing.name||slug}</h3>
+    <div class="ing-sheet-names">${namesHtml}</div>
+    <p class="ing-sheet-about">${ing.about||''}</p>
+    ${subsHtml}
+  `;
+  host.querySelector('#ing-sheet').classList.add('open');
+  host.querySelector('#ing-sheet-backdrop').classList.add('open');
+  try { track('Ingredient Sheet Opened',{recipe:recipeId||'unknown',ingredient_slug:slug}); } catch(e){}
+}
+
+function closeIngredientSheet(){
+  const host = document.getElementById('ing-sheet-host');
+  if(!host) return;
+  host.querySelector('#ing-sheet').classList.remove('open');
+  host.querySelector('#ing-sheet-backdrop').classList.remove('open');
 }
 
 // =================== MEMBER DETAIL ===================
@@ -2303,9 +3164,119 @@ phoneContinue.addEventListener('click',()=>{
   track('Onboarding Phone Submitted',{fields_filled:2});
   track('Form Submitted',{form_name:'onboarding',fields_filled:2});
   track('Onboarding Completed');
+  // First-time users see the 5-screen walkthrough; returning go straight home
+  if(!STATE.walkthroughSeen){
+    track('Walkthrough Started',{trigger:'new-user'});
+    wtGo(1,'new-user');
+  } else {
+    go('screen-home');
+    renderHome();
+  }
+});
+
+// =================== WALKTHROUGH (5 feature screens — instrumented for funnel analysis) ===================
+const WT_STEPS = {
+  1:'daily_recipe',
+  2:'tap_ingredient',
+  3:'servings_family',
+  4:'share_dish',
+  5:'ask_question'
+};
+let _wtStepStart = 0;
+function wtGo(step, trigger){
+  // Log time spent on previous step
+  const prevActive = document.querySelector('.screen.wt.active');
+  if(prevActive && _wtStepStart){
+    const prevStep = parseInt(prevActive.id.replace('screen-wt-',''),10);
+    if(prevStep && prevStep !== step){
+      track('Walkthrough Step Time',{
+        step: prevStep,
+        step_name: WT_STEPS[prevStep],
+        time_spent_sec: Math.round((Date.now()-_wtStepStart)/1000)
+      });
+    }
+  }
+  go('screen-wt-'+step);
+  _wtStepStart = Date.now();
+  track('Walkthrough Step Viewed',{
+    step,
+    step_name: WT_STEPS[step],
+    total_steps: 5,
+    trigger: trigger || 'next'
+  });
+}
+
+function finishWalkthrough(reason){
+  const activeEl = document.querySelector('.screen.wt.active');
+  const lastStep = activeEl ? parseInt(activeEl.id.replace('screen-wt-',''),10) : null;
+  // Final step time
+  if(_wtStepStart && lastStep){
+    track('Walkthrough Step Time',{
+      step: lastStep,
+      step_name: WT_STEPS[lastStep],
+      time_spent_sec: Math.round((Date.now()-_wtStepStart)/1000)
+    });
+  }
+  STATE.walkthroughSeen = true;
+  saveState();
+  if(reason==='skip'){
+    track('Walkthrough Skipped',{
+      last_step: lastStep,
+      last_step_name: WT_STEPS[lastStep]||null,
+      total_steps: 5,
+      completion_pct: lastStep ? Math.round((lastStep/5)*100) : 0
+    });
+  } else {
+    track('Walkthrough Completed',{
+      last_step: 5,
+      last_step_name: WT_STEPS[5],
+      total_steps: 5,
+      completion_pct: 100
+    });
+  }
   go('screen-home');
   renderHome();
+}
+document.querySelectorAll('[data-wt-skip]').forEach(b=>{
+  b.addEventListener('click',()=>finishWalkthrough('skip'));
 });
+
+function bindWt(nextId, backId, fromStep){
+  const nextBtn = document.getElementById(nextId);
+  const backBtn = document.getElementById(backId);
+  if(nextBtn){
+    nextBtn.addEventListener('click',()=>{
+      if(fromStep === 5){
+        track('Walkthrough Next Tapped',{ from_step: 5, from_step_name: WT_STEPS[5], cta:'lets-start' });
+        finishWalkthrough('complete');
+      } else {
+        track('Walkthrough Next Tapped',{
+          from_step: fromStep,
+          from_step_name: WT_STEPS[fromStep],
+          to_step: fromStep+1,
+          to_step_name: WT_STEPS[fromStep+1]
+        });
+        wtGo(fromStep+1,'next');
+      }
+    });
+  }
+  if(backBtn){
+    backBtn.addEventListener('click',()=>{
+      track('Walkthrough Back Tapped',{
+        from_step: fromStep,
+        from_step_name: WT_STEPS[fromStep],
+        to_step: fromStep-1,
+        to_step_name: WT_STEPS[fromStep-1]
+      });
+      wtGo(fromStep-1,'back');
+    });
+  }
+}
+bindWt('wt-next-1', null,         1);
+bindWt('wt-next-2', 'wt-back-2',  2);
+bindWt('wt-next-3', 'wt-back-3',  3);
+bindWt('wt-next-4', 'wt-back-4',  4);
+bindWt('wt-next-5', 'wt-back-5',  5);
 
 // =================== Buttons ===================
 document.querySelectorAll('[data-back-home]').forEach(b=>{
@@ -2526,8 +3497,9 @@ async function generateShareCard(day){
 }
 
 // Build the WhatsApp text payload that accompanies the share
+const HABUILD_SHARE_URL = 'https://khushibagai-create.github.io/habuild-nutrition/';
 function buildShareText(day){
-  return `${day.title} — ${day.short||''}\n\nFull recipe on the Habuild app — one small lesson a day.`;
+  return `Today I tried "${day.title}" — super healthy and delicious!\n\n${HABUILD_SHARE_URL}`;
 }
 
 // Final fallback: download image + open WhatsApp Web with text
@@ -2644,26 +3616,49 @@ document.getElementById('today-share-btn').addEventListener('click',async()=>{
   const btn=document.getElementById('today-share-btn');
   const originalLabel=btn.textContent;
   btn.disabled=true;
-  btn.textContent='Creating image...';
-  track('Share Initiated',{recipe:day.id});
+  btn.textContent='Preparing…';
+  track('Share Initiated',{recipe:day.id,target:'whatsapp'});
 
-  // Open preview sheet immediately (with loading state) so user gets instant feedback
-  _shareSheet.open(day);
+  const text=buildShareText(day);
 
-  let result={blob:null,dataUrl:null};
+  // 1) Try native Web Share API with the recipe card image (mobile + Safari)
   try{
-    result=await generateShareCard(day);
+    const cardResult=await generateShareCard(day);
+    if(cardResult.blob && navigator.canShare){
+      const file=new File([cardResult.blob],`habuild-${day.id||'recipe'}.jpg`,{type:'image/jpeg'});
+      const data={title:day.title,text,files:[file]};
+      if(navigator.canShare(data)){
+        try{
+          await navigator.share(data);
+          track('Share Completed',{recipe:day.id,mode:'native-with-image'});
+          btn.disabled=false; btn.textContent=originalLabel;
+          return;
+        }catch(err){
+          if(err && err.name==='AbortError'){
+            track('Share Cancelled',{recipe:day.id});
+            btn.disabled=false; btn.textContent=originalLabel;
+            return;
+          }
+        }
+      }
+    }
+    // 2) On desktop (no Web Share), download the image then open WhatsApp Web with text
+    if(cardResult.blob){
+      const url=URL.createObjectURL(cardResult.blob);
+      const a=document.createElement('a');
+      a.href=url; a.download=`habuild-${day.id||'recipe'}.jpg`;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+      showToast('Image downloaded · attach in WhatsApp');
+    }
   }catch(e){
     console.warn('Share card generation failed',e);
   }
-  if(result.blob||result.dataUrl){
-    track('Share Image Generated',{recipe:day.id,bytes:result.blob?result.blob.size:0});
-  }
-  _shareSheet.setPreview(result.dataUrl,result.blob);
 
-  // Re-enable the underlying button so the user can re-trigger after sheet closes
-  btn.disabled=false;
-  btn.textContent=originalLabel;
+  // 3) Open WhatsApp with the text (works on every platform)
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank','noopener');
+  track('Share Completed',{recipe:day.id,mode:'whatsapp-text'});
+  btn.disabled=false; btn.textContent=originalLabel;
 });
 document.getElementById('member-submit-btn').addEventListener('click',()=>{
   track('Member Submit Tap');
@@ -2762,9 +3757,20 @@ function renderHome(){
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
 
 function init(){
+  // Force walkthrough preview via ?wt — bypass everything else
+  if(new URLSearchParams(location.search).has('wt')){
+    track('Walkthrough Started',{trigger:'forced-preview'});
+    wtGo(1,'forced-preview');
+    return;
+  }
   if(STATE.user.phone && STATE.user.name){
-    go('screen-home');
-    renderHome();
+    if(!STATE.walkthroughSeen){
+      track('Walkthrough Started',{trigger:'returning-user'});
+      wtGo(1,'returning-user');
+    } else {
+      go('screen-home');
+      renderHome();
+    }
   } else if(STATE.user.name){
     go('screen-onb-phone');
   } else {
