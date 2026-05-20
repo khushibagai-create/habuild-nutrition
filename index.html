@@ -372,9 +372,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .recipe-q-wrap{background:white;border:1.5px solid var(--sand);border-radius:16px;padding:14px;margin-top:6px;box-shadow:0 4px 14px rgba(0,0,0,0.05);}
 .recipe-q-input{width:100%;border:none;outline:none;background:transparent;font-family:inherit;font-size:15px;line-height:1.5;color:var(--ink);resize:none;margin-bottom:10px;}
 .recipe-q-input::placeholder{color:#888;}
-.recipe-q-btn{background:var(--forest);color:white;border:none;border-radius:100px;padding:10px 18px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(45,80,22,0.25);transition:transform 0.1s;}
-.recipe-q-btn:active{transform:scale(0.97);}
-.recipe-q-btn.sent{background:var(--cream-deep);color:var(--forest);}
+.recipe-q-btn{background:var(--forest);color:white;border:none;border-radius:14px;padding:14px 18px;font-family:inherit;font-size:15.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 16px rgba(45,80,22,0.28);transition:transform 0.1s;width:100%;margin-top:4px;}
+.recipe-q-btn:active{transform:scale(0.98);}
+.recipe-q-btn.sent{background:var(--cream-deep);color:var(--forest);box-shadow:none;}
 .recipe-q-note{font-size:11.5px;color:var(--muted);margin-top:10px;line-height:1.4;}
 .recipe-q-asked{font-size:13.5px;color:var(--muted);font-style:italic;line-height:1.45;padding:4px 12px 10px 0;border-bottom:1px dashed var(--cream-deep);margin-bottom:12px;}
 .recipe-q-asked::before{content:'You asked: ';font-weight:600;color:var(--forest);font-style:normal;}
@@ -818,7 +818,9 @@ function findRecipeAnswer(question, day){
 
   // Token: keep alphanumerics + Devanagari (so Hindi words match against tags)
   const stop = new Set(['the','a','an','is','are','what','how','do','i','to','for','of','in','on','my','me','can','should','this','that','it','and','or','but','with','about','have','has','be','was','were','will','if','when','why','which','please','tell','any','some','also','need','want','take','here','too','only','one','from','they','them','their','there','these','those','then','than','so','as','at','up','out','off','not','no','yes','ok','okay','hi','hello','am','pm','ji','aap','aapka','kya','hai','ke','ka','ki','ko','mein','main','se','tu','hum','ho']);
-  const qTokens = q.replace(/[^a-z0-9ऀ-ॿ\s]/g,' ').split(/\s+/).filter(w=>w.length>=2 && !stop.has(w));
+  let qTokens = q.replace(/[^a-z0-9ऀ-ॿ\s]/g,' ').split(/\s+/).filter(w=>w.length>=2 && !stop.has(w));
+  // Strip trailing 's' for plural→singular matching (diabetics→diabetic, rotis→roti, sprouts→sprout)
+  qTokens = qTokens.flatMap(w => w.endsWith('s') && w.length>3 ? [w, w.slice(0,-1)] : [w]);
   if(!qTokens.length) return null;
 
   let best = null;
@@ -837,9 +839,20 @@ function findRecipeAnswer(question, day){
       if(s>=4 && (!best || s>best.score)) best = {score:s, answer:item.why, source:'recipe-mcq', heading:item.q};
     });
   }
-  // 2. Global FAQS — tags weighted highest, then q, then a
+  // 2. RECIPE_FAQS — per-recipe FAQ bank (highest-priority FAQ source for non-Ambali dishes)
+  if(day && typeof RECIPE_FAQS!=='undefined' && RECIPE_FAQS[day.id]){
+    RECIPE_FAQS[day.id].forEach(faq=>{
+      const tagText = (faq.tags||[]).join(' ');
+      const s = score(tagText,5) + score(faq.q,3) + score(faq.a,1);
+      if(s>=4 && (!best || s>best.score)) best = {score:s, answer:faq.a, source:'recipe-faq', heading:faq.q};
+    });
+  }
+  // 3. Global FAQS — only consider an entry if it is unscoped OR scoped to the current recipe
   if(typeof FAQS!=='undefined'){
     FAQS.forEach(faq=>{
+      if(faq.recipes && faq.recipes.length){
+        if(!day || faq.recipes.indexOf(day.id) === -1) return; // wrong-recipe scope — skip
+      }
       const tagText = (faq.tags||[]).join(' ');
       const s = score(tagText,4) + score(faq.q,2) + score(faq.a,1);
       if(s>=4 && (!best || s>best.score)) best = {score:s, answer:faq.a, source:'faq', heading:faq.q};
@@ -1391,124 +1404,158 @@ const FAQS = [
   // ===== What is Ambali (most basic question — many new members) =====
   { id:'q-what-is', q:'What is Ambali?',
     a:'Ambali is a light, easy-to-make millet drink. You cook millet flour (ragi or jowar) with water into a smooth paste, then add buttermilk and salt. It is thin like chaas — easy to sip. People drink it in the morning. It is naturally rich in calcium, iron and fibre.',
-    tags:['what','ambali','ambli','ambil','amali','introduction','define','meaning','dont know','new']},
+    tags:['what','ambali','ambli','ambil','amali','introduction','define','meaning','dont know','new'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-regional-names', q:'Is Ambali called something else in my region?',
     a:'Same drink, different names: Ambali (Karnataka), Ambli / Ambil (Maharashtra), Amali (some areas), Ragi malt / Ragi kanji (Tamil Nadu, Kerala, Andhra), Nachni pej (Konkan). All refer to a fermented or freshly cooked millet drink. If your grandmother used to make ragi or jowar pej or kanji — that is the same thing.',
-    tags:['name','called','regional','marathi','tamil','telugu','kannada','malayalam','konkan','what is it']},
+    tags:['name','called','regional','marathi','tamil','telugu','kannada','malayalam','konkan','what is it'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Ambali troubleshooting (directly from PDF page 5) =====
   { id:'q-lumps', q:'My Ambali has lumps — what should I do?',
     a:'Lumps form when the paste isn\'t mixed thoroughly. The fix: mix the ragi flour into ½ cup water very well first — only add the full glass of water once the paste is completely lump-free. A smooth paste makes a smooth Ambali.',
-    tags:['lump','lumps','clump','paste','smooth']},
+    tags:['lump','lumps','clump','paste','smooth'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-thick', q:'My Ambali came out too thick — what now?',
     a:'Add a little water at a time and mix. The texture should be like chaas — thin and easy to sip. Don\'t pour in too much water at once.',
-    tags:['thick','heavy','consistency','texture','dense']},
+    tags:['thick','heavy','consistency','texture','dense'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-thin', q:'My Ambali is too thin or watery',
     a:'Cook it slightly longer on a low flame, stirring continuously, until it looks slightly thick and glossy. If already cooled, you can heat a fresh small batch with a bit more flour and mix the two together.',
-    tags:['thin','watery','runny','liquid']},
+    tags:['thin','watery','runny','liquid'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-sour', q:'My Ambali turned out very sour',
     a:'This happens when the overnight fermentation goes too long. A slight sourness is normal. (1) Shorten the fermentation time — 6-8 hours max. (2) Try the freshly made version — you can drink it right away.',
-    tags:['sour','fermentation','tangy','khatta']},
+    tags:['sour','fermentation','tangy','khatta'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-bland', q:'My Ambali tastes bland',
     a:'Add a pinch of namak and ½ tsp roasted jeera powder. A little more chaas brings out the tang. Try chopped coriander or green chilli. Find your own taste.',
-    tags:['bland','tasteless','flat','no flavor','no flavour']},
+    tags:['bland','tasteless','flat','no flavor','no flavour'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Storage / make-ahead (12% of user questions) =====
   { id:'q-store-fridge', q:'Can I keep Ambali in the fridge?',
     a:'For best taste, drink Ambali fresh on the same day. If you must store it: cook the base (millet + water) and keep in the fridge for up to 24 hours. Add the buttermilk and salt only just before drinking — buttermilk makes it sourer in the fridge. Don\'t store for more than 1 day.',
-    tags:['store','storage','fridge','refrigerate','keep','next day','tomorrow','later']},
+    tags:['store','storage','fridge','refrigerate','keep','next day','tomorrow','later'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-make-ahead', q:'Can I make Ambali for 2 days at once?',
     a:'Yes — make the base (millet flour + water cooked smooth) for 2 days and keep covered in the fridge. Add buttermilk and salt fresh each day. The base alone keeps well for 24-36 hours; once buttermilk is added the drink is best within 4-6 hours.',
-    tags:['two days','2 days','batch','ahead','multiple','enough','consecutive']},
+    tags:['two days','2 days','batch','ahead','multiple','enough','consecutive'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-overnight', q:'Overnight or freshly made — which is better?',
     a:'Both are beneficial. Overnight (traditional, 6-8 hrs): lighter taste, easier digestion, mild tang. Freshly made: quick, light, no waiting. Choose by your routine. Consistency matters more than perfection.',
-    tags:['overnight','fresh','traditional','difference','both','better']},
+    tags:['overnight','fresh','traditional','difference','both','better'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-no-pot', q:'I don\'t have an earthen pot for fermentation — what now?',
     a:'No problem at all. Use a clean steel or glass bowl. Cover with a plate and rest on the kitchen counter for 6-8 hours. The fermentation comes from the buttermilk culture, not the pot. Earthen pots are traditional but not required.',
-    tags:['earthen','pot','clay','matka','steel','glass','container','bowl','no pot']},
+    tags:['earthen','pot','clay','matka','steel','glass','container','bowl','no pot'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Who should avoid / contraindications (8% — safety) =====
   { id:'q-diabetes-safe', q:'Is Ambali safe if I have diabetes?',
     a:'Yes — Ambali is generally good for diabetes. Millets release sugar slowly and improve insulin sensitivity. Drink it on empty stomach. Skip honey or jaggery. If you are on diabetes medication, monitor your fasting sugar for the first week and let your doctor know — you may need to adjust the dose.',
-    tags:['diabetes','diabetic','sugar','insulin','blood sugar','medication']},
+    tags:['diabetes','diabetic','sugar','insulin','blood sugar','medication'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-bp-safe', q:'Is Ambali safe if I have high BP?',
     a:'Yes, with one note: keep the salt small (just a pinch). The buttermilk and millets are fine. Avoid the green chilli and onion garnish if you are on a low-sodium diet. If you are on BP medication, no need to skip — just go easy on the salt.',
-    tags:['bp','blood pressure','high bp','hypertension','salt','sodium']},
+    tags:['bp','blood pressure','high bp','hypertension','salt','sodium'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-thyroid-safe', q:'Can thyroid patients drink Ambali?',
     a:'Yes — Ambali is safe with thyroid issues. Millets in moderation (1 glass a day) do not interfere with thyroid medication. Take your thyroid tablet 30-45 min before drinking Ambali so absorption isn\'t affected. If you have any concerns, mention to your doctor at the next visit.',
-    tags:['thyroid','hypothyroid','hyperthyroid','tsh','thyronorm','levothyroxine']},
+    tags:['thyroid','hypothyroid','hyperthyroid','tsh','thyronorm','levothyroxine'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-pregnancy-safe', q:'Is Ambali safe during pregnancy?',
     a:'In small amounts (half a glass), yes — millets are nutritious in pregnancy. But please run it past your gynaecologist first, especially in the first trimester. Skip the overnight fermented version during pregnancy (stick to freshly made). Don\'t use raw onion or green chilli garnishes.',
-    tags:['pregnancy','pregnant','garbh','expecting','trimester','baby']},
+    tags:['pregnancy','pregnant','garbh','expecting','trimester','baby'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-kids-safe', q:'Can children drink Ambali?',
     a:'Yes — Ambali is excellent for children above 2 years. It is light, rich in calcium and iron, and great for growing kids. For children, skip the salt or use very little, and use freshly made (not fermented) version. A small glass once a day is enough.',
-    tags:['kid','kids','child','children','baby','toddler','bachcha']},
+    tags:['kid','kids','child','children','baby','toddler','bachcha'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-medication', q:'I am on medication — do I need to consult my doctor?',
     a:'Ambali is generally safe with most medications. If you are on diabetes medication, BP medication, or thyroid medication, please tell your doctor at your next visit. Keep a 30-45 min gap between taking any tablet and drinking Ambali so absorption is not affected.',
-    tags:['medication','medicine','tablet','drug','consult','doctor','prescription']},
+    tags:['medication','medicine','tablet','drug','consult','doctor','prescription'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Timing — when to drink (8%) =====
   { id:'q-when-ambali', q:'When should I drink Ambali?',
     a:'In the morning, after yoga, on an empty stomach — best between 7-9 AM. Avoid it with lunch or dinner. Digestion and absorption are at their best on an empty stomach.',
-    tags:['when','timing','time','morning','kab','samay']},
+    tags:['when','timing','time','morning','kab','samay'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-breakfast-after', q:'Can I have breakfast after Ambali?',
     a:'Yes — keep a 30-45 minute gap. The body absorbs Ambali\'s nutrients best on an empty stomach, then you can have your normal breakfast. Roti, poha, idli, oats, fruits — all fine after Ambali.',
-    tags:['breakfast','after','before','meal','khana','nashta','interval','gap']},
+    tags:['breakfast','after','before','meal','khana','nashta','interval','gap'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-empty-stomach', q:'What should I drink on an empty stomach?',
     a:'Right after waking, 1 glass of water (room temperature). 30 min later — Ambali, herbal tea (fennel-cumin, CCF), or lemon water. Water before chai or coffee — less acidity, more hydration.',
-    tags:['empty stomach','khali pet','morning drink','wake up','sober']},
+    tags:['empty stomach','khali pet','morning drink','wake up','sober'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-night', q:'Can I have Ambali at night or evening?',
     a:'Stick to morning. Ambali in the evening is heavy on digestion and can disturb sleep. If you missed it in the morning, have it before 11 AM. If you really want a similar evening drink, try CCF tea or fennel water instead.',
-    tags:['night','evening','dinner','raat','shaam']},
+    tags:['night','evening','dinner','raat','shaam'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-chai', q:'When should I avoid chai?',
     a:'(1) On an empty stomach — it causes acidity. (2) After 4 PM — it affects your sleep. (3) Right before or after a meal — iron absorption drops. Best: morning water or Ambali first, then chai with breakfast.',
-    tags:['chai','tea','coffee','timing']},
+    tags:['chai','coffee'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Results / how long (7%) =====
   { id:'q-results-time', q:'How many days will it take to see results?',
     a:'Most people notice lighter feeling and better digestion within 1 week. Visible changes — energy, less bloating, steady blood sugar — usually show in 2-4 weeks of daily Ambali. Hair, skin and weight changes take 6-8 weeks. Consistency matters more than intensity.',
-    tags:['result','results','effect','benefit','how long','kitne din','days','weeks','farak','dikhne','asar']},
+    tags:['result','results','effect','benefit','how long','kitne din','days','weeks','farak','dikhne','asar'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-benefits-list', q:'What are the benefits of Ambali?',
     a:'Daily Ambali helps you feel: lighter and more comfortable, better digestion with less bloating, steadier energy without heaviness, more hydrated. It is also a simple way to add calcium, iron and fibre from millets into your routine.',
-    tags:['benefit','benefits','good','fayda','faayda','help','helpful','use']},
+    tags:['benefit','benefits','good','fayda','faayda','help','helpful','use'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Substitutes & alternatives =====
   { id:'q-no-buttermilk', q:'I don\'t have buttermilk — can I use curd?',
     a:'Yes. Whisk 2 tbsp of curd with ¼ cup water to make quick chaas. Use that. Or skip the buttermilk entirely and just have it with salt and water — the freshly made version doesn\'t need buttermilk.',
-    tags:['buttermilk','chaas','curd','dahi','yogurt','no buttermilk','substitute','alternative']},
+    tags:['buttermilk','chaas','curd','dahi','yogurt','no buttermilk','substitute','alternative'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-jaggery', q:'Can I add jaggery or sugar to Ambali?',
     a:'Traditionally no — Ambali is a savoury drink (salt + chaas + jeera). Adding jaggery changes the digestive effect and works against the blood-sugar benefit. If you really need sweetness, half a date soaked in the buttermilk works better than jaggery. For diabetics — strictly no jaggery.',
-    tags:['jaggery','gud','sugar','sweet','meetha','honey']},
+    tags:['jaggery','gud','sugar','sweet','meetha','honey'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-other-millet', q:'Can I use bajra, kodo or little millet?',
     a:'Yes — all millets work. Bajra is best in cold months (it is warming). Kodo and little millet are gentle and good for digestive issues. Ragi is the easiest to start with (smoothest texture). Jowar is the most cooling. Rotate between them across the week.',
-    tags:['bajra','kodo','little millet','samai','varagu','rajgira','rajkira','other millet','different millet']},
+    tags:['bajra','kodo','little millet','samai','varagu','rajgira','rajkira','other millet','different millet'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-rajkira', q:'Can Ambali be made with rajgira (amaranth) powder?',
     a:'Rajgira (amaranth) is not a traditional Ambali ingredient. It is a different grain — works better as a flour for chilla or roti. For Ambali, stick to ragi, jowar, bajra or other small millets. The texture and digestion behaviour are different with rajgira.',
-    tags:['rajgira','rajkira','amaranth','ramdana','chaulai']},
+    tags:['rajgira','rajkira','amaranth','ramdana','chaulai'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Servings & quantity =====
   { id:'q-one-person', q:'How much for one person?',
     a:'For 1 glass (1 person): 2 tbsp millet flour (about 30g), ½ cup water for the paste, 1 glass water for cooking, ½ to 1 glass extra water after cooling, ½ cup buttermilk, salt to taste. The recipe in the app is for 1 glass — double everything for 2 people.',
-    tags:['one','1 person','single','solo','akela','for me','myself','quantity']},
+    tags:['one','1 person','single','solo','akela','for me','myself','quantity'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-grams', q:'Can you give measurements in grams?',
     a:'Yes — for 1 glass: 30g (about 2 tbsp) millet flour, 250ml (1 glass) water for cooking + 125ml (½ cup) for the paste + 125ml extra after cooling, 125ml (½ cup) buttermilk, 2g (a pinch) salt. Approximate measurements work fine — Ambali is forgiving.',
-    tags:['gram','grams','ml','millilitre','milliliter','measure','weight','exact','approx']},
+    tags:['gram','grams','ml','millilitre','milliliter','measure','weight','exact','approx'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-family-batch', q:'Can I make it for the whole family at once?',
     a:'Yes! Multiply the base recipe by the number of people. Keep the base plain (ragi flour, water, salt, chaas). Then add individual add-ons to each serving — coriander for one, green chilli for another, just jeera for someone else. Everyone gets their own version.',
-    tags:['family','joint family','everyone','whole family','large batch','ghar','sab','log','persons','people','serving','servings','how many','number','recipe for']},
+    tags:['family','joint family','everyone','whole family','large batch','ghar','sab','log','persons','people','serving','servings','how many','number','recipe for'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Seasonal (~1%) =====
   { id:'q-summer', q:'Is Ambali okay in summer?',
     a:'Ambali is perfect for summer — that is when it shines. It is hydrating, cooling, light on the stomach. Jowar is especially cooling for summer. Drink slightly chilled (room-temperature buttermilk) for max summer comfort.',
-    tags:['summer','garmi','hot','heat','garm','warm season']},
+    tags:['summer','garmi','hot','heat','garm','warm season'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
   { id:'q-winter', q:'Can I drink Ambali in winter?',
     a:'Yes — but switch to ragi or bajra (these are warming). Skip the cold buttermilk — use room-temperature or slightly warm buttermilk. Add a pinch of dry ginger powder (sonth) for extra warmth. Drink within 30 min of preparing — don\'t let it sit cold.',
-    tags:['winter','cold','sardi','thanda','cool season']},
+    tags:['winter','cold','sardi','thanda','cool season'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Texture goal (PDF "final texture") =====
   { id:'q-final-texture', q:'What should the final texture of Ambali be?',
     a:'Thin and easy to sip — like chaas (buttermilk). You should be able to drink it from a glass, not eat it with a spoon. If it is too thick to sip, add water slowly and mix.',
-    tags:['final','final texture','texture','consistency','should be','target']},
+    tags:['final','final texture','texture','consistency','should be','target'],
+    recipes:['amb-d1','amb-d2','amb-d3','amb-d4','amb-d5','amb-d6']},
 
   // ===== Generic health (kept from before) =====
   { id:'q-ghee', q:'Is ghee okay with diabetes?',
@@ -1524,6 +1571,155 @@ const FAQS = [
     a:'Roasted chana, a handful of soaked almonds + walnuts, fruit (apple, banana, papaya), bhuna jeera with curd, or a small bowl of sprouts. Avoid biscuits, namkeen, fried snacks. CCF tea or tulsi tea can also kill the craving — often dehydration is mistaken for hunger.',
     tags:['snack','evening','craving','hunger','bhukh','chai time','5pm','6pm','7pm']}
 ];
+
+// =================== PER-RECIPE FAQ BANK ===================
+// 20 non-Ambali recipes × 5 question themes each = 100 entries.
+// Themes (consistent across all recipes): diabetes-safe, who-should-avoid,
+// storage/make-ahead, when-to-eat-drink, substitutes-and-alternatives.
+// Answers grounded in each recipe's explanation/benefits + standard ingredient nutrition.
+const RECIPE_FAQS = {
+  'methi-water': [
+    {q:'Is methi water safe for diabetes?', a:'Yes — methi (fenugreek) seeds are one of the best natural foods for blood sugar control. The soaked mucilage slows glucose absorption. If you are on diabetes medication, monitor your fasting sugar — you may need to adjust dose with your doctor. Drink daily on empty stomach.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid methi water?', a:'Pregnant women (methi can stimulate uterus — skip until post-delivery). People on blood-thinning medication (methi has mild blood-thinning effect — consult doctor). Otherwise safe for BP, thyroid, kids over 5. If you have low blood pressure, monitor — methi can lower BP slightly.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who']},
+    {q:'Can I make methi water for 2 days?', a:'Best made fresh — soak overnight, drink in the morning, discard the rest. The mucilage breaks down after 24 hours and the water turns slimy. Don\'t store soaked methi in the fridge for more than a day.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink methi water?', a:'First thing in the morning, on an empty stomach — 15-20 min before your morning chai or breakfast. Effects on blood sugar are strongest when taken before food. Avoid in the evening — the bitter taste can disturb sleep.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet']},
+    {q:'Can I use methi powder instead of seeds?', a:'Whole soaked seeds work better — the mucilage releases slowly from intact seeds. Powder dissolves too fast and loses the slow-release benefit. If you only have powder, use ½ tsp in warm water and drink immediately. But seeds soaked overnight is the proper recipe.', tags:['instead','substitute','alternative','replace','without','no','powder','seeds']}
+  ],
+  'karela-sabzi': [
+    {q:'Is karela sabzi safe for diabetes?', a:'Yes — karela (bitter gourd) is one of the most studied vegetables for blood sugar. Charantin in karela acts like insulin. Have 2-3 times a week. If on diabetes medication: monitor your sugar — karela can stack with medicine and drop sugar too low. Coordinate with your doctor.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid karela?', a:'People on diabetes medication (consult doctor — can cause hypoglycaemia when combined). Pregnant women (karela can stimulate the uterus — skip until post-delivery). People with very low blood sugar tendencies. Otherwise safe — even children can have small portions.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who']},
+    {q:'Can I store karela sabzi in the fridge?', a:'Best eaten same day — fresh. Karela\'s active compounds (cucurbitacins) break down within 12 hours and the bitterness sharpens. If you must store, fridge for max 24 hrs and reheat lightly on a tawa. Don\'t freeze — it turns mushy.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When is the best time to eat karela?', a:'Lunch is best — gives time for the bitter compounds to act on blood sugar during the active part of the day. Avoid at night (the bitter taste can affect sleep for some). Don\'t eat karela on a completely empty stomach if you have acidity — pair with a roti or rice.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','lunch']},
+    {q:'How do I reduce the bitterness?', a:'Slice karela thin, remove seeds, rub with 1 tsp salt and rest 30 minutes. Squeeze and rinse 2-3 times before cooking. This pulls out the harsh bitter cucurbitacins through osmosis. Adds 10 minutes to prep but makes karela edible for the whole joint family.', tags:['instead','substitute','alternative','replace','without','no','bitter','reduce','remove']}
+  ],
+  'hibiscus-tea': [
+    {q:'Is hibiscus tea safe for diabetes?', a:'Yes — hibiscus is actually helpful for diabetics. It improves insulin sensitivity and lowers fasting sugar slightly. Skip honey or sugar. If you take diabetes medication, no major interaction — but mention to your doctor at the next visit.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid hibiscus tea?', a:'Pregnant women — hibiscus can affect estrogen levels in early pregnancy (skip first trimester). People on BP medication — hibiscus lowers BP, can stack with medicine (consult doctor). People on chloroquine. Otherwise safe for thyroid, kids over 5, lactating women in moderation.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who']},
+    {q:'Can I make hibiscus tea in advance?', a:'Brew a fresh batch each day — the polyphenols degrade after 24 hours and the tea turns flat. If needed, you can keep the dried hibiscus petals stored in an airtight jar for months. Brewed tea: drink within 6 hours, fridge for at most 24 hrs.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink hibiscus tea?', a:'Twice daily for best BP results — once mid-morning, once evening before dinner. Caffeine-free, so safe in the evening. Avoid right before bed (mild diuretic, can cause night-time bathroom visits).', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet']},
+    {q:'No fresh hibiscus — can I use teabags?', a:'Yes — pure hibiscus teabags work fine (e.g. Twinings, Tetley pure hibiscus). Avoid blends mixed with green tea or fruit. Dried whole hibiscus petals (gudhal) from an Indian grocer are best and cheapest. 1 tbsp dried = 1 large cup.', tags:['instead','substitute','alternative','replace','without','no','teabag','dried','fresh']}
+  ],
+  'beetroot-juice': [
+    {q:'Is beetroot juice safe for diabetes?', a:'In small amounts (½ glass), yes — beetroot has natural sugars but also fibre and nitrates that help insulin sensitivity. Skip if your fasting sugar is over 200. Drink fresh, undiluted, no added sugar or salt. Monitor sugar response for the first week.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid beetroot juice?', a:'People with kidney stones (oxalates in beetroot can worsen). People on BP medication — beetroot lowers BP, can stack with medicine (consult doctor). People with very low BP. Pregnant women in small amounts is fine. Children can have ¼ glass diluted.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','kidney']},
+    {q:'Can I store beetroot juice?', a:'No — drink fresh within 10-15 minutes of juicing. Active nitrates degrade within 20 minutes. Stored juice loses most of its BP-lowering effect. The fridge does NOT preserve the active compounds.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When is best to drink beetroot juice?', a:'Morning, empty stomach — max nitrate absorption. Also good 1 hour before a workout for stamina boost. Skip at night (the nitrates can disturb sleep). Don\'t drink with meals — the iron in spinach/beetroot is best absorbed solo.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','workout']},
+    {q:'No juicer — can I make beetroot juice?', a:'Yes — boil 1 chopped beetroot in ¼ cup water 5 min, cool, blend with ginger + lemon + water, then strain through a fine sieve or muslin. Tastes the same. Or grate raw beetroot, squeeze through cloth — gives concentrated juice.', tags:['instead','substitute','alternative','replace','without','no','juicer','blender']}
+  ],
+  'nutmeg-milk': [
+    {q:'Is nutmeg milk safe for diabetes?', a:'Yes — use cow milk, no sugar or honey. Nutmeg itself has no sugar. If you are lactose intolerant, use almond milk. For diabetics on insulin, time the drink at least 1 hour after your last meal (milk has natural lactose sugar).', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid nutmeg?', a:'Pregnant women — large amounts of nutmeg can cause uterine contractions (a pinch is fine, but skip during pregnancy to be safe). People on anti-anxiety or sleep medication (nutmeg can stack). Children under 5 (the sedative effect is too strong). Otherwise fine for BP, thyroid, lactating mothers.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who']},
+    {q:'Can I make a batch of nutmeg milk for the week?', a:'No — milk should be warmed fresh each night. Grated nutmeg loses potency in 24-36 hours stored mixed in milk. Keep whole nutmegs in a jar (they last 2 years) and grate fresh each evening. The whole drink takes 5 minutes.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When is the right time for nutmeg milk?', a:'30-45 minutes before bedtime — gives the sedative compounds time to absorb. Don\'t drink right at bedtime (the milk volume can cause night urine). Skip if you have a 3 AM acid reflux pattern (milk worsens it). For best sleep: bath, then this drink.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','bedtime','sleep','night']},
+    {q:'I don\'t have whole nutmeg — can I use powder?', a:'Yes — ¼ tsp powder for 1 cup milk. But the smell-and-flavour fades fast in powder form (within 3 months of grinding). Buying a whole nutmeg and grating it gives 10× the aroma. One whole nutmeg lasts 6 months.', tags:['instead','substitute','alternative','replace','without','no','powder','whole']}
+  ],
+  'banana-smoothie': [
+    {q:'Is banana smoothie safe for diabetes?', a:'In moderation — use a small banana (50g, not the big ones), no honey, no added sugar. Banana has natural sugars but also fibre and magnesium. Drink with the meal, not on empty stomach. Monitor your post-meal sugar to see how your body responds.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid banana smoothie?', a:'People with severe kidney disease (potassium in bananas can stack up). People with chronic constipation may find it heavy. Lactose intolerant — use plant milk instead. Otherwise safe for BP, thyroid, kids, pregnant women.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','kidney']},
+    {q:'Can I make banana smoothie ahead and refrigerate?', a:'Make and drink within 30 minutes — bananas oxidise fast and the smoothie turns brown and bitter. The magnesium-tryptophan combo also weakens after blending. If you must make ahead, prep ingredients separately and blend just before drinking.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink banana smoothie?', a:'1 hour before bed for sleep support. Or as a post-workout recovery drink. Avoid first thing in the morning on empty stomach if you have acidity. Don\'t replace a meal with it — it works alongside meals, not instead of them.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','workout','bedtime']},
+    {q:'No banana — can I use something else?', a:'Mango or chikoo work for sleep support (both have natural sugars + nutrients). For an even-better sleep cocktail: blend ¼ cup soaked almonds with milk + cinnamon + a date — gives the same magnesium boost without the banana.', tags:['instead','substitute','alternative','replace','without','no']}
+  ],
+  'brazil-trail': [
+    {q:'Is brazil nut trail mix safe for diabetes?', a:'Yes — nuts and seeds have minimal blood sugar impact. Use raisins sparingly (max 5-6) or replace with sugar-free dried cranberries. Eat 1 small handful (~20g) as a snack between meals, not on top of a sweet dessert.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid brazil nuts?', a:'People already on selenium supplements (selenium can stack and cause toxicity — selenosis). People with severe nut allergies. Children under 5 (choking hazard with whole nuts). Otherwise excellent for BP, thyroid, pregnancy (in moderation), lactating women.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','allergy','selenium']},
+    {q:'Can I prep trail mix for the week?', a:'Yes! That\'s the point. Mix in a clean dry jar — lasts 7-10 days at room temperature, 3 weeks in the fridge. Keep nuts and dried fruit dry — any moisture turns the nuts rancid. Glass jar with tight lid is ideal.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days','week']},
+    {q:'When is the best time to eat trail mix?', a:'Mid-morning (11 AM) or evening (5-6 PM) as a snack between meals. Best as a pre-workout snack (steady energy). Avoid late at night — the fats take time to digest and can disturb sleep. Don\'t eat more than 1 small handful (20g) — calorie-dense.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','workout','snack']},
+    {q:'Can\'t find brazil nuts — what else?', a:'Sunflower seeds + walnuts give similar selenium + omega-3. 1 tbsp sunflower seeds + 4 walnuts = roughly 1 brazil nut\'s selenium. Brazil nuts are uniquely selenium-rich though — if you have a thyroid issue, try to source them (most super markets and Amazon stock them).', tags:['instead','substitute','alternative','replace','without','no','sunflower','walnut']}
+  ],
+  'spearmint-tea': [
+    {q:'Is spearmint tea safe for diabetes?', a:'Yes — completely safe. Spearmint has no impact on blood sugar. Skip the honey if you are diabetic. Especially useful for women with PCOD + insulin resistance.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid spearmint tea?', a:'People on hormone therapy (HRT, IVF cycles) — spearmint lowers androgens, can interfere. People with GERD/acid reflux (mint can relax the stomach valve and worsen reflux). Otherwise safe for kids, BP patients, thyroid, lactating women.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','hormone','pcod','pcos','acidity','reflux']},
+    {q:'Can I make spearmint tea ahead?', a:'Brew fresh — the volatile mint oils evaporate within an hour. Steep mint leaves in just-boiled water, cover, drink within 30 minutes. Dried mint leaves stored in a jar last 6 months. Fresh leaves last 5-7 days in the fridge.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink spearmint tea for PCOD?', a:'Twice daily — once mid-morning, once mid-evening, for at least 4-6 weeks. Caffeine-free, so safe any time. For digestion, drink after meals. For PCOD/hormone benefits, drink between meals on a relatively empty stomach.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','pcod','pcos']},
+    {q:'No fresh mint — can I use peppermint?', a:'Spearmint and peppermint are different — spearmint is the one with PCOD evidence. Peppermint is fine for digestion but less effective for hormones. If you can\'t find fresh, dried spearmint (most herbal grocers, Amazon) works. 1 tsp dried = 8-10 fresh leaves.', tags:['instead','substitute','alternative','replace','without','no','peppermint','pudina','dried','fresh']}
+  ],
+  'kadha-immunity': [
+    {q:'Is kadha safe for diabetes?', a:'Yes — kadha has no sugar. Use a small amount of honey only if needed (½ tsp). Tulsi and cinnamon in kadha actually help insulin sensitivity. Have during seasonal change or when you feel a cold coming.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid kadha?', a:'Pregnant women — kadha is heating, mulethi can raise BP, contains many strong herbs. Skip in pregnancy unless okayed by your gynaec. People on BP medication (mulethi raises BP). Children under 5 (too strong — dilute heavily). Otherwise safe.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','mulethi']},
+    {q:'Can I store kadha in the fridge?', a:'Yes — strain, cool, store in glass jar in the fridge for up to 2 days. Reheat lightly on the stove (don\'t microwave — destroys the active compounds). Don\'t add honey to the storage jar — only add when serving warm.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink kadha?', a:'When you feel a cold coming — first sign of throat scratch. Also during season change (mid-monsoon, mid-winter). 2-3 times a week is enough — daily kadha for months can disturb gut and cause acidity. Best time: mid-morning or early evening.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','cold','flu']},
+    {q:'I don\'t have all the herbs — what\'s essential?', a:'The minimum kadha is: tulsi + ginger + black pepper + honey. That alone gives 70% of the benefit. Cinnamon, clove, mulethi are extras. Use what you have. Skipping mulethi is actually wise for BP patients.', tags:['instead','substitute','alternative','replace','without','no','essential','minimum']}
+  ],
+  'amla-shot': [
+    {q:'Is amla shot safe for diabetes?', a:'Yes — amla actually helps diabetics. Chromium in amla improves insulin sensitivity. Drink unsweetened (no honey, no jaggery). 30 ml shot in the morning daily during winter months when amla is in season.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid amla?', a:'People on blood thinners (amla has mild blood-thinning effect — consult doctor). People with severe acidity at the moment (the citric acid worsens active acidity — wait till settled). Pregnant women — small amounts fine, but skip the concentrated shot. Otherwise excellent for everyone.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','acidity']},
+    {q:'How long does fresh amla juice keep?', a:'Best fresh — drink within 2-3 hours of making. Refrigerated: max 2 days in glass jar (oxidises and bitterness sharpens). Whole fresh amla fruits last 2 weeks in the fridge. Frozen amla pulp lasts 6 months.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink amla shot?', a:'First thing in the morning, empty stomach — max vitamin C absorption. Rinse your mouth with water afterwards (the acidity can erode tooth enamel). Don\'t drink in the evening (the vitamin C can be too stimulating for some).', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet']},
+    {q:'No fresh amla — can I use amla powder?', a:'Yes — 1 tsp amla powder in ½ cup warm water gives similar vitamin C. Pure amla murabba (1 piece daily) also works but has added sugar. Avoid bottled "amla juice" — most have preservatives and added sweetener.', tags:['instead','substitute','alternative','replace','without','no','powder','murabba','dried']}
+  ],
+  'yogurt-cucumber': [
+    {q:'Is yogurt cucumber salad safe for diabetes?', a:'Yes — perfect for diabetics. Curd has zero added sugar, cucumber is mostly water and fibre. Use full-fat curd (not flavoured). Eat 1 small bowl before main meals to slow sugar spike.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid yogurt cucumber salad?', a:'People with severe lactose intolerance — use plant-based curd instead. People prone to evening cold/cough (curd at night can aggravate kapha). Otherwise safe for BP, thyroid, kids, pregnant women.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','lactose']},
+    {q:'Can I make yogurt cucumber salad ahead?', a:'Cucumber releases water once salted — best made within 30 minutes of eating. If you want to prep: keep curd and chopped cucumber separate, mix just before serving. Sliced cucumber alone keeps in fridge for 1 day.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I eat this salad?', a:'Best with lunch — before the main meal as a fibre-and-fluid starter. Curd is heaviest at lunchtime when digestion is strongest. Avoid at night for some (ayurveda) — curd is kapha-aggravating in the evening.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet']},
+    {q:'No curd at home — alternatives?', a:'Use thick chaas (buttermilk) — same probiotic benefit. Or use coconut yogurt for a dairy-free version. The cucumber + jeera + black salt base works with any yogurt-style dressing.', tags:['instead','substitute','alternative','replace','without','no','curd','dahi','dairy free']}
+  ],
+  'chickpea-herb': [
+    {q:'Is chickpea salad safe for diabetes?', a:'Excellent for diabetics — chickpeas are slow-release carbs with low glycemic index, plus high protein. The fibre slows sugar absorption. Have ½ to 1 cup as a meal or hearty snack. No honey or sweet chutney.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid chickpea salad?', a:'People with severe IBS or gas issues (chickpeas can cause bloating — soak overnight + cook well to reduce). Kidney disease patients (high protein/potassium). Otherwise safe for everyone — kids love it, pregnant women, BP, thyroid all fine.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','kidney','ibs','gas']},
+    {q:'Can I make chickpea salad ahead?', a:'Yes — cooked chickpeas store in the fridge for 4-5 days. Make the herb salad fresh each time (herbs wilt). Or mix everything except lemon, refrigerate up to 1 day, add fresh lemon and herbs just before serving.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When is the best time to eat this?', a:'Lunch or evening (4-6 PM) as a heavy snack. The slow-release carbs keep you full for 3-4 hours. Skip at night (chickpeas can cause overnight gas). Especially good as a post-workout meal.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','workout','snack']},
+    {q:'No canned chickpeas — what else?', a:'Use kala chana, rajma, white peas, or even sprouts. Any cooked legume gives the same protein + fibre profile. Soak overnight (8 hours) + pressure cook 4-5 whistles, then cool and use. Avoid raw canned ones with added sugar/preservatives.', tags:['instead','substitute','alternative','replace','without','no','canned','rajma','dal','chana']}
+  ],
+  'beetroot-carrot': [
+    {q:'Is beetroot carrot salad safe for diabetes?', a:'In moderation, yes — small bowl (½ cup) as a starter. Beetroot has natural sugars but the fibre slows absorption. Carrot is fine. Skip honey or jaggery dressing. Have at lunch, not at night.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid this salad?', a:'People with kidney stones (oxalates in raw beetroot can worsen). People on BP medication may want to skip if their BP is already low. Otherwise safe — kids especially love the bright colours.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','kidney']},
+    {q:'Can I prep this salad ahead?', a:'Grate beetroot and carrot up to 1 day ahead (store separately in airtight boxes in the fridge). Beetroot stains carrot purple if mixed early. Add peanuts, lemon and salt only just before eating — otherwise the salad becomes soggy.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I eat beetroot carrot salad?', a:'Before lunch or as a 4 PM snack. The fibre slows digestion — good for portion control. Avoid at night (raw veggies are harder to digest in the evening).', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet']},
+    {q:'No peanuts — alternatives?', a:'Roasted moongphali (peanut) is the traditional choice, but pumpkin seeds, sunflower seeds, or chopped almonds all work. Use 1 tbsp of any. Avoid skipping the crunch — it slows down chewing and improves the eating experience.', tags:['instead','substitute','alternative','replace','without','no','peanut','seeds','allergy','allergic']}
+  ],
+  'sweet-potato': [
+    {q:'Is sweet potato salad safe for diabetes?', a:'In small portions, yes — sweet potato has a moderate GI (lower than white potato). Use ½ a small sweet potato as a fibre-first starter. The ghee + jeera tempering slows sugar release further. Boiled is better than fried/roasted for sugar control.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid sweet potato salad?', a:'Mostly safe — even diabetics in moderation. People with severe IBS may find it gas-forming. Avoid in fasting/vrat if the recipe uses non-vrat ingredients (regular salt vs sendha namak). Otherwise great for kids, pregnancy, BP, thyroid.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','ibs']},
+    {q:'Can I make sweet potato salad ahead?', a:'Boil the sweet potato up to 1 day ahead (store in fridge). The tempering (ghee + jeera + masala) takes 2 minutes — do fresh each time. Mixed salad stays good 4-6 hrs in the fridge but starts to lose texture.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I eat sweet potato salad?', a:'Just before the main meal (3-4 bites) for fibre-first benefit. Or as a 4 PM snack. Especially good in cooler months (sweet potato is warming). Avoid late at night — the carbs are slow to digest before sleep.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','snack']},
+    {q:'No sweet potato — substitutes?', a:'Boiled raw banana (kacche kele), boiled arbi (taro), or boiled pumpkin all work. Same recipe with the ghee + jeera tempering. All are warming, slow-release carbs. Avoid white potato — its GI is too high to call this a fibre-first dish.', tags:['instead','substitute','alternative','replace','without','no','potato','arbi','pumpkin']}
+  ],
+  'mixed-sprouts': [
+    {q:'Are mixed sprouts safe for diabetes?', a:'Excellent for diabetics — sprouts are low GI, high protein, high fibre. Eat ½ cup with a meal or as a snack. Steam them lightly for 3-4 minutes (raw sprouts have a slight blood sugar elevation in some people). No sugar dressing.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid mixed sprouts?', a:'People with severe gas/bloating — even sprouting reduces but doesn\'t eliminate gas. Steam them lightly to make easier. People with uric acid issues (moong is okay but limit chana sprouts). Children: small portions, well-steamed. Pregnant: 100% steam them (raw sprouts can carry bacteria).', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','gas','uric']},
+    {q:'How long do sprouts keep?', a:'Once sprouted: 3-4 days in the fridge in an airtight container. Steam before eating to reduce bacterial risk and gas. Don\'t store sprouts wet — pat dry before refrigerating. Fresh sprouts smell mild; if they smell sour, throw them out.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I eat sprouts?', a:'Mid-morning (11 AM) or evening (4-6 PM) as a heavy snack. Avoid at night (digestive load + gas potential). Especially good as a pre-workout or post-workout option for the protein boost.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','workout','snack']},
+    {q:'How do I make sprouts at home?', a:'Soak whole moong + chana + matki overnight (8 hours). Drain, tie loosely in clean muslin, place in a covered bowl in a warm spot. Rinse twice daily. Sprouts appear in 24-36 hours. Steam 3-4 minutes before eating.', tags:['instead','substitute','alternative','replace','without','no','make','homemade','how to sprout']}
+  ],
+  'beetroot-roti': [
+    {q:'Are beetroot rotis safe for diabetes?', a:'Yes — actually better than plain wheat rotis. Beetroot adds fibre and slows down sugar absorption from the wheat. Pair with sabzi + dal, skip ghee on top if you are watching weight. Eat 1-2 rotis at a meal, not more.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid beetroot rotis?', a:'People with kidney stones (oxalates in beetroot — keep portions small). Otherwise safe for BP, thyroid, kids (they love the pink colour), pregnant women, lactating mothers. People on warfarin should mention to doctor.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','kidney']},
+    {q:'Can I make beetroot roti dough ahead?', a:'Dough keeps in the fridge for up to 24 hours in an airtight container — let it come to room temperature before rolling. Cooked rotis: best fresh, but stay soft if wrapped in a cloth in a casserole for 2-3 hours. Don\'t microwave to reheat — turns rubbery.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When can I eat beetroot roti?', a:'Lunch or dinner — same as any roti. Especially good for school/office tiffin (kids eat them more readily because of the pretty pink colour). Avoid late dinner (10 PM+) — wheat is slow to digest at night.', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','lunch','dinner','tiffin']},
+    {q:'No beetroot — other veggie options?', a:'Spinach (palak roti — green), methi (slightly bitter, fenugreek leaves), grated carrot (orange), grated bottle gourd (lauki, soft pale rotis). All follow the same technique: grate the veggie, add to atta, knead with little water (veggies release water).', tags:['instead','substitute','alternative','replace','without','no','palak','methi','carrot','lauki']}
+  ],
+  'coconut-water': [
+    {q:'Is coconut water safe for diabetes?', a:'In small amounts (½ glass), yes — coconut water has natural sugars but a low glycemic index. Tender coconut is better than packaged. Avoid flavoured/sweetened coconut water. Skip if your fasting sugar is over 200.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid coconut water?', a:'People with chronic kidney disease (high potassium can stack up — consult nephrologist). People with very low BP (coconut water lowers BP further). Otherwise safe for pregnancy, kids, BP-controlled patients, thyroid.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','kidney','potassium']},
+    {q:'How long does coconut water keep?', a:'Best fresh — drink within 30 minutes of opening the coconut. Refrigerated: max 24 hrs (it turns slightly fermented). Don\'t leave at room temperature once opened — it sours within hours. Pack tetra-pack coconut water lasts longer but has preservatives.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink coconut water?', a:'Best fresh — drink within 30 minutes of opening the coconut. Anytime of day works. Especially good post-yoga, in summer afternoons, after sweating, or to break a 4 PM hunger pang. Avoid right before bed (it\'s mildly diuretic).', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','workout','yoga']},
+    {q:'No fresh coconut — alternatives?', a:'Tender packaged coconut water (look for "no added sugar" on label). Or make oral rehydration solution: 1 glass water + ¼ tsp salt + ½ tsp sugar + lemon juice. Not as good as fresh but gives the electrolyte balance. ORS sachets work for sick days.', tags:['instead','substitute','alternative','replace','without','no','tender','packaged','ors']}
+  ],
+  'tulsi-tea': [
+    {q:'Is tulsi tea safe for diabetes?', a:'Yes — tulsi actually helps diabetics by improving insulin sensitivity. Drink unsweetened (no honey or sugar). 1-2 cups daily can lower fasting sugar by 5-10 points over weeks. Safe with diabetes medication.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid tulsi tea?', a:'Pregnant women (tulsi has mild emmenagogue effect — avoid in pregnancy, ok post-delivery). People on blood thinners (mild blood-thinning — consult doctor). Otherwise safe for kids, BP, thyroid, lactating mothers.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','blood thinner']},
+    {q:'Can I make tulsi tea ahead?', a:'Brew fresh — the essential oils in tulsi evaporate within an hour. Steep fresh or dried tulsi leaves in just-boiled water for 4-5 minutes, drink within 30 minutes. Dried tulsi leaves in a jar last 6 months.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink tulsi tea?', a:'Anytime — caffeine-free, so safe morning, afternoon, or evening. For stress relief, drink late afternoon. For immunity, morning is good. For sleep support, an hour before bed. Don\'t drink right after a meal (interferes with iron absorption).', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','sleep','stress']},
+    {q:'No fresh tulsi — alternatives?', a:'Dried tulsi leaves work (1 tsp = 8-10 fresh leaves). Pure tulsi teabags (Organic India, Tata, Vahdam) are widely available. Tulsi drops (5-7 drops in warm water) for travel. Plant a tulsi at home — easy to grow in a pot.', tags:['instead','substitute','alternative','replace','without','no','dried','teabag','plant']}
+  ],
+  'cinnamon-tea': [
+    {q:'Is cinnamon tea safe for diabetes?', a:'Yes — this is one of the BEST drinks for diabetes. Cinnamon improves insulin sensitivity and lowers post-meal sugar spikes. Drink unsweetened, after meals 2-3 times a week. Use Ceylon cinnamon if available (less coumarin).', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid cinnamon tea?', a:'Pregnant women in large amounts (small daily cup is fine). People on blood thinners (cinnamon has mild blood-thinning effect). People on diabetes medication may need to monitor sugar (cinnamon stacks). Otherwise safe.', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','blood thinner']},
+    {q:'Can I make cinnamon tea ahead?', a:'Brew fresh in 5 minutes. If you want to prep: keep cinnamon sticks in a jar (last 1+ year). The brewed tea loses potency within an hour. For a make-ahead version: boil 6-8 cinnamon sticks in 2 cups water, strain, fridge for 2 days, dilute to drink.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink cinnamon tea?', a:'After meals — when post-meal sugar is rising, cinnamon helps buffer it. Mid-morning and afternoon are best. Avoid late night (the warming effect can disturb sleep for some people).', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet']},
+    {q:'No cinnamon stick — can I use powder?', a:'Yes — ½ tsp ground cinnamon for 1 cup. Powder dissolves more — strain through a fine sieve. Stick gives cleaner taste; powder is more pungent. Either works for the blood-sugar benefit.', tags:['instead','substitute','alternative','replace','without','no','powder','stick']}
+  ],
+  'ccf-tea': [
+    {q:'Is CCF tea safe for diabetes?', a:'Yes — completely safe. Cumin, coriander, fennel have no impact on blood sugar. Skip honey if you are diabetic. Drink unsweetened after meals to aid digestion.', tags:['diabetes','diabetic','sugar','blood sugar','insulin','medication','safe']},
+    {q:'Who should avoid CCF tea?', a:'Pregnant women in the first trimester (fennel has mild emmenagogue effect — small amounts in food fine, concentrated tea skip in first trimester). Otherwise safe for everyone — kids, BP, thyroid, lactating women (fennel actually boosts milk supply for nursing mothers).', tags:['avoid','safe','bp','pregnant','pregnancy','kids','child','thyroid','medication','who','lactating']},
+    {q:'Can I make CCF tea ahead?', a:'Brew fresh — 5 minutes. The seeds are dry-stable for months in a jar but the brewed tea loses essential oils within 2 hours. Make a fresh small batch each time. Pre-crush a week\'s worth of seeds and store in a small jar.', tags:['store','storage','fridge','keep','next day','batch','make ahead','last','days']},
+    {q:'When should I drink CCF tea?', a:'After meals — when bloating starts. Also good in the evening (4-6 PM) as a digestive reset. Safe before bed (caffeine-free). Avoid first thing in the morning on empty stomach (the bitter notes can trigger acidity for some).', tags:['when','timing','time','morning','evening','before','after','meal','empty stomach','khali pet','bloating']},
+    {q:'No fennel — what else?', a:'Cumin + coriander alone (CC tea) is still useful for digestion. Or use just saunf (fennel) + jeera (cumin). Mukhwas (saunf-based mouth fresheners) can also work. Pure ajwain water for severe bloating. The trio is best but any one or two help.', tags:['instead','substitute','alternative','replace','without','no','fennel','saunf','jeera','cumin','dhaniya']}
+  ]
+};
+
 
 function findFAQAnswer(query){
   const q = (query||'').toLowerCase().trim();
@@ -1649,7 +1845,7 @@ function openTodayDetail(day){
         <textarea class="recipe-q-input" id="recipe-q-input" rows="2" placeholder="Ask about ${day.title} — ingredients, method, your condition..."></textarea>
         <button class="recipe-q-btn" id="recipe-q-submit">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Send to SB's team
+          Ask
         </button>
         <div class="recipe-q-note">Our team usually replies within 24 hrs. Your question may help others too — we sometimes add it to the FAQ.</div>
       </div>
