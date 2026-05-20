@@ -25,11 +25,11 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5;font-size:16px;}
-.phone-wrap{position:relative;width:100%;height:100vh;height:100dvh;background:var(--cream);}
+.phone-wrap{position:relative;width:100%;height:100vh;height:100dvh;background:var(--cream);transform:translateZ(0);}
 .phone{position:relative;width:100%;height:100%;background:var(--cream);overflow-y:auto;}
 @media (min-width:480px){
   body{background:#1c2615;display:flex;align-items:center;justify-content:center;}
-  .phone-wrap{width:420px;height:92vh;max-height:900px;border-radius:34px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.4);}
+  .phone-wrap{width:420px;height:92vh;max-height:900px;border-radius:34px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.4);transform:translateZ(0);}
   .phone{border-radius:34px;}
 }
 .screen{position:absolute;inset:0;background:var(--cream);display:none;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;}
@@ -607,7 +607,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
       </div>
       <div class="ob-field">
         <div class="ob-label">Phone</div>
-        <input class="ob-input" id="phone-input" type="tel" placeholder="98XXXXXXXX" inputmode="numeric"/>
+        <input class="ob-input" id="phone-input" type="tel" placeholder="98XXXXXXXX" inputmode="numeric" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       </div>
     </div>
     <div class="ob-helper">We won't message you anything other than your Habuild updates.</div>
@@ -1569,7 +1569,17 @@ const FAQS = [
     tags:['acidity','heartburn','burning','gas','reflux','jalan']},
   { id:'q-snack-evening', q:'A healthy snack for evening cravings?',
     a:'Roasted chana, a handful of soaked almonds + walnuts, fruit (apple, banana, papaya), bhuna jeera with curd, or a small bowl of sprouts. Avoid biscuits, namkeen, fried snacks. CCF tea or tulsi tea can also kill the craving — often dehydration is mistaken for hunger.',
-    tags:['snack','evening','craving','hunger','bhukh','chai time','5pm','6pm','7pm']}
+    tags:['snack','evening','craving','hunger','bhukh','chai time','5pm','6pm','7pm']},
+  // ===== Universal seasonal guidance (any recipe) =====
+  { id:'q-summer-generic', q:'Can I have this in summer?',
+    a:'Most Habuild recipes work in all seasons. For summer specifically: prefer cooling drinks (hibiscus, spearmint, coconut water, ambali made with jowar), lighter salads (cucumber, sprouts), and avoid kadha + warming kadha + nutmeg milk during peak heat. Drink at room temperature, not too cold. Adjust spice levels down slightly.',
+    tags:['summer','garmi','hot','heat','garm','warm season','hot weather','summers']},
+  { id:'q-winter-generic', q:'Can I have this in winter?',
+    a:'Most Habuild recipes work year-round. For winter: prefer warming options (kadha, ragi ambali, cinnamon tea, nutmeg milk, sweet potato), warm drinks rather than cold (avoid chilled coconut water, beetroot juice). Add ginger or a pinch of dry ginger (sonth) to drinks for extra warmth. Skip raw cold salads if you feel chilled.',
+    tags:['winter','sardi','cold','thanda','cool season','winters']},
+  { id:'q-monsoon-generic', q:'Can I have this in monsoon?',
+    a:'In monsoon, focus on immunity and digestion. Best: kadha, ginger-tulsi tea, CCF tea, methi water, light cooked foods. Skip raw salads (sprouts okay if steamed), and avoid stale prepared food (fridge for max 12 hrs). If you feel cold-and-flu coming, double down on kadha 2-3 times in the week.',
+    tags:['monsoon','barish','barsat','rain','rainy','humid','flu season']}
 ];
 
 // =================== PER-RECIPE FAQ BANK ===================
@@ -1847,7 +1857,7 @@ function openTodayDetail(day){
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           Ask
         </button>
-        <div class="recipe-q-note">Our team usually replies within 24 hrs. Your question may help others too — we sometimes add it to the FAQ.</div>
+        <div class="recipe-q-note">Team replies within 24 hrs.</div>
       </div>
     </div>
     <div class="block">
@@ -1941,7 +1951,7 @@ function openTodayDetail(day){
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               Sent — SB's team will reply within 24 hrs
             </div>
-            <div class="recipe-q-note">Your question may help others too — we sometimes add it to the FAQ.</div>
+            <div class="recipe-q-note">Your question may help others too.</div>
           </div>`;
         showToast('Question sent — usually replied within 24 hrs');
       }
@@ -2689,7 +2699,6 @@ function renderHome(){
     bp.innerHTML=previewRecipes.map(d=>{
       const cond=(d.conditions&&d.conditions[0])||'';
       return `<div class="bp-card" data-rid="${d.id}">
-        <div class="vc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z"/></svg></div>
         <div class="img" style="background-image:url('${d.img}')"></div>
         <div class="overlay">
           <div class="t">${d.title}</div>
