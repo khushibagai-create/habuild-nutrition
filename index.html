@@ -517,8 +517,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .member-meta{font-size:12.5px;color:var(--muted);}
 .member-tag{display:inline-block;background:var(--cream-deep);color:var(--gold);font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;margin-top:4px;}
 .member-dish-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--forest);margin-bottom:12px;letter-spacing:-0.3px;}
+.member-why{background:var(--cream-deep);border-left:3px solid var(--gold);border-radius:10px;padding:11px 14px;margin-bottom:18px;}
+.member-why-label{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--gold);margin-bottom:4px;}
+.member-why-text{font-size:14px;color:var(--ink);font-style:italic;line-height:1.5;}
 .member-story{margin-bottom:24px;}
 .member-story p{font-size:14.5px;line-height:1.65;color:var(--ink);margin-bottom:12px;}
+.member-ings li{cursor:default;}
 .member-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 .member-grid .tile{aspect-ratio:1;border-radius:14px;background-size:cover;background-position:center;background-color:var(--sand);position:relative;cursor:pointer;overflow:hidden;}
 .member-grid .tile:not(.upload-tile)::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,0.7) 100%);}
@@ -947,8 +951,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     <div class="detail-title">Share your recipe</div>
   </div>
   <div class="ar-body">
-    <div class="ar-hero-title">Your dish, with the community</div>
-    <div class="ar-hero-sub">One photo, one line — that's it. Members like you will learn from you.</div>
+    <div class="ar-hero-title">Share your recipe</div>
+    <div class="ar-hero-sub">A photo, your recipe, one line on why it's special. Members like you will learn from you.</div>
 
     <div class="ar-photo-zone" id="ar-photo-zone">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
@@ -957,21 +961,23 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     </div>
     <input type="file" id="ar-photo-file" accept="image/*" style="display:none;"/>
 
-    <div class="ar-field-label">Dish name</div>
+    <div class="ar-field-label">Name of the recipe</div>
     <div class="ar-field">
       <input id="ar-dish" placeholder="e.g., Ragi Laddoo"/>
     </div>
 
-    <div class="ar-field-label">One line — what's special</div>
+    <div class="ar-field-label">How to make</div>
     <div class="ar-field">
-      <textarea id="ar-note" rows="3" placeholder="How did your family like it? What did you change?"></textarea>
+      <textarea id="ar-method" rows="6" placeholder="Step 1 — soak ragi 30 min&#10;Step 2 — roast on slow flame&#10;Step 3 — mix dates, ghee, walnuts&#10;Step 4 — shape into laddoos"></textarea>
     </div>
 
-    <div class="ar-field-label">Which condition? (optional)</div>
-    <div class="ar-tag-grid" id="ar-tags"></div>
+    <div class="ar-field-label">Why it's special (one line)</div>
+    <div class="ar-field">
+      <input id="ar-note" maxlength="120" placeholder="e.g., No sugar, full of iron — kids love it"/>
+    </div>
   </div>
   <div class="ar-bottom">
-    <button class="btn-primary" id="ar-submit" disabled>Add to the Club</button>
+    <button class="btn-primary" id="ar-submit" disabled>Share with the community</button>
   </div>
 </section>
 
@@ -2104,28 +2110,40 @@ const CONDITIONS = [
 const CLUB = [
   {id:'c1', name:'Ashalatha', loc:'Bengaluru', dish:'Ragi Laddoo', condition:'Diabetes',
    note:'Mom\'s recipe — my kids fight for these. Energy + iron, no sugar.',
-   story:`I learned this from my mother in Mysuru. She made these every Saturday — never failed. Now my own kids fight over them, and 8 batchmates in our feedback group asked me for the recipe.\n\nThe trick is ragi roasting — slow flame, golden colour. If it goes brown, the bitterness comes in. Dates instead of sugar. Ghee for binding. Walnuts and makhana came in later — Kirti from Indore tried that version and now I make hers more than mine.\n\nHonestly, this is what I love about Habuild. A recipe doesn't stay one way. It travels.`,
-   tag:'diabetes', img:IMG.mem_ragi, initial:'A'},
+   story:`Mum's Saturday recipe from Mysuru. The trick is slow roasting — golden, not brown.`,
+   tag:'diabetes', img:IMG.mem_ragi, initial:'A',
+   why:'No sugar, full of iron — kids genuinely love it.',
+   recipe:{ingredients:['1 cup ragi flour','½ cup dates (deseeded, paste)','2 tbsp ghee','¼ cup walnuts, chopped','¼ cup makhana, crushed','½ tsp cardamom powder','Pinch of salt'],method:['Dry roast ragi flour on slow flame 8-10 min till nutty aroma','Roast walnuts + makhana lightly in ghee','Mix dates paste with warm flour till sticky','Add nuts, cardamom, salt — mix well','Shape into small laddoos while warm','Store in airtight jar — lasts 1 week']}},
   {id:'c2', name:'Shubhada', loc:'Pune', dish:'Methi Dal for Grandson', condition:'Iron + Family',
    note:'My 3-year-old grandson eats this — no sugar, full iron. Methi is bitter but he loves it cooked soft.',
-   story:`My grandson is 3. He's never tasted sugar — my daughter-in-law was firm about that and now we all follow it.\n\nThe challenge is iron. Kids need it but they reject anything green. So I cook methi very soft with moong dal, mash it slightly, add a little ghee at the end. He eats two katoris.\n\nHabuild taught me this — vegetable in the dal, not on the side. He doesn't see methi as methi. He sees it as dal.`,
-   tag:'kids', img:IMG.mem_methi, initial:'S'},
+   story:`My grandson is 3. Cook methi soft inside the dal — he doesn't see it as methi, he sees it as dal.`,
+   tag:'kids', img:IMG.mem_methi, initial:'S',
+   why:'Hides methi inside dal — kids eat iron without fuss.',
+   recipe:{ingredients:['½ cup yellow moong dal','1 cup fresh methi leaves, chopped fine','1 tomato, chopped','½ tsp haldi','½ tsp jeera','1 tsp ghee','Salt to taste','¼ inch ginger, grated'],method:['Soak moong dal 15 min, drain','Pressure cook dal + methi + tomato + haldi + ginger + salt with 2 cups water — 3 whistles','Mash slightly with a wooden spoon till soft','Heat ghee, add jeera, pour over dal','Serve with soft rice or roti — kids love it warm']}},
   {id:'c3', name:'Kirti Sarmalkar', loc:'Indore', dish:'Ragi Laddu', condition:'Energy + Iron',
-   note:'Mum\'s ragi laddu — just follow this recipe. No sugar, full energy. I shared it in the WhatsApp group and everyone asked for it.',
-   story:`This is my mum\'s recipe — ragi flour, jaggery, ghee. Roasting on a slow flame is important — if it goes too brown, the bitterness creeps in.\n\nI shared this recipe in the Habuild feedback group. 8 batchmates asked for it — everyone made it, everyone loved it. Energy and iron, no sugar.\n\nMy kids ask for these every Saturday. I want every Habuild member to try them — something healthy in the daily routine that kids will actually eat.`,
-   tag:'energy', img:IMG.mem_walnut_laddu, initial:'K'},
+   note:'Mum\'s ragi laddu — just follow this recipe. No sugar, full energy.',
+   story:`Mum's recipe — ragi, jaggery, ghee. 8 batchmates asked for it after I shared. Now my Saturday tradition.`,
+   tag:'energy', img:IMG.mem_walnut_laddu, initial:'K',
+   why:'Mum\'s recipe — 8 batchmates asked for it after I shared.',
+   recipe:{ingredients:['1 cup ragi flour','½ cup jaggery, grated','3 tbsp ghee','¼ cup mixed nuts (walnut, almond, cashew)','½ tsp cardamom powder','1 tbsp poppy seeds (khus khus)','Pinch of salt'],method:['Slow-roast ragi flour till golden + nutty (8-10 min — do NOT brown)','In a separate pan, melt ghee + jaggery till syrupy','Mix roasted flour into the syrup','Add nuts, cardamom, poppy seeds','Cool slightly — shape into laddoos while still warm','Store airtight — lasts 7-10 days']}},
   {id:'c4', name:'Madhavee', loc:'Chennai', dish:'Apple Carrot Crunch', condition:'Weight',
    note:'My evening snack. Started with Habuild recipe, added pumpkin seeds.',
-   story:`I'm 54, working in an office, and the 5pm slump used to send me to biscuits. Then Habuild shared the apple-carrot crunch and I started keeping it ready in a box.\n\nGrate one carrot, one apple, lemon, salt, jeera. I added roasted pumpkin seeds for crunch. It travels. It doesn't go brown if you add lemon early.\n\nLost 4 kilos in 6 months. Not because of this alone — but because I stopped the biscuits.`,
-   tag:'weight', img:IMG.mem_apple_carrot, initial:'M'},
+   story:`Replaced my 5pm biscuits with this box. Lost 4 kg in 6 months — mostly by stopping the biscuits.`,
+   tag:'weight', img:IMG.mem_apple_carrot, initial:'M',
+   why:'5pm snack that travels — no more biscuit cravings.',
+   recipe:{ingredients:['1 apple, grated','1 carrot, grated','2 tbsp roasted pumpkin seeds','½ lemon (juice)','½ tsp roasted jeera powder','Pinch of black salt','Few mint leaves (optional)'],method:['Grate apple + carrot into a bowl','Squeeze lemon immediately (stops browning)','Add jeera powder + black salt','Toss in pumpkin seeds + mint','Eat fresh — or pack in steel dabba for office']}},
   {id:'c5', name:'Supriya', loc:'Mumbai', dish:'OH Salad (year-old fav)', condition:'Summer',
    note:'I still refer to this recipe a year later. Best summer salad.',
-   story:`Habuild shared an onion-herb salad about a year ago. I starred it on WhatsApp and I still go back to it every summer.\n\nOnion (red, finely sliced), coriander, mint, lemon, salt, a pinch of jeera. That's it. Cooling, light, takes 5 minutes. I make it for everyone when they come over.\n\nThis is the kind of recipe that doesn't go out of date. I just wish I didn't have to scroll WhatsApp for ages to find it again.`,
-   tag:'summer', img:IMG.mem_oh_salad, initial:'S'},
+   story:`5-minute cooling salad I've been making for a year. The kind of recipe that doesn't go out of date.`,
+   tag:'summer', img:IMG.mem_oh_salad, initial:'S',
+   why:'5-min cooling summer salad — never goes out of date.',
+   recipe:{ingredients:['1 red onion, sliced thin','½ cup fresh coriander, chopped','¼ cup fresh mint, chopped','1 lemon (juice)','½ tsp roasted jeera powder','Salt to taste','Optional: 1 green chilli, slit'],method:['Slice onion thin — soak in cold water 5 min to mellow it','Drain + pat dry','Toss with coriander, mint, lemon, jeera, salt','Rest 5 min — flavours mingle','Serve cold — best paired with dal-chawal or as a side']}},
   {id:'c6', name:'Geeta', loc:'Nagpur', dish:'Karela Sabzi (no bitterness)', condition:'Diabetes',
    note:'My husband\'s sugar dropped 20 points in 3 months. Salt-soak trick.',
-   story:`My husband was diagnosed with diabetes 4 years ago. He hated karela — refused to eat it. The salt-soak trick changed everything.\n\nThin slices, rub with salt, leave 30 min, squeeze and rinse twice. The bitterness goes. He doesn't even know it's the same karela.\n\nWe eat it 2-3 times a week now. His fasting sugar dropped from 145 to 124 in 3 months. The doctor was surprised. I'm not — I trust the food.`,
-   tag:'diabetes', img:IMG.mem_karela, initial:'G'}
+   story:`Husband refused karela for years. Salt-soak fixed it — fasting sugar dropped 145 → 124 in 3 months.`,
+   tag:'diabetes', img:IMG.mem_karela, initial:'G',
+   why:'Salt-soak trick removes bitterness — husband\'s sugar dropped 20 points.',
+   recipe:{ingredients:['2 medium karela (bitter gourd)','1 onion, sliced','1 tomato, chopped','½ tsp haldi','½ tsp jeera','1 tsp oil','Salt for soak + cooking','Optional: 1 tsp jaggery (finish)'],method:['Slice karela thin, remove seeds','Rub with 1 tsp salt — leave 30 min','Squeeze + rinse 2-3 times till bitter water runs out','Heat oil, add jeera, onion — sauté till soft','Add karela + haldi — cook covered 10 min','Add tomato + salt — cook 5 more min','Optional: 1 tsp jaggery to round off — serve with phulka']}}
 ];
 
 // Get today's recipe — date is pinned to 2026-05-14 (Cardamom Thu) for demo; safe from timezone drift
@@ -2637,17 +2655,6 @@ function openTodayDetail(day){
         <div class="recipe-q-note">Team replies within 24 hrs.</div>
       </div>
     </div>
-    <div class="block">
-      <div class="block-title">Today\'s reflection</div>
-      <div class="soft-card">
-        <div class="soft-card-label">Reflect</div>
-        <div class="soft-card-text">${day.reflection}</div>
-      </div>
-      <div class="wa-card">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.78 11.78 0 0 0 12 0 11.78 11.78 0 0 0 3.48 3.48 11.78 11.78 0 0 0 0 12c0 2.07.54 4.1 1.56 5.9L0 24l6.27-1.64A11.94 11.94 0 0 0 12 24a11.78 11.78 0 0 0 8.52-3.48A11.78 11.78 0 0 0 24 12a11.78 11.78 0 0 0-3.48-8.52z"/></svg>
-        <div class="wa-card-text">${day.nudge}</div>
-      </div>
-    </div>
     <div style="height:110px;"></div>
   `;
 
@@ -2859,6 +2866,8 @@ function openMemberDetail(m){
     </div>
   </div>`;
   const storyHtml = (m.story || '').split('\n\n').map(p=>`<p>${p}</p>`).join('');
+  const ingHtml = (m.recipe && m.recipe.ingredients || []).map(i=>`<li>${i}</li>`).join('');
+  const methodHtml = (m.recipe && m.recipe.method || []).map(s=>`<li>${s}</li>`).join('');
   document.getElementById('member-detail-body').innerHTML=`
     <div class="member-hero" style="background-image:url('${m.img||''}')"></div>
     <div class="member-info">
@@ -2871,6 +2880,14 @@ function openMemberDetail(m){
     </div>
     <div class="member-dish-title">${m.dish}</div>
     <div class="member-story">${storyHtml}</div>
+    ${ingHtml?`<div class="block">
+      <div class="block-title">Ingredients</div>
+      <ul class="ingredients member-ings">${ingHtml}</ul>
+    </div>`:''}
+    ${methodHtml?`<div class="block">
+      <div class="block-title">How to make</div>
+      <ol class="steps">${methodHtml}</ol>
+    </div>`:''}
     <div class="block">
       <div class="block-title">More member dishes</div>
     </div>
@@ -2897,35 +2914,27 @@ function openMemberDetail(m){
 
 // =================== ADD RECIPE ===================
 let _arPhoto=null;
-let _arTag=null;
 function openAddRecipe(){
   // reset fields each open
   document.getElementById('ar-dish').value='';
+  document.getElementById('ar-method').value='';
   document.getElementById('ar-note').value='';
-  _arPhoto=null;_arTag=null;
+  _arPhoto=null;
   const zone=document.getElementById('ar-photo-zone');
   zone.style.backgroundImage='';
   zone.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Add a photo</span><div class="sub">A photo of your dish</div>`;
   document.getElementById('ar-submit').disabled=true;
-  // render tag chips
-  const tagGrid=document.getElementById('ar-tags');
-  tagGrid.innerHTML=CONDITIONS.filter(c=>c.id!=='all').map(c=>`<div class="ar-tag" data-tid="${c.id}">${c.name}</div>`).join('');
-  tagGrid.querySelectorAll('.ar-tag').forEach(t=>{
-    t.addEventListener('click',()=>{
-      tagGrid.querySelectorAll('.ar-tag').forEach(x=>x.classList.remove('selected'));
-      t.classList.add('selected');
-      _arTag=t.getAttribute('data-tid');
-    });
-  });
   go('screen-add-recipe');
   track('Add Recipe View');
 }
 function arValidate(){
   const dish=document.getElementById('ar-dish').value.trim();
+  const method=document.getElementById('ar-method').value.trim();
   const note=document.getElementById('ar-note').value.trim();
-  document.getElementById('ar-submit').disabled=!(dish && note);
+  document.getElementById('ar-submit').disabled=!(dish && method && note);
 }
 document.getElementById('ar-dish').addEventListener('input',arValidate);
+document.getElementById('ar-method').addEventListener('input',arValidate);
 document.getElementById('ar-note').addEventListener('input',arValidate);
 document.getElementById('ar-photo-zone').addEventListener('click',()=>document.getElementById('ar-photo-file').click());
 document.getElementById('ar-photo-file').addEventListener('change',e=>{
@@ -2941,8 +2950,9 @@ document.getElementById('ar-photo-file').addEventListener('change',e=>{
 });
 document.getElementById('ar-submit').addEventListener('click', async () => {
   const dish = document.getElementById('ar-dish').value.trim();
+  const method = document.getElementById('ar-method').value.trim();
   const note = document.getElementById('ar-note').value.trim();
-  if (!dish || !note) return;
+  if (!dish || !method || !note) return;
   const btn = document.getElementById('ar-submit');
   btn.disabled = true;
   btn.textContent = sb ? 'Sending...' : 'Saving...';
@@ -2956,16 +2966,21 @@ document.getElementById('ar-submit').addEventListener('click', async () => {
     } catch(e) { console.warn('photo blob convert failed', e); }
   }
 
+  // Parse method into steps — split on newlines
+  const methodSteps = method.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+
   const submission = {
     id: 'local-' + Date.now(),
     name: STATE.user.name || 'You',
     loc: STATE.user.city || 'India',
-    dish, note,
-    tag: _arTag,
+    dish,
+    note,
+    why: note,
     img: _arPhoto || '',
     initial: (STATE.user.name || 'Y')[0].toUpperCase(),
-    condition: _arTag || 'Member dish',
+    condition: 'Member dish',
     story: note,
+    recipe: { ingredients: [], method: methodSteps },
     isLocal: true
   };
 
@@ -2976,7 +2991,7 @@ document.getElementById('ar-submit').addEventListener('click', async () => {
   // Refresh remote list (so any new community submissions also appear)
   refreshRemoteSubmissions();
 
-  track('Add Recipe Submitted', { dish, tag: _arTag, mode: result.local ? 'local' : 'remote' });
+  track('Add Recipe Submitted', { dish, method_steps: methodSteps.length, mode: result.local ? 'local' : 'remote' });
   showToast(result.local
     ? 'Saved (this device only)'
     : 'Your recipe is live in the Club');
