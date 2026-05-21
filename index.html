@@ -1158,18 +1158,25 @@ if(new URLSearchParams(location.search).has('wt')){ STATE.walkthroughSeen=false;
 async function backendSubmit(submission, photoBlob) {
   if (!sb) return { ok: true, local: true, submission };
   try {
-    // Upload photo if present
+    // Photo upload — non-fatal. If it fails (RLS, network, etc.), continue without a photo.
     let photoUrl = submission.img || '';
     if (photoBlob) {
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
-      const { data: upData, error: upErr } = await sb.storage
-        .from('submission-photos')
-        .upload(fileName, photoBlob, { contentType: 'image/jpeg', upsert: false });
-      if (upErr) throw upErr;
-      const { data: urlData } = sb.storage.from('submission-photos').getPublicUrl(fileName);
-      photoUrl = urlData.publicUrl;
+      try {
+        const fileName = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+        const { data: upData, error: upErr } = await sb.storage
+          .from('submission-photos')
+          .upload(fileName, photoBlob, { contentType: 'image/jpeg', upsert: false });
+        if (upErr) {
+          console.warn('[backend] photo upload failed (continuing without photo):', upErr);
+        } else {
+          const { data: urlData } = sb.storage.from('submission-photos').getPublicUrl(fileName);
+          photoUrl = urlData.publicUrl;
+        }
+      } catch (photoErr) {
+        console.warn('[backend] photo upload threw (continuing without photo):', photoErr);
+      }
     }
-    // Insert row
+    // Insert row — this is the part that must succeed for community visibility
     const row = {
       member_name: submission.name,
       city: submission.loc,
