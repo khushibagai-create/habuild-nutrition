@@ -2166,36 +2166,12 @@ const CLUB = [
    tag:'diabetes', img:IMG.mem_ragi, initial:'A',
    why:'No sugar, full of iron — kids genuinely love it.',
    recipe:{ingredients:['1 cup ragi flour','½ cup dates (deseeded, paste)','2 tbsp ghee','¼ cup walnuts, chopped','¼ cup makhana, crushed','½ tsp cardamom powder','Pinch of salt'],method:['Dry roast ragi flour on slow flame 8-10 min till nutty aroma','Roast walnuts + makhana lightly in ghee','Mix dates paste with warm flour till sticky','Add nuts, cardamom, salt — mix well','Shape into small laddoos while warm','Store in airtight jar — lasts 1 week']}},
-  {id:'c2', name:'Shubhada', loc:'Pune', dish:'Methi Dal for Grandson', condition:'Iron + Family',
-   note:'My 3-year-old grandson eats this — no sugar, full iron. Methi is bitter but he loves it cooked soft.',
-   story:`My grandson is 3. Cook methi soft inside the dal — he doesn't see it as methi, he sees it as dal.`,
-   tag:'kids', img:IMG.mem_methi, initial:'S',
-   why:'Hides methi inside dal — kids eat iron without fuss.',
-   recipe:{ingredients:['½ cup yellow moong dal','1 cup fresh methi leaves, chopped fine','1 tomato, chopped','½ tsp haldi','½ tsp jeera','1 tsp ghee','Salt to taste','¼ inch ginger, grated'],method:['Soak moong dal 15 min, drain','Pressure cook dal + methi + tomato + haldi + ginger + salt with 2 cups water — 3 whistles','Mash slightly with a wooden spoon till soft','Heat ghee, add jeera, pour over dal','Serve with soft rice or roti — kids love it warm']}},
   {id:'c3', name:'Kirti Sarmalkar', loc:'Indore', dish:'Ragi Laddu', condition:'Energy + Iron',
    note:'Mum\'s ragi laddu — just follow this recipe. No sugar, full energy.',
    story:`Mum's recipe — ragi, jaggery, ghee. 8 batchmates asked for it after I shared. Now my Saturday tradition.`,
    tag:'energy', img:IMG.mem_walnut_laddu, initial:'K',
    why:'Mum\'s recipe — 8 batchmates asked for it after I shared.',
-   recipe:{ingredients:['1 cup ragi flour','½ cup jaggery, grated','3 tbsp ghee','¼ cup mixed nuts (walnut, almond, cashew)','½ tsp cardamom powder','1 tbsp poppy seeds (khus khus)','Pinch of salt'],method:['Slow-roast ragi flour till golden + nutty (8-10 min — do NOT brown)','In a separate pan, melt ghee + jaggery till syrupy','Mix roasted flour into the syrup','Add nuts, cardamom, poppy seeds','Cool slightly — shape into laddoos while still warm','Store airtight — lasts 7-10 days']}},
-  {id:'c4', name:'Madhavee', loc:'Chennai', dish:'Apple Carrot Crunch', condition:'Weight',
-   note:'My evening snack. Started with Habuild recipe, added pumpkin seeds.',
-   story:`Replaced my 5pm biscuits with this box. Lost 4 kg in 6 months — mostly by stopping the biscuits.`,
-   tag:'weight', img:IMG.mem_apple_carrot, initial:'M',
-   why:'5pm snack that travels — no more biscuit cravings.',
-   recipe:{ingredients:['1 apple, grated','1 carrot, grated','2 tbsp roasted pumpkin seeds','½ lemon (juice)','½ tsp roasted jeera powder','Pinch of black salt','Few mint leaves (optional)'],method:['Grate apple + carrot into a bowl','Squeeze lemon immediately (stops browning)','Add jeera powder + black salt','Toss in pumpkin seeds + mint','Eat fresh — or pack in steel dabba for office']}},
-  {id:'c5', name:'Supriya', loc:'Mumbai', dish:'OH Salad (year-old fav)', condition:'Summer',
-   note:'I still refer to this recipe a year later. Best summer salad.',
-   story:`5-minute cooling salad I've been making for a year. The kind of recipe that doesn't go out of date.`,
-   tag:'summer', img:IMG.mem_oh_salad, initial:'S',
-   why:'5-min cooling summer salad — never goes out of date.',
-   recipe:{ingredients:['1 red onion, sliced thin','½ cup fresh coriander, chopped','¼ cup fresh mint, chopped','1 lemon (juice)','½ tsp roasted jeera powder','Salt to taste','Optional: 1 green chilli, slit'],method:['Slice onion thin — soak in cold water 5 min to mellow it','Drain + pat dry','Toss with coriander, mint, lemon, jeera, salt','Rest 5 min — flavours mingle','Serve cold — best paired with dal-chawal or as a side']}},
-  {id:'c6', name:'Geeta', loc:'Nagpur', dish:'Karela Sabzi (no bitterness)', condition:'Diabetes',
-   note:'My husband\'s sugar dropped 20 points in 3 months. Salt-soak trick.',
-   story:`Husband refused karela for years. Salt-soak fixed it — fasting sugar dropped 145 → 124 in 3 months.`,
-   tag:'diabetes', img:IMG.mem_karela, initial:'G',
-   why:'Salt-soak trick removes bitterness — husband\'s sugar dropped 20 points.',
-   recipe:{ingredients:['2 medium karela (bitter gourd)','1 onion, sliced','1 tomato, chopped','½ tsp haldi','½ tsp jeera','1 tsp oil','Salt for soak + cooking','Optional: 1 tsp jaggery (finish)'],method:['Slice karela thin, remove seeds','Rub with 1 tsp salt — leave 30 min','Squeeze + rinse 2-3 times till bitter water runs out','Heat oil, add jeera, onion — sauté till soft','Add karela + haldi — cook covered 10 min','Add tomato + salt — cook 5 more min','Optional: 1 tsp jaggery to round off — serve with phulka']}}
+   recipe:{ingredients:['1 cup ragi flour','½ cup jaggery, grated','3 tbsp ghee','¼ cup mixed nuts (walnut, almond, cashew)','½ tsp cardamom powder','1 tbsp poppy seeds (khus khus)','Pinch of salt'],method:['Slow-roast ragi flour till golden + nutty (8-10 min — do NOT brown)','In a separate pan, melt ghee + jaggery till syrupy','Mix roasted flour into the syrup','Add nuts, cardamom, poppy seeds','Cool slightly — shape into laddoos while still warm','Store airtight — lasts 7-10 days']}}
 ];
 
 // Get today's recipe — date is pinned to 2026-05-14 (Cardamom Thu) for demo; safe from timezone drift
@@ -2919,15 +2895,18 @@ function getAllMembers() {
 function openMemberDetail(m){
   document.getElementById('member-detail-title').textContent='Featured';
   const all = getAllMembers();
-  // Show ALL other member dishes (no cap) — grid is scrollable, "Add your recipe" tile pinned at the end
   const others = all.filter(c => c.id !== m.id);
-  const tilesHtml=others.map(o=>`<div class="tile" style="background-image:url('${o.img||''}')" data-mid="${o.id}"><div class="name">${o.name} · ${o.dish}</div></div>`).join('');
+  // "Add your recipe" tile is always pinned at position 4 (index 3) — first 3 dishes, then upload, then the rest
   const uploadTile=`<div class="tile upload-tile" id="member-upload-tile">
     <div class="upload-tile-inner">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       <div>Add your<br/>recipe</div>
     </div>
   </div>`;
+  const tile = (o) => `<div class="tile" style="background-image:url('${o.img||''}')" data-mid="${o.id}"><div class="name">${o.name} · ${o.dish}</div></div>`;
+  const head = others.slice(0,3).map(tile).join('');
+  const tail = others.slice(3).map(tile).join('');
+  const tilesHtml = head + uploadTile + tail;
   const storyHtml = (m.story || '').split('\n\n').map(p=>`<p>${p}</p>`).join('');
   const ingHtml = (m.recipe && m.recipe.ingredients || []).map(i=>`<li>${i}</li>`).join('');
   const methodHtml = (m.recipe && m.recipe.method || []).map(s=>`<li>${s}</li>`).join('');
@@ -2954,7 +2933,7 @@ function openMemberDetail(m){
     <div class="block">
       <div class="block-title">More member dishes</div>
     </div>
-    <div class="member-grid">${tilesHtml}${uploadTile}</div>
+    <div class="member-grid">${tilesHtml}</div>
   `;
   // Bind tile clicks — separate handler per element so upload tile is direct
   document.querySelectorAll('.member-grid .tile[data-mid]').forEach(t=>{
