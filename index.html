@@ -2903,13 +2903,24 @@ function closeIngredientSheet(){
 // =================== MEMBER DETAIL ===================
 function getAllMembers() {
   // Combined: remote submissions (live) + local user submissions + seeded CLUB
-  return [].concat(STATE.remoteClubSubmissions || [], STATE.myClubSubmissions || [], CLUB);
+  // Dedupe by (name|dish) — handles overlap between remote + local copies of the same submission
+  const all = [].concat(STATE.remoteClubSubmissions || [], STATE.myClubSubmissions || [], CLUB);
+  const seen = new Set();
+  const out = [];
+  for(const m of all){
+    const key = `${(m.name||'').toLowerCase().trim()}|${(m.dish||'').toLowerCase().trim()}`;
+    if(seen.has(key)) continue;
+    seen.add(key);
+    out.push(m);
+  }
+  return out;
 }
 
 function openMemberDetail(m){
   document.getElementById('member-detail-title').textContent='Featured';
   const all = getAllMembers();
-  const others = all.filter(c => c.id !== m.id).slice(0, 3);
+  // Show ALL other member dishes (no cap) — grid is scrollable, "Add your recipe" tile pinned at the end
+  const others = all.filter(c => c.id !== m.id);
   const tilesHtml=others.map(o=>`<div class="tile" style="background-image:url('${o.img||''}')" data-mid="${o.id}"><div class="name">${o.name} · ${o.dish}</div></div>`).join('');
   const uploadTile=`<div class="tile upload-tile" id="member-upload-tile">
     <div class="upload-tile-inner">
@@ -3037,11 +3048,14 @@ document.getElementById('ar-submit').addEventListener('click', async () => {
   };
 
   const result = await backendSubmit(submission, photoBlob);
-  // Always also keep a local copy so user sees their own dish immediately
-  STATE.myClubSubmissions.unshift(result.submission || submission);
-  saveState();
-  // Refresh remote list (so any new community submissions also appear)
-  refreshRemoteSubmissions();
+  // Only keep a local copy if the backend rejected (fallback offline-mode).
+  // Otherwise the next refreshRemoteSubmissions() will pull it from Supabase — no duplicates.
+  if (result.local) {
+    STATE.myClubSubmissions.unshift(result.submission || submission);
+    saveState();
+  }
+  // Refresh remote list (so any new community submissions also appear) — await so home re-renders with the fresh submission
+  await refreshRemoteSubmissions();
 
   track('Add Recipe Submitted', { dish, method_steps: methodSteps.length, mode: result.local ? 'local' : 'remote' });
   showToast(result.local
