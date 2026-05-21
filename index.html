@@ -1036,8 +1036,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 // 2. Paste URL + anon key below
 // 3. Run the SQL from SUPABASE_SETUP.md in your Supabase SQL editor
 // If left empty, app falls back to localStorage (per-device only).
-const SUPABASE_URL = '';
-const SUPABASE_ANON_KEY = '';
+const SUPABASE_URL = 'https://fpxlsuruosglkgckrvgi.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_VKgvUSUe3TnjdTGtSSFwFQ_mb9JkYlM';
 let sb = null;
 try {
   if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
@@ -3038,8 +3038,8 @@ document.getElementById('ar-submit').addEventListener('click', async () => {
 
   track('Add Recipe Submitted', { dish, method_steps: methodSteps.length, mode: result.local ? 'local' : 'remote' });
   showToast(result.local
-    ? 'Saved (this device only)'
-    : 'Your recipe is live in the Club');
+    ? 'Saved on your phone — community sharing coming soon'
+    : 'Your recipe is live in the community');
 
   // Reset form
   document.getElementById('ar-dish').value = '';
