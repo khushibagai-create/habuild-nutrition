@@ -2160,12 +2160,6 @@ const CONDITIONS = [
 ];
 
 const CLUB = [
-  {id:'c1', name:'Ashalatha', loc:'Bengaluru', dish:'Ragi Laddoo', condition:'Diabetes',
-   note:'Mom\'s recipe — my kids fight for these. Energy + iron, no sugar.',
-   story:`Mum's Saturday recipe from Mysuru. The trick is slow roasting — golden, not brown.`,
-   tag:'diabetes', img:IMG.mem_ragi, initial:'A',
-   why:'No sugar, full of iron — kids genuinely love it.',
-   recipe:{ingredients:['1 cup ragi flour','½ cup dates (deseeded, paste)','2 tbsp ghee','¼ cup walnuts, chopped','¼ cup makhana, crushed','½ tsp cardamom powder','Pinch of salt'],method:['Dry roast ragi flour on slow flame 8-10 min till nutty aroma','Roast walnuts + makhana lightly in ghee','Mix dates paste with warm flour till sticky','Add nuts, cardamom, salt — mix well','Shape into small laddoos while warm','Store in airtight jar — lasts 1 week']}},
   {id:'c3', name:'Kirti Sarmalkar', loc:'Indore', dish:'Ragi Laddu', condition:'Energy + Iron',
    note:'Mum\'s ragi laddu — just follow this recipe. No sugar, full energy.',
    story:`Mum's recipe — ragi, jaggery, ghee. 8 batchmates asked for it after I shared. Now my Saturday tradition.`,
@@ -2892,8 +2886,12 @@ function getAllMembers() {
   const all = [].concat(STATE.remoteClubSubmissions || [], STATE.myClubSubmissions || [], CLUB);
   const seen = new Set();
   const out = [];
+  // Hide list — submissions to suppress from the featured grid for now (remove later when no longer needed)
+  const HIDE_DISHES = ['sattu drink', 'ragi laddoo']; // Sattu Drink + Ashalatha's Ragi Laddoo
   for(const m of all){
-    const key = `${(m.name||'').toLowerCase().trim()}|${(m.dish||'').toLowerCase().trim()}`;
+    const dish = (m.dish||'').toLowerCase().trim();
+    if (HIDE_DISHES.includes(dish)) continue;
+    const key = `${(m.name||'').toLowerCase().trim()}|${dish}`;
     if(seen.has(key)) continue;
     seen.add(key);
     out.push(m);
