@@ -2192,7 +2192,16 @@ function getTodayRecipe(){
   return dated[0];
 }
 
-function getFeatured(){return CLUB.find(c=>c.id==='c3')||CLUB[0];} // Kirti Sarmalkar (real WhatsApp share)
+function getFeatured(){
+  // Prefer Rajshree Khopkar's "Ragi Oats Sugar Free Cookies" community submission if it's loaded from Supabase
+  const all = [...(STATE.remoteClubSubmissions||[]), ...(STATE.myClubSubmissions||[])];
+  const rajshree = all.find(s =>
+    (s.name||'').toLowerCase().includes('rajshree') &&
+    (s.dish||'').toLowerCase().includes('ragi oats')
+  );
+  if (rajshree) return rajshree;
+  return CLUB.find(c=>c.id==='c3')||CLUB[0]; // fallback: Kirti Sarmalkar
+}
 function getOtherMembers(){return CLUB.slice(1);}
 
 // =================== FAQ DATA ===================
