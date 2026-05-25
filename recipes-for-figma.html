@@ -838,6 +838,43 @@ html, body { background: #1c2615; margin: 0; padding: 40px 0; min-height: 100vh;
   transform: none !important;
 }
 
+/* ========================================================================
+   HARD RESET — the original prototype CSS has a @media (min-width:480px)
+   rule that turns <body> into a centered flexbox and shrinks .phone-wrap
+   to 420×92vh. That breaks the figma-stack layout entirely. Neutralize. */
+html, body {
+  height: auto !important;
+  background: #1c2615 !important;
+  display: block !important;
+  align-items: initial !important;
+  justify-content: initial !important;
+  overflow-x: hidden;
+}
+.phone-wrap {
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.phone {
+  border-radius: 0 !important;
+  height: auto !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+/* Restore the figma stack to a column scroll */
+.figma-stack {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 72px !important;
+  padding: 40px 20px 120px;
+  width: 100%;
+}
+.figma-page-header { width: 100%; }
 </style>
 </head>
 <body>
