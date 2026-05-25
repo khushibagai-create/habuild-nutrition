@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1320, initial-scale=1">
+<title>Habuild · Recipes — design specs (all screens)</title>
+<style>
+  :root{
+    --forest:#2D5016; --sage:#4A7C59; --cream:#F5F0E8; --cream-deep:#E8D5B7;
+    --sand:#DCC79A; --gold:#8B6914; --ink:#1c1a17; --muted:#6e6960;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+  body{
+    background:#1c2615;
+    font-family:'Inter','SF Pro Text','Helvetica Neue',sans-serif;
+    color:#fff;
+    padding:48px 36px 80px;
+    min-height:100vh;
+  }
+  header{max-width:1280px;margin:0 auto 40px;}
+  .eyebrow{display:inline-block;background:rgba(255,255,255,0.08);color:#cdd7c0;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border-radius:100px;margin-bottom:18px;}
+  h1{font-family:'Playfair Display',Georgia,serif;font-size:48px;font-weight:700;letter-spacing:-1px;line-height:1.1;margin-bottom:14px;color:#fff;}
+  .lead{font-size:17px;line-height:1.6;color:#cdd7c0;max-width:720px;}
+  .meta{margin-top:18px;display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:#9aa493;}
+  .meta a{color:#cdd7c0;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,0.25);}
+  .meta a:hover{text-decoration-color:#fff;}
+
+  .legend{
+    max-width:1280px;margin:0 auto 48px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:14px;padding:22px 24px;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+  }
+  .legend h3{font-size:11px;font-weight:700;letter-spacing:1.4px;color:#9aa493;text-transform:uppercase;margin-bottom:8px;}
+  .legend p{font-size:13.5px;color:#cdd7c0;line-height:1.55;}
+
+  .toc{max-width:1280px;margin:0 auto 60px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px 32px;font-size:13.5px;}
+  .toc a{color:#cdd7c0;text-decoration:none;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.1);}
+  .toc a:hover{color:#fff;border-bottom-color:rgba(255,255,255,0.4);}
+
+  .grid{
+    max-width:1280px;margin:0 auto;
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:48px 36px;
+  }
+  @media (max-width:1100px){.grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:760px){.grid{grid-template-columns:1fr;}}
+
+  .frame{display:flex;flex-direction:column;align-items:center;}
+  .frame-label{
+    width:100%;text-align:left;
+    margin-bottom:14px;
+    padding-left:8px;
+  }
+  .frame-num{font-size:11px;font-weight:700;letter-spacing:1.4px;color:#7a9d65;text-transform:uppercase;}
+  .frame-title{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;color:#fff;margin-top:4px;line-height:1.2;}
+  .frame-sub{font-size:13px;color:#9aa493;margin-top:5px;line-height:1.45;}
+
+  .phone{
+    width:390px;max-width:100%;
+    background:#000;
+    border-radius:42px;
+    padding:8px 8px 16px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.35);
+    position:relative;
+  }
+  .phone::before{
+    content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);
+    width:120px;height:24px;background:#000;border-radius:0 0 16px 16px;
+    z-index:3;
+  }
+  .phone-screen{
+    width:100%;
+    background:#fff;
+    border-radius:34px;
+    overflow:hidden;
+    position:relative;
+  }
+  /* Constrain visible image height so tall screens don't dwarf others */
+  .phone-screen img{
+    width:100%;height:auto;display:block;
+  }
+  .phone-screen.scroll{
+    max-height:780px;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  }
+  .phone-screen.scroll::-webkit-scrollbar{width:6px;}
+  .phone-screen.scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.3);border-radius:3px;}
+
+  .scroll-hint{
+    margin-top:10px;display:flex;align-items:center;gap:6px;
+    font-size:11px;color:#7a9d65;letter-spacing:0.5px;
+  }
+  .scroll-hint::before{content:'↕';font-size:14px;}
+
+  /* Section divider */
+  .section-divider{
+    max-width:1280px;margin:80px auto 40px;
+    display:flex;align-items:center;gap:20px;
+  }
+  .section-divider::before, .section-divider::after{
+    content:'';flex:1;height:1px;background:rgba(255,255,255,0.1);
+  }
+  .section-divider span{
+    font-size:12px;font-weight:700;letter-spacing:2px;color:#7a9d65;text-transform:uppercase;
+  }
+
+  footer{
+    max-width:1280px;margin:80px auto 0;
+    padding-top:32px;border-top:1px solid rgba(255,255,255,0.1);
+    font-size:13px;color:#7a9d65;line-height:1.6;
+  }
+  footer a{color:#cdd7c0;text-decoration:underline;text-underline-offset:3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Habuild · Recipes</div>
+  <h1>Recipes tab — design specs<br/>(all screens)</h1>
+  <p class="lead">Every state of the Recipes feature, captured straight from the live prototype. Use this as the visual reference alongside the PRD. Each phone frame is the actual screen with proper scroll — drag inside it if the content extends beyond the visible area.</p>
+  <div class="meta">
+    <a href="https://khushibagai-create.github.io/habuild-nutrition/" target="_blank">Live prototype →</a>
+    <span>·</span>
+    <a href="https://app.clickup.com/9002212861/docs/8c95qfx-158636/8c95qfx-52196" target="_blank">PRD in ClickUp →</a>
+    <span>·</span>
+    <span>Updated 2026-05-25</span>
+  </div>
+</header>
+
+<div class="legend">
+  <div>
+    <h3>Owner</h3>
+    <p>Khushi Bagai · App Pod</p>
+  </div>
+  <div>
+    <h3>Scope</h3>
+    <p>Full prototype, V1 scope. 12 screens.</p>
+  </div>
+  <div>
+    <h3>Tab name</h3>
+    <p>"Recipes" (bottom nav slot 3)</p>
+  </div>
+  <div>
+    <h3>Backend</h3>
+    <p>Supabase · reuse existing <code>submissions</code> table + new <code>recipes_likes</code> table</p>
+  </div>
+</div>
+
+<nav class="toc">
+  <a href="#s1">01 · Home — populated</a>
+  <a href="#s2">02 · Home — empty state</a>
+  <a href="#s3">03 · Today's recipe detail</a>
+  <a href="#s4">04 · Member detail — community</a>
+  <a href="#s5">05 · Member detail — own (Edit + Delete)</a>
+  <a href="#s6">06 · Add recipe — empty</a>
+  <a href="#s7">07 · Add recipe — filled</a>
+  <a href="#s8">08 · Recipe submitted — success</a>
+  <a href="#s9">09 · Edit recipe — pre-filled</a>
+  <a href="#s10">10 · Recipe updated — success</a>
+  <a href="#s11">11 · Browse all recipes</a>
+  <a href="#s12">12 · FAQ · Ask the team</a>
+</nav>
+
+<div class="section-divider"><span>Home tab</span></div>
+
+<div class="grid">
+
+  <article class="frame" id="s1">
+    <div class="frame-label">
+      <div class="frame-num">Screen 01</div>
+      <div class="frame-title">Home — populated</div>
+      <div class="frame-sub">Member has submitted recipes. Cover · Browse · FAQ · Featured Recipes · Your recipes grid.</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/01_home_populated.png" alt="Home populated"/></div></div>
+    <div class="scroll-hint">Scroll inside the frame to see Featured + Your recipes</div>
+  </article>
+
+  <article class="frame" id="s2">
+    <div class="frame-label">
+      <div class="frame-num">Screen 02</div>
+      <div class="frame-title">Home — empty state</div>
+      <div class="frame-sub">Brand-new member. Your recipes shows the "Save what you cook" empty card with green CTA button.</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/02_home_empty.png" alt="Home empty"/></div></div>
+    <div class="scroll-hint">Scroll inside the frame to reach the Your recipes empty card</div>
+  </article>
+
+  <article class="frame" id="s3">
+    <div class="frame-label">
+      <div class="frame-num">Screen 03</div>
+      <div class="frame-title">Today's recipe detail</div>
+      <div class="frame-sub">Opened from cover or "Read recipe →". Hero, voice tip, ingredients, method, benefits, Q&amp;A, share.</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/03_today_recipe_detail.png" alt="Today's recipe detail"/></div></div>
+    <div class="scroll-hint">Scroll inside the frame for full recipe content</div>
+  </article>
+
+</div>
+
+<div class="section-divider"><span>Community + Own recipes</span></div>
+
+<div class="grid">
+
+  <article class="frame" id="s4">
+    <div class="frame-label">
+      <div class="frame-num">Screen 04</div>
+      <div class="frame-title">Member detail — community</div>
+      <div class="frame-sub">Someone else's recipe. Heart pill on hero. No Edit/Delete pills.</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/04_member_community.png" alt="Member community detail"/></div></div>
+    <div class="scroll-hint">Scroll for ingredients · method · more member dishes</div>
+  </article>
+
+  <article class="frame" id="s5">
+    <div class="frame-label">
+      <div class="frame-num">Screen 05</div>
+      <div class="frame-title">Member detail — own</div>
+      <div class="frame-sub">Member's own recipe. <strong>✎ Edit recipe</strong> + <strong>🗑 Delete</strong> pills visible below dish title.</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/05_member_own_with_edit_delete.png" alt="Member own detail"/></div></div>
+    <div class="scroll-hint">Scroll to see Edit + Delete pills</div>
+  </article>
+
+</div>
+
+<div class="section-divider"><span>Add · Edit · Delete</span></div>
+
+<div class="grid">
+
+  <article class="frame" id="s6">
+    <div class="frame-label">
+      <div class="frame-num">Screen 06</div>
+      <div class="frame-title">Add recipe — empty</div>
+      <div class="frame-sub">Photo zone · Name · How to make · Why it's special. Submit disabled until all 3 text fields filled.</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/06_add_recipe_empty.png" alt="Add recipe empty"/></div></div>
+  </article>
+
+  <article class="frame" id="s7">
+    <div class="frame-label">
+      <div class="frame-num">Screen 07</div>
+      <div class="frame-title">Add recipe — filled</div>
+      <div class="frame-sub">All fields complete. Submit button is forest-green and active: "Share with the community".</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/07_add_recipe_filled.png" alt="Add recipe filled"/></div></div>
+  </article>
+
+  <article class="frame" id="s8">
+    <div class="frame-label">
+      <div class="frame-num">Screen 08</div>
+      <div class="frame-title">Recipe submitted — success</div>
+      <div class="frame-sub">Lands here after submit. WhatsApp share (primary) + "Done — back to home" text link (secondary).</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/08_submitted_success.png" alt="Submitted success"/></div></div>
+  </article>
+
+  <article class="frame" id="s9">
+    <div class="frame-label">
+      <div class="frame-num">Screen 09</div>
+      <div class="frame-title">Edit recipe — pre-filled</div>
+      <div class="frame-sub">Triggered by ✎ pill. All fields pre-populated. Submit becomes "Save changes".</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/09_edit_recipe_prefilled.png" alt="Edit recipe prefilled"/></div></div>
+  </article>
+
+  <article class="frame" id="s10">
+    <div class="frame-label">
+      <div class="frame-num">Screen 10</div>
+      <div class="frame-title">Recipe updated — success</div>
+      <div class="frame-sub">Same layout as Screen 08 with "Recipe updated" / "Your changes are live for the community."</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/10_updated_success.png" alt="Updated success"/></div></div>
+  </article>
+
+  <article class="frame" id="s11">
+    <div class="frame-label">
+      <div class="frame-num">Screen 11</div>
+      <div class="frame-title">Browse all recipes</div>
+      <div class="frame-sub">Meal-time chip (primary) + Condition pill (secondary). Tap any tile → recipe detail.</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/11_browse_all_recipes.png" alt="Browse all recipes"/></div></div>
+    <div class="scroll-hint">Long scroll — full recipe library inside</div>
+  </article>
+
+</div>
+
+<div class="section-divider"><span>Support</span></div>
+
+<div class="grid">
+
+  <article class="frame" id="s12">
+    <div class="frame-label">
+      <div class="frame-num">Screen 12</div>
+      <div class="frame-title">FAQ · Ask the team</div>
+      <div class="frame-sub">"Have a question?" Hero. Free-text ask field. Curated FAQ list below (from WhatsApp query audit).</div>
+    </div>
+    <div class="phone"><div class="phone-screen scroll"><img src="assets/prd/12_faq_ask_team.png" alt="FAQ Ask team"/></div></div>
+  </article>
+
+</div>
+
+<footer>
+  Built from the live prototype at <a href="https://khushibagai-create.github.io/habuild-nutrition/" target="_blank">khushibagai-create.github.io/habuild-nutrition</a>.
+  All screens captured 2026-05-25. Interaction details, copy, backend, analytics, risks, and open questions are in the PRD:
+  <a href="https://app.clickup.com/9002212861/docs/8c95qfx-158636/8c95qfx-52196" target="_blank">ClickUp · PRD — Recipes tab</a>.
+</footer>
+
+</body>
+</html>
