@@ -629,18 +629,21 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .feature-like:active{transform:scale(0.96);}
 .feature-img{position:relative;}
 
-/* =================== EDIT-OWN-RECIPE PILL =================== */
-.member-edit-btn{
+/* =================== EDIT/DELETE OWN-RECIPE PILLS =================== */
+.member-owner-actions{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 8px;}
+.member-edit-btn,.member-delete-btn{
   display:inline-flex;align-items:center;gap:6px;
-  margin:6px 0 8px;
   padding:7px 14px 7px 12px;
-  background:var(--cream-deep);color:var(--forest);
-  border:1.5px solid var(--sand);border-radius:100px;
+  border-radius:100px;
   font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;
   letter-spacing:0.1px;
 }
+.member-edit-btn{background:var(--cream-deep);color:var(--forest);border:1.5px solid var(--sand);}
 .member-edit-btn svg{width:13px;height:13px;flex-shrink:0;}
 .member-edit-btn:active{transform:scale(0.98);background:var(--sand);}
+.member-delete-btn{background:transparent;color:#b04545;border:1.5px solid #e8c5c5;}
+.member-delete-btn svg{width:13px;height:13px;flex-shrink:0;}
+.member-delete-btn:active{transform:scale(0.98);background:#fbf0f0;}
 
 /* =================== POST-SUBMIT SUCCESS SCREEN =================== */
 .recipe-success{padding:30px 24px 40px;text-align:center;}
@@ -667,22 +670,46 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 /* =================== YOUR RECIPES HOME SECTION =================== */
 .my-recipes-wrap{padding:0 18px 24px;margin-bottom:8px;}
 .my-recipes-empty{
+  position:relative;
   background:linear-gradient(135deg,var(--cream-deep),var(--sand));
-  border-radius:18px;padding:24px 20px;text-align:center;
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  cursor:pointer;
+  border-radius:20px;padding:30px 22px 24px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  cursor:pointer;text-align:center;
+  overflow:hidden;
 }
-.my-recipes-empty:active{opacity:0.92;}
-.my-recipes-empty .ic{
-  width:46px;height:46px;border-radius:50%;background:white;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--forest);box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  margin-bottom:4px;
+.my-recipes-empty::before{
+  content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;
+  background:rgba(255,255,255,0.35);border-radius:50%;
 }
-.my-recipes-empty .ic svg{width:20px;height:20px;}
-.my-recipes-empty .t{font-size:15px;font-weight:700;color:var(--ink);}
-.my-recipes-empty .s{font-size:13px;color:var(--muted);max-width:240px;line-height:1.45;}
-.my-recipes-empty .cta{font-size:13px;font-weight:700;color:var(--forest);margin-top:4px;letter-spacing:0.2px;}
+.my-recipes-empty::after{
+  content:'';position:absolute;bottom:-50px;left:-30px;width:100px;height:100px;
+  background:rgba(45,80,22,0.04);border-radius:50%;
+}
+.my-recipes-empty:active{transform:scale(0.995);opacity:0.96;}
+.my-recipes-empty .t{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;color:var(--ink);
+  letter-spacing:-0.4px;line-height:1.2;
+  position:relative;z-index:1;
+  margin-bottom:2px;
+}
+.my-recipes-empty .s{
+  font-size:13.5px;color:var(--muted);
+  max-width:300px;line-height:1.55;
+  position:relative;z-index:1;
+  margin-bottom:10px;
+}
+.my-recipes-empty .cta-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--forest);color:white;
+  padding:13px 24px;border-radius:100px;
+  font-family:inherit;font-size:14.5px;font-weight:700;
+  border:none;cursor:pointer;
+  box-shadow:0 6px 16px rgba(45,80,22,0.24);
+  letter-spacing:0.2px;
+  position:relative;z-index:1;
+}
+.my-recipes-empty .cta-btn svg{width:14px;height:14px;flex-shrink:0;}
 .my-recipes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 .my-recipe-tile{
   position:relative;border-radius:16px;overflow:hidden;
@@ -1399,6 +1426,39 @@ async function backendUpdate(submissionId, fields, photoBlob) {
     console.warn('[backend] update failed, local-only:', e);
     return { ok: false, local: true };
   }
+}
+
+async function backendDelete(submissionId) {
+  if (!sb) return { ok: true, local: true };
+  const remoteId = submissionId && submissionId.startsWith('remote-') ? submissionId.slice(7) : null;
+  if (!remoteId) return { ok: true, local: true };
+  try {
+    const { error } = await sb.from('submissions').delete().eq('id', remoteId);
+    if (error) throw error;
+    return { ok: true, local: false };
+  } catch (e) {
+    console.warn('[backend] delete failed, local-only:', e);
+    return { ok: false, local: true };
+  }
+}
+
+// Delete a submission everywhere — local mirrors, remote Supabase row, and saved-state cache.
+async function deleteSubmission(m) {
+  const id = m.id;
+  const removeFromList = (list) => {
+    if (!list) return;
+    const i = list.findIndex(s => s.id === id);
+    if (i >= 0) list.splice(i, 1);
+  };
+  removeFromList(STATE.myClubSubmissions);
+  removeFromList(STATE.remoteClubSubmissions);
+  saveState();
+  const result = await backendDelete(id);
+  if (!result.local) {
+    try { await refreshRemoteSubmissions(); } catch(e) {}
+  }
+  track('Recipe Deleted', { id, dish: m.dish, mode: result.local ? 'local' : 'remote' });
+  return result;
 }
 
 async function backendFetchSubmissions() {
@@ -3242,7 +3302,12 @@ function openMemberDetail(m){
   // Detect own recipe — case-insensitive name match
   const myName = (STATE.user.name||'').toLowerCase().trim();
   const isOwn = !!myName && (m.name||'').toLowerCase().trim() === myName;
-  const editPill = isOwn ? `<button class="member-edit-btn" id="member-edit-btn" data-track="CTA Clicked" data-track-prop-cta_label="Edit recipe" data-track-prop-cta_location="member-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Edit this recipe</button>` : '';
+  const editPill = isOwn ? `
+    <div class="member-owner-actions">
+      <button class="member-edit-btn" id="member-edit-btn" data-track="CTA Clicked" data-track-prop-cta_label="Edit recipe" data-track-prop-cta_location="member-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Edit recipe</button>
+      <button class="member-delete-btn" id="member-delete-btn" data-track="CTA Clicked" data-track-prop-cta_label="Delete recipe" data-track-prop-cta_location="member-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>Delete</button>
+    </div>
+  ` : '';
   // Like button overlaid on hero — shows count + heart, filled when liked
   const _likedNow = isLiked(m);
   const _likeCount = getLikeCount(m);
@@ -3295,6 +3360,24 @@ function openMemberDetail(m){
       e.stopPropagation();
       track('Edit Recipe Tapped', { id: m.id });
       openAddRecipe(m);
+    });
+  }
+  const delBtn = document.getElementById('member-delete-btn');
+  if(delBtn){
+    delBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const ok = window.confirm(`Delete "${m.dish}"?\n\nThis can't be undone.`);
+      if (!ok) {
+        track('Delete Recipe Cancelled', { id: m.id });
+        return;
+      }
+      track('Delete Recipe Confirmed', { id: m.id, dish: m.dish });
+      delBtn.disabled = true;
+      delBtn.textContent = 'Deleting…';
+      try { await deleteSubmission(m); } catch(err) { console.warn('delete err', err); }
+      showToast('Recipe deleted');
+      go('screen-home');
+      renderHome();
     });
   }
   // Hero like button
@@ -4359,19 +4442,26 @@ function renderMyRecipes(){
   const recipes = getMyRecipes();
 
   if (recipes.length === 0) {
-    // Empty state — invite first submission
+    // Empty state — entire card is clickable, invites first submission
     wrap.innerHTML = `
-      <div class="my-recipes-empty" id="my-recipes-empty">
-        <div class="ic">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-        </div>
-        <div class="t">You haven't added a recipe yet</div>
-        <div class="s">Share something you cooked — even one line is fine. Other members will see it.</div>
-        <div class="cta">Add your first recipe →</div>
+      <div class="my-recipes-empty" id="my-recipes-empty" role="button" tabindex="0">
+        <div class="t">Save what you cook</div>
+        <div class="s">One dish you make often — that's all. Your recipe will live in your cookbook here and reach members across the community.</div>
+        <button class="cta-btn" id="my-recipes-empty-btn" type="button">
+          Add your first recipe
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
     `;
     const empty = document.getElementById('my-recipes-empty');
-    if (empty) empty.onclick = () => { track('My Recipes Empty Tapped'); openAddRecipe(); };
+    if (empty) {
+      const fire = (e) => { if (e) e.stopPropagation(); track('My Recipes Empty Tapped'); openAddRecipe(); };
+      empty.onclick = fire;
+      empty.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fire(); } };
+      // Button + card share the same handler — explicit on button avoids double-firing
+      const btn = document.getElementById('my-recipes-empty-btn');
+      if (btn) btn.onclick = fire;
+    }
     return;
   }
 
