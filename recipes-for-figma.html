@@ -809,6 +809,35 @@ html, body { background: #1c2615; margin: 0; padding: 40px 0; min-height: 100vh;
 .figma-frame .cover { height: 574px !important; min-height: 574px !important; }
 .figma-frame .phone-wrap { height: auto !important; min-height: auto !important; }
 
+/* Contain all `position: fixed` elements (.bottom-cta, .toast, .share-overlay, etc.)
+   so they don't escape the figma-frame and float over the page. */
+.figma-frame { isolation: isolate; }
+.figma-frame .bottom-cta-fade,
+.figma-frame .bottom-cta,
+.figma-frame .toast,
+.figma-frame .share-overlay,
+.figma-frame .ing-sheet {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  transform: none !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+/* Hide inactive overlays that were left in the DOM */
+.figma-frame .share-overlay { display: none !important; }
+.figma-frame .toast { display: none !important; }
+/* Hide the floating filter button on Browse — it's a position:fixed pill that doesn't
+   carry meaning when statically stacked. Inline filter chips are still visible above. */
+.figma-frame .filter-fab,
+.figma-frame .browse-filter-fab { display: none !important; }
+/* ar-bottom uses padding-bottom on .ar-body for spacing — keep its layout natural */
+.figma-frame .ar-bottom {
+  position: relative !important;
+  left: auto !important; right: auto !important; bottom: auto !important;
+  transform: none !important;
+}
+
 </style>
 </head>
 <body>
