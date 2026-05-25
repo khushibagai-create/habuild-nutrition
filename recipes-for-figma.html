@@ -902,17 +902,25 @@ body { overflow-x: auto !important; }
 .figma-page-header { width: 100%; max-width: 900px; margin: 0 auto; padding: 40px 24px 0; }
 
 /* ===== bg-fill: real <img> standing in for CSS background-image so
-   html.to.design imports them as Figma image fills (not lost backgrounds). */
+   html.to.design imports them as Figma image fills. Use NORMAL FLOW
+   (not position:absolute) — the plugin imports flow imgs reliably as
+   image fills, but skips small absolute-positioned ones as decoration. */
 .bg-fill {
-  position: absolute !important;
-  inset: 0 !important;
+  display: block !important;
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
-  z-index: 0 !important;
   pointer-events: none !important;
   border-radius: inherit !important;
+  /* Sit BEHIND the gradient + text overlays via negative margin trick —
+     pulls subsequent siblings up to overlap it. */
+  margin: 0 !important;
+}
+/* Pull the FIRST sibling AFTER bg-fill up to overlap it (the gradient
+   ::after is already absolute; this is for any plain overlay div). */
+.figma-frame img.bg-fill + * {
+  margin-top: -100%;
 }
 /* Ensure ANY direct parent of a .bg-fill img is positioned, so the
    absolute-positioned image fills it correctly. :has() is widely
