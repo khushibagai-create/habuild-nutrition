@@ -130,6 +130,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
   .masthead-title::before,.masthead-title::after{content:'';position:absolute;top:50%;width:34px;height:1px;background:var(--sage-light);}
   .masthead-title::before{right:calc(100% + 16px);}
   .masthead-title::after{left:calc(100% + 16px);}
+  .masthead-sub{font-size:13px;color:var(--muted);margin-top:8px;font-style:italic;letter-spacing:0.1px;}
   .feature{padding:20px 22px 0;}
   .feature-card{display:flex;flex-direction:column;background:white;border-radius:22px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,0.12);cursor:pointer;}
   .feature-img{width:100%;aspect-ratio:16/11;background-size:cover;background-position:center;background-color:var(--sand);}
@@ -578,6 +579,145 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .share-actions button:active:not(:disabled){transform:scale(0.97);}
 .share-actions .share-confirm svg{width:16px;height:16px;}
 
+/* =================== LIKE BUTTONS =================== */
+/* Big floating heart on hero image (member detail) */
+.like-fab{
+  position:absolute;right:14px;bottom:14px;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 14px 9px 12px;border-radius:100px;
+  background:rgba(255,255,255,0.94);
+  border:none;cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,0.22);
+  font-family:inherit;font-size:14px;font-weight:700;color:#1f1a1a;
+  z-index:5;
+}
+.like-fab svg{width:18px;height:18px;flex-shrink:0;color:#d23a3a;}
+.like-fab.liked svg{fill:#d23a3a;stroke:#d23a3a;}
+.like-fab:not(.liked) svg{fill:none;stroke:#1f1a1a;stroke-width:2;}
+.like-fab:active{transform:scale(0.97);}
+
+/* Small heart pill on tile (More member dishes grid) */
+.tile-like{
+  position:absolute;top:8px;right:8px;
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 8px;border-radius:100px;
+  background:rgba(255,255,255,0.94);
+  font-size:11px;font-weight:700;color:#1f1a1a;
+  z-index:3;cursor:pointer;
+  border:none;font-family:inherit;
+  box-shadow:0 2px 6px rgba(0,0,0,0.18);
+}
+.tile-like svg{width:11px;height:11px;flex-shrink:0;color:#d23a3a;}
+.tile-like.liked svg{fill:#d23a3a;stroke:#d23a3a;}
+.tile-like:not(.liked) svg{fill:none;stroke:#1f1a1a;stroke-width:2.2;}
+.tile-like:active{transform:scale(0.95);}
+
+/* Heart pill on home Featured hero */
+.feature-like{
+  position:absolute;top:12px;right:12px;
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 10px;border-radius:100px;
+  background:rgba(255,255,255,0.94);
+  font-size:12px;font-weight:700;color:#1f1a1a;
+  z-index:3;cursor:pointer;
+  border:none;font-family:inherit;
+  box-shadow:0 3px 10px rgba(0,0,0,0.2);
+}
+.feature-like svg{width:13px;height:13px;flex-shrink:0;color:#d23a3a;}
+.feature-like.liked svg{fill:#d23a3a;stroke:#d23a3a;}
+.feature-like:not(.liked) svg{fill:none;stroke:#1f1a1a;stroke-width:2.2;}
+.feature-like:active{transform:scale(0.96);}
+.feature-img{position:relative;}
+
+/* =================== EDIT-OWN-RECIPE PILL =================== */
+.member-edit-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  margin:6px 0 8px;
+  padding:7px 14px 7px 12px;
+  background:var(--cream-deep);color:var(--forest);
+  border:1.5px solid var(--sand);border-radius:100px;
+  font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;
+  letter-spacing:0.1px;
+}
+.member-edit-btn svg{width:13px;height:13px;flex-shrink:0;}
+.member-edit-btn:active{transform:scale(0.98);background:var(--sand);}
+
+/* =================== POST-SUBMIT SUCCESS SCREEN =================== */
+.recipe-success{padding:30px 24px 40px;text-align:center;}
+.success-confetti{font-size:54px;margin-bottom:16px;line-height:1;}
+.success-headline{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--forest);line-height:1.15;margin-bottom:8px;letter-spacing:-0.5px;}
+.success-sub{font-size:15px;color:var(--muted);line-height:1.45;margin-bottom:26px;padding:0 8px;}
+.success-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 14px 38px rgba(0,0,0,0.12);text-align:left;margin-bottom:24px;}
+.success-card-img{width:100%;aspect-ratio:16/11;background-size:cover;background-position:center;background-color:var(--sand);}
+.success-card-img.no-photo{background:linear-gradient(135deg,var(--cream-deep),var(--sand));display:flex;align-items:center;justify-content:center;color:var(--forest);font-family:'Playfair Display',serif;font-size:24px;font-weight:700;}
+.success-card-body{padding:20px 20px 22px;}
+.success-card-kicker{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:6px;}
+.success-card-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:10px;letter-spacing:-0.3px;}
+.success-card-byline{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.success-card-byline .ava{width:30px;height:30px;border-radius:50%;background:var(--gold);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
+.success-card-byline span{font-size:13px;color:var(--ink);font-weight:600;}
+.success-card-lead{font-size:14px;color:var(--muted);line-height:1.5;font-style:italic;}
+.success-actions{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+.success-actions .btn-success-share{background:#25D366;color:white;font-weight:700;font-size:15px;padding:14px;border-radius:14px;border:none;display:flex;align-items:center;justify-content:center;gap:9px;}
+.success-actions .btn-success-share svg{width:18px;height:18px;}
+.success-actions .btn-success-share:active{opacity:0.9;}
+.success-actions .btn-success-done{background:transparent;color:var(--muted);font-weight:600;font-size:13.5px;padding:10px;border-radius:8px;border:none;letter-spacing:0.1px;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(110,105,95,0.35);text-decoration-thickness:1px;}
+.success-actions .btn-success-done:active{color:var(--forest);text-decoration-color:var(--forest);}
+
+/* =================== YOUR RECIPES HOME SECTION =================== */
+.my-recipes-wrap{padding:0 18px 24px;margin-bottom:8px;}
+.my-recipes-empty{
+  background:linear-gradient(135deg,var(--cream-deep),var(--sand));
+  border-radius:18px;padding:24px 20px;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  cursor:pointer;
+}
+.my-recipes-empty:active{opacity:0.92;}
+.my-recipes-empty .ic{
+  width:46px;height:46px;border-radius:50%;background:white;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--forest);box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom:4px;
+}
+.my-recipes-empty .ic svg{width:20px;height:20px;}
+.my-recipes-empty .t{font-size:15px;font-weight:700;color:var(--ink);}
+.my-recipes-empty .s{font-size:13px;color:var(--muted);max-width:240px;line-height:1.45;}
+.my-recipes-empty .cta{font-size:13px;font-weight:700;color:var(--forest);margin-top:4px;letter-spacing:0.2px;}
+.my-recipes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.my-recipe-tile{
+  position:relative;border-radius:16px;overflow:hidden;
+  aspect-ratio:4/5;background:var(--sand);cursor:pointer;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+.my-recipe-tile .img{position:absolute;inset:0;background-size:cover;background-position:center;}
+.my-recipe-tile .img.no-photo{
+  background:linear-gradient(135deg,var(--cream-deep),var(--sand));
+  display:flex;align-items:center;justify-content:center;
+  color:var(--forest);font-family:'Playfair Display',serif;
+  font-size:16px;font-weight:700;text-align:center;padding:12px;
+}
+.my-recipe-tile::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,0.74) 100%);}
+.my-recipe-tile .label{position:absolute;left:11px;right:11px;bottom:10px;color:white;z-index:2;}
+.my-recipe-tile .label .t{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;line-height:1.2;text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+.my-recipe-tile .label .you-badge{font-size:9.5px;letter-spacing:0.6px;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,0.92);text-shadow:0 1px 6px rgba(0,0,0,0.6);margin-top:2px;}
+.my-recipe-tile-add{
+  aspect-ratio:4/5;
+  box-sizing:border-box;          /* keep dashed border inside the column */
+  border-radius:16px;
+  background:rgba(45,80,22,0.06);
+  border:2px dashed rgba(45,80,22,0.3);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;cursor:pointer;color:var(--forest);
+  overflow:hidden;
+}
+.my-recipe-tile-add:active{transform:scale(0.99);}
+.my-recipe-tile-add .ic-c{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--forest);color:white;
+  display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;
+}
+.my-recipe-tile-add .t-c{font-size:13px;font-weight:700;}
+
 </style>
 <script src="assets/analytics.js"></script>
 <script>
@@ -631,38 +771,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
-    <div class="masthead masthead-spaced">
-      <div class="masthead-title">Featured Today</div>
-    </div>
-    <div class="feature">
-      <div class="feature-card" id="mag-feature-card">
-        <div class="feature-img" id="mag-feature-img" style="background-image:url('assets/kirti-ragi-laddu.jpg')"></div>
-        <div class="feature-body">
-          <div class="feature-kicker" id="mag-feat-kicker">From the Community · Diabetes</div>
-          <h2 class="feature-title" id="mag-feat-title">Ragi Laddoo</h2>
-          <div class="feature-byline">
-            <div class="ava" id="mag-feat-ava">A</div>
-            <span id="mag-feat-byline">Ashalatha · Bengaluru</span>
-          </div>
-          <p class="feature-lead" id="mag-feat-lead">"Mom's recipe — my kids fight for these. Energy + iron, no sugar."</p>
-          <a class="feature-link" id="mag-feat-link">Read the story
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="upload-cta-wrap">
-      <button class="upload-cta-card" id="upload-cta-home" data-track="CTA Clicked" data-track-prop-cta_label="Add a recipe" data-track-prop-cta_location="home-card">
-        <div class="upload-cta-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </div>
-        <div class="upload-cta-body">
-          <div class="upload-cta-title">Share your recipe</div>
-          <div class="upload-cta-sub">A photo and one line — with the community</div>
-        </div>
-        <svg class="upload-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-      <button class="upload-cta-card" id="faq-cta-home" data-track="CTA Clicked" data-track-prop-cta_label="Ask a question (FAQ)" data-track-prop-cta_location="home-card" style="margin-top:12px;">
+    <div class="upload-cta-wrap" style="padding-top:0;">
+      <button class="upload-cta-card" id="faq-cta-home" data-track="CTA Clicked" data-track-prop-cta_label="Ask a question (FAQ)" data-track-prop-cta_location="home-after-browse">
         <div class="upload-cta-icon" style="background:linear-gradient(135deg,var(--cream-deep),var(--sand));">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
@@ -672,6 +782,38 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
         </div>
         <svg class="upload-cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
+    </div>
+    <div class="masthead masthead-spaced">
+      <div class="masthead-title">Featured Recipes</div>
+      <div class="masthead-sub">From the community members</div>
+    </div>
+    <div class="feature">
+      <div class="feature-card" id="mag-feature-card">
+        <div class="feature-img" id="mag-feature-img" style="background-image:url('assets/kirti-ragi-laddu.jpg')">
+          <button class="feature-like" id="mag-feat-like" data-track="CTA Clicked" data-track-prop-cta_label="Like recipe" data-track-prop-cta_location="home-feature">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="mag-feat-like-count">0</span>
+          </button>
+        </div>
+        <div class="feature-body">
+          <div class="feature-kicker" id="mag-feat-kicker">From the Community · Diabetes</div>
+          <h2 class="feature-title" id="mag-feat-title">Ragi Laddoo</h2>
+          <div class="feature-byline">
+            <div class="ava" id="mag-feat-ava">A</div>
+            <span id="mag-feat-byline">Ashalatha · Bengaluru</span>
+          </div>
+          <p class="feature-lead" id="mag-feat-lead">"Mom's recipe — my kids fight for these. Energy + iron, no sugar."</p>
+          <a class="feature-link" id="mag-feat-link">View complete recipe
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="masthead masthead-spaced">
+      <div class="masthead-title">Your recipes</div>
+    </div>
+    <div class="my-recipes-wrap" id="my-recipes-wrap">
+      <!-- Rendered by renderMyRecipes() — either empty-state card or grid -->
     </div>
   </div>
 </section>
@@ -905,7 +1047,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
   </div>
   <div class="detail-body" id="member-detail-body"></div>
   <div class="bottom-cta">
-    <button class="btn-primary" id="member-submit-btn" data-track="CTA Clicked" data-track-prop-cta_label="Add your dish" data-track-prop-cta_location="member-detail">Add your dish</button>
+    <button class="btn-primary" id="member-submit-btn" data-track="CTA Clicked" data-track-prop-cta_label="Add your recipe" data-track-prop-cta_location="member-detail">Add your recipe</button>
   </div>
 </section>
 <!-- =================== BROWSE =================== -->
@@ -978,6 +1120,36 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
   </div>
   <div class="ar-bottom">
     <button class="btn-primary" id="ar-submit" disabled>Share with the community</button>
+  </div>
+</section>
+
+<!-- =================== POST-SUBMIT SUCCESS SCREEN =================== -->
+<section id="screen-recipe-success" class="screen">
+  <div class="recipe-success">
+    <div class="success-confetti">🌱</div>
+    <div class="success-headline">Your recipe is live</div>
+    <div class="success-sub">Other members will now see it on their Featured page. Thank you for sharing.</div>
+
+    <div class="success-card">
+      <div class="success-card-img" id="success-card-img">Member dish</div>
+      <div class="success-card-body">
+        <div class="success-card-kicker">Shared by you</div>
+        <h2 class="success-card-title" id="success-card-title">Your recipe</h2>
+        <div class="success-card-byline">
+          <div class="ava" id="success-card-ava">Y</div>
+          <span id="success-card-byline">You · India</span>
+        </div>
+        <p class="success-card-lead" id="success-card-lead">"Why it's special"</p>
+      </div>
+    </div>
+
+    <div class="success-actions">
+      <button class="btn-success-share" id="success-share-wa">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+        Share on WhatsApp
+      </button>
+      <button class="btn-success-done" id="success-done">Done — back to home</button>
+    </div>
   </div>
 </section>
 
@@ -1054,6 +1226,7 @@ const STATE = {
   myClubSubmissions:[],  // local user submissions (for instant feedback + offline)
   remoteClubSubmissions:[], // pulled from Supabase if available (in-memory, refreshed)
   walkthroughSeen:false,
+  likedRecipes:[],          // array of recipe keys (name|dish) the user has hearted
   _currentDay:null
 };
 function track(event,props){
@@ -1141,7 +1314,7 @@ function loadState(){
 function saveState(){
   try{
     // Only persist these — skip remoteClubSubmissions (memory-only)
-    const persisted = {user:STATE.user, savedRecipes:STATE.savedRecipes, myClubSubmissions:STATE.myClubSubmissions, walkthroughSeen:STATE.walkthroughSeen};
+    const persisted = {user:STATE.user, savedRecipes:STATE.savedRecipes, myClubSubmissions:STATE.myClubSubmissions, walkthroughSeen:STATE.walkthroughSeen, likedRecipes:STATE.likedRecipes||[]};
     localStorage.setItem('habuild-nut-v2',JSON.stringify(persisted));
   }catch(e){}
 }
@@ -1195,6 +1368,39 @@ async function backendSubmit(submission, photoBlob) {
   }
 }
 
+async function backendUpdate(submissionId, fields, photoBlob) {
+  if (!sb) return { ok: true, local: true };
+  // Only remote rows can be updated server-side. Local-only entries (id starts with 'local-') just update in-memory.
+  const remoteId = submissionId && submissionId.startsWith('remote-') ? submissionId.slice(7) : null;
+  if (!remoteId) return { ok: true, local: true };
+  try {
+    let photoUrl = fields.img || '';
+    if (photoBlob) {
+      try {
+        const fileName = `${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
+        const { error: upErr } = await sb.storage.from('submission-photos')
+          .upload(fileName, photoBlob, { contentType: 'image/jpeg', upsert: false });
+        if (!upErr) {
+          const { data: urlData } = sb.storage.from('submission-photos').getPublicUrl(fileName);
+          photoUrl = urlData.publicUrl;
+        }
+      } catch (photoErr) { console.warn('[backend] update photo upload failed:', photoErr); }
+    }
+    const update = {
+      dish: fields.dish,
+      note: fields.note,
+      condition_tag: fields.tag,
+    };
+    if (photoUrl) update.image_url = photoUrl;
+    const { data, error } = await sb.from('submissions').update(update).eq('id', remoteId).select().single();
+    if (error) throw error;
+    return { ok: true, local: false, submission: rowToSubmission(data) };
+  } catch (e) {
+    console.warn('[backend] update failed, local-only:', e);
+    return { ok: false, local: true };
+  }
+}
+
 async function backendFetchSubmissions() {
   if (!sb) return [];
   try {
@@ -1230,6 +1436,8 @@ function rowToSubmission(row) {
 // Refresh remote submissions in the background
 async function refreshRemoteSubmissions() {
   const remote = await backendFetchSubmissions();
+  // Apply curated recipe overlays (full ingredients/method) for submissions in CURATED_RECIPES
+  remote.forEach(applyCuration);
   STATE.remoteClubSubmissions = remote;
   // Re-render home feed if it's currently shown
   if (document.getElementById('screen-home')?.classList.contains('active')) {
@@ -2186,15 +2394,124 @@ function getTodayRecipe(){
   return dated[0];
 }
 
+// =================== LIKE / HEART STATE ===================
+// Each user has their own like state in localStorage. Recipes get a stable baseline "community"
+// count (deterministic per recipe) so the counter feels real without needing a backend.
+function getRecipeKey(m){
+  return `${(m.name||'').toLowerCase().trim()}|${(m.dish||'').toLowerCase().trim()}`;
+}
+function _baselineLikes(m){
+  const k = getRecipeKey(m);
+  let h = 0;
+  for (let i = 0; i < k.length; i++) h = (h * 31 + k.charCodeAt(i)) & 0x7FFFFFFF;
+  return 12 + (h % 60); // 12–71 baseline
+}
+function isLiked(m){
+  return (STATE.likedRecipes||[]).includes(getRecipeKey(m));
+}
+function getLikeCount(m){
+  return _baselineLikes(m) + (isLiked(m) ? 1 : 0);
+}
+function toggleLike(m){
+  STATE.likedRecipes = STATE.likedRecipes || [];
+  const key = getRecipeKey(m);
+  const idx = STATE.likedRecipes.indexOf(key);
+  if (idx >= 0) STATE.likedRecipes.splice(idx, 1);
+  else STATE.likedRecipes.push(key);
+  saveState();
+  track('Recipe Like Toggled', { recipe_key: key, liked: idx < 0, dish: m.dish, name: m.name });
+  return idx < 0; // returns new "liked" state
+}
+
+// Curated recipe overlay — adds full ingredients/method/condition to specific community submissions
+// where the original Supabase row only had a short note. Keyed by lowercase "name|dish".
+const CURATED_RECIPES = {
+  'rajshree khopkar|ragi oats sugar free cookies': {
+    condition: 'Energy + Iron',
+    tag: 'energy',
+    note: "Mom's recipe — sugar-free, made with ragi, oats and dates. Kids ask for seconds.",
+    why:  "Sugar-free, full of fibre and plant protein — kids genuinely love them.",
+    story: `Mum's go-to evening snack. The trick is roasting the ragi flour slow so the cookies smell nutty, not raw. Dates do all the sweetening — zero sugar.`,
+    recipe: {
+      ingredients: [
+        '1 cup ragi (finger millet) flour',
+        '½ cup rolled oats',
+        '4–5 medjool dates (deseeded, made into a paste)',
+        '3 tbsp ghee (or melted coconut oil)',
+        '2 tbsp peanut butter',
+        '¼ cup mixed nuts (cashew + almond), chopped',
+        '1 tbsp sesame seeds',
+        '½ tsp cardamom powder',
+        'Pinch of salt',
+        '2–3 tbsp warm milk (only if dough feels dry)'
+      ],
+      method: [
+        'Preheat oven to 175°C (350°F)',
+        'Dry-roast ragi flour on slow flame 6–7 min until the raw smell goes — set aside',
+        'Lightly toast the oats in the same pan 2–3 min',
+        'In a bowl, mix ragi flour, oats, sesame seeds, cardamom, salt',
+        'Add dates paste, melted ghee and peanut butter — mix till crumbly',
+        'Add warm milk 1 tbsp at a time until the dough just comes together (slightly stiff, not wet)',
+        'Fold in the chopped nuts',
+        'Pinch portions, roll into balls, flatten gently, score an X on top with a knife',
+        'Place on a lined tray and bake 18–20 min until edges are firm',
+        'Cool fully on the tray — they crisp up as they cool',
+        'Store in an airtight jar — keeps 7–10 days'
+      ]
+    }
+  }
+};
+
+// Apply CURATED_RECIPES overlay to a submission in place (and return it)
+function applyCuration(s){
+  if(!s) return s;
+  const key = `${(s.name||'').toLowerCase().trim()}|${(s.dish||'').toLowerCase().trim()}`;
+  const overlay = CURATED_RECIPES[key];
+  if (overlay) Object.assign(s, overlay);
+  return s;
+}
+
 function getFeatured(){
-  // Prefer Rajshree Khopkar's "Ragi Oats Sugar Free Cookies" community submission if it's loaded from Supabase
-  const all = [...(STATE.remoteClubSubmissions||[]), ...(STATE.myClubSubmissions||[])];
-  const rajshree = all.find(s =>
-    (s.name||'').toLowerCase().includes('rajshree') &&
-    (s.dish||'').toLowerCase().includes('ragi oats')
-  );
-  if (rajshree) return rajshree;
-  return CLUB.find(c=>c.id==='c3')||CLUB[0]; // fallback: Kirti Sarmalkar
+  // Featured = the recipe with the highest like count across community + seeded CLUB.
+  // Hidden dishes are skipped (per HIDE_DISHES list used elsewhere).
+  const HIDE = ['sattu drink', 'ragi laddoo', 'hello recipe', 'hello'];
+  const all = [
+    ...(STATE.remoteClubSubmissions||[]),
+    ...(STATE.myClubSubmissions||[]),
+    ...CLUB
+  ].filter(s => !HIDE.includes((s.dish||'').toLowerCase().trim()));
+
+  if (!all.length) return CLUB[0];
+  // Dedupe by name|dish (covers remote+local overlap)
+  const seen = new Set();
+  const unique = [];
+  for (const s of all) {
+    const k = getRecipeKey(s);
+    if (seen.has(k)) continue;
+    seen.add(k); unique.push(s);
+  }
+  unique.sort((a,b) => getLikeCount(b) - getLikeCount(a));
+  return unique[0];
+}
+
+// All submissions made by the current user — pulled from remote (Supabase) + local, deduped by dish.
+function getMyRecipes(){
+  const myName = (STATE.user.name||'').toLowerCase().trim();
+  if (!myName) return [];
+  // Same hide-list applied across the prototype (test entries from the feedback group)
+  const HIDE = ['sattu drink', 'ragi laddoo', 'hello recipe', 'hello'];
+  const all = [...(STATE.myClubSubmissions||[]), ...(STATE.remoteClubSubmissions||[])];
+  const mine = all.filter(s => (s.name||'').toLowerCase().trim() === myName);
+  const seen = new Set();
+  const out = [];
+  for (const m of mine) {
+    const k = (m.dish||'').toLowerCase().trim();
+    if (!k || seen.has(k)) continue;
+    if (HIDE.includes(k)) continue;
+    seen.add(k);
+    out.push(m);
+  }
+  return out;
 }
 function getOtherMembers(){return CLUB.slice(1);}
 
@@ -2887,7 +3204,7 @@ function getAllMembers() {
   const seen = new Set();
   const out = [];
   // Hide list — submissions to suppress from the featured grid for now (remove later when no longer needed)
-  const HIDE_DISHES = ['sattu drink', 'ragi laddoo']; // Sattu Drink + Ashalatha's Ragi Laddoo
+  const HIDE_DISHES = ['sattu drink', 'ragi laddoo', 'hello recipe', 'hello']; // Sattu Drink + Ashalatha's Ragi Laddoo + test entries
   for(const m of all){
     const dish = (m.dish||'').toLowerCase().trim();
     if (HIDE_DISHES.includes(dish)) continue;
@@ -2910,15 +3227,29 @@ function openMemberDetail(m){
       <div>Add your<br/>recipe</div>
     </div>
   </div>`;
-  const tile = (o) => `<div class="tile" style="background-image:url('${o.img||''}')" data-mid="${o.id}"><div class="name">${o.name} · ${o.dish}</div></div>`;
+  const tile = (o) => {
+    const _l = isLiked(o);
+    const _c = getLikeCount(o);
+    const _h = `<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+    return `<div class="tile" style="background-image:url('${o.img||''}');position:relative;" data-mid="${o.id}"><button class="tile-like ${_l?'liked':''}" data-like-key="${getRecipeKey(o)}">${_h}<span>${_c}</span></button><div class="name">${o.name} · ${o.dish}</div></div>`;
+  };
   const head = others.slice(0,3).map(tile).join('');
   const tail = others.slice(3).map(tile).join('');
   const tilesHtml = head + uploadTile + tail;
   const storyHtml = (m.story || '').split('\n\n').map(p=>`<p>${p}</p>`).join('');
   const ingHtml = (m.recipe && m.recipe.ingredients || []).map(i=>`<li>${i}</li>`).join('');
   const methodHtml = (m.recipe && m.recipe.method || []).map(s=>`<li>${s}</li>`).join('');
+  // Detect own recipe — case-insensitive name match
+  const myName = (STATE.user.name||'').toLowerCase().trim();
+  const isOwn = !!myName && (m.name||'').toLowerCase().trim() === myName;
+  const editPill = isOwn ? `<button class="member-edit-btn" id="member-edit-btn" data-track="CTA Clicked" data-track-prop-cta_label="Edit recipe" data-track-prop-cta_location="member-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Edit this recipe</button>` : '';
+  // Like button overlaid on hero — shows count + heart, filled when liked
+  const _likedNow = isLiked(m);
+  const _likeCount = getLikeCount(m);
+  const heartSvg = `<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+  const heroLikeBtn = `<button class="like-fab ${_likedNow?'liked':''}" id="member-hero-like-btn" data-track="CTA Clicked" data-track-prop-cta_label="Like recipe" data-track-prop-cta_location="member-detail">${heartSvg}<span class="like-count">${_likeCount}</span></button>`;
   document.getElementById('member-detail-body').innerHTML=`
-    <div class="member-hero" style="background-image:url('${m.img||''}')"></div>
+    <div class="member-hero" style="background-image:url('${m.img||''}');position:relative;">${heroLikeBtn}</div>
     <div class="member-info">
       <div class="member-avatar">${m.initial}</div>
       <div>
@@ -2928,6 +3259,7 @@ function openMemberDetail(m){
       </div>
     </div>
     <div class="member-dish-title">${m.dish}</div>
+    ${editPill}
     <div class="member-story">${storyHtml}</div>
     ${ingHtml?`<div class="block">
       <div class="block-title">Ingredients</div>
@@ -2957,24 +3289,82 @@ function openMemberDetail(m){
       openAddRecipe();
     });
   }
+  const editBtn = document.getElementById('member-edit-btn');
+  if(editBtn){
+    editBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      track('Edit Recipe Tapped', { id: m.id });
+      openAddRecipe(m);
+    });
+  }
+  // Hero like button
+  const heroLike = document.getElementById('member-hero-like-btn');
+  if (heroLike) {
+    heroLike.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const liked = toggleLike(m);
+      heroLike.classList.toggle('liked', liked);
+      heroLike.querySelector('.like-count').textContent = getLikeCount(m);
+    });
+  }
+  // Tile like buttons (in More member dishes grid)
+  document.querySelectorAll('.member-grid .tile-like').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.getAttribute('data-like-key');
+      // Reverse-lookup the member object from the key
+      const target = getAllMembers().find(c => getRecipeKey(c) === key);
+      if (!target) return;
+      const liked = toggleLike(target);
+      btn.classList.toggle('liked', liked);
+      btn.querySelector('span').textContent = getLikeCount(target);
+    });
+  });
   go('screen-member');
   track('Member Detail View',{member:m.id});
 }
 
 // =================== ADD RECIPE ===================
 let _arPhoto=null;
-function openAddRecipe(){
-  // reset fields each open
-  document.getElementById('ar-dish').value='';
-  document.getElementById('ar-method').value='';
-  document.getElementById('ar-note').value='';
-  _arPhoto=null;
-  const zone=document.getElementById('ar-photo-zone');
-  zone.style.backgroundImage='';
-  zone.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Add a photo</span><div class="sub">A photo of your dish</div>`;
-  document.getElementById('ar-submit').disabled=true;
+let _editingSubmission=null;
+function openAddRecipe(existing){
+  _editingSubmission = existing || null;
+  const isEdit = !!existing;
+
+  // Prefill or reset fields
+  document.getElementById('ar-dish').value   = isEdit ? (existing.dish || '') : '';
+  const methodText = isEdit && existing.recipe && existing.recipe.method
+    ? existing.recipe.method.join('\n')
+    : '';
+  document.getElementById('ar-method').value = methodText;
+  document.getElementById('ar-note').value   = isEdit ? (existing.note || existing.why || '') : '';
+
+  _arPhoto = isEdit && existing.img ? existing.img : null;
+  const zone = document.getElementById('ar-photo-zone');
+  if (_arPhoto) {
+    zone.innerHTML = '';
+    zone.style.backgroundImage = `url('${_arPhoto}')`;
+  } else {
+    zone.style.backgroundImage = '';
+    zone.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Add a photo</span><div class="sub">A photo of your dish</div>`;
+  }
+
+  // Update screen labels for edit vs create
+  const submitBtn  = document.getElementById('ar-submit');
+  submitBtn.textContent = isEdit ? 'Save changes' : 'Share with the community';
+  const heroTitle  = document.querySelector('#screen-add-recipe .ar-hero-title');
+  if (heroTitle) heroTitle.textContent = isEdit ? 'Edit your recipe' : 'Share your recipe';
+  const heroSub    = document.querySelector('#screen-add-recipe .ar-hero-sub');
+  if (heroSub) heroSub.textContent = isEdit
+    ? 'Update the photo, recipe, or one line on why it\'s special.'
+    : 'A photo, your recipe, one line on why it\'s special. Members like you will learn from you.';
+  const detailHdr  = document.querySelector('#screen-add-recipe .detail-title');
+  if (detailHdr) detailHdr.textContent = isEdit ? 'Edit recipe' : 'Share your recipe';
+
+  // re-run validation (button enabled iff all 3 fields present)
+  arValidate();
   go('screen-add-recipe');
-  track('Add Recipe View');
+  track(isEdit ? 'Edit Recipe View' : 'Add Recipe View', isEdit ? { id: existing.id } : {});
 }
 function arValidate(){
   const dish=document.getElementById('ar-dish').value.trim();
@@ -3006,9 +3396,10 @@ document.getElementById('ar-submit').addEventListener('click', async () => {
   btn.disabled = true;
   btn.textContent = sb ? 'Sending...' : 'Saving...';
 
-  // Build photo blob (if any)
+  // Build photo blob ONLY for newly-picked images (data: URLs).
+  // Existing remote photos are passed through as URLs without re-uploading.
   let photoBlob = null;
-  if (_arPhoto) {
+  if (_arPhoto && _arPhoto.startsWith('data:')) {
     try {
       const res = await fetch(_arPhoto);
       photoBlob = await res.blob();
@@ -3018,6 +3409,63 @@ document.getElementById('ar-submit').addEventListener('click', async () => {
   // Parse method into steps — split on newlines
   const methodSteps = method.split(/\n+/).map(s=>s.trim()).filter(Boolean);
 
+  // ===== EDIT MODE =====
+  if (_editingSubmission) {
+    const existing = _editingSubmission;
+    const fields = {
+      dish, note,
+      tag: existing.tag || existing.condition,
+      img: _arPhoto || existing.img || '',
+    };
+    const result = await backendUpdate(existing.id, fields, photoBlob);
+
+    // Update local mirrors (in-memory) regardless of remote success
+    const updateInList = (list) => {
+      if (!list) return;
+      const i = list.findIndex(s => s.id === existing.id);
+      if (i >= 0) {
+        list[i] = {
+          ...list[i],
+          dish, note, why: note,
+          img: _arPhoto || list[i].img || '',
+          recipe: { ingredients: (list[i].recipe && list[i].recipe.ingredients) || [], method: methodSteps },
+          story: note,
+        };
+      }
+    };
+    updateInList(STATE.myClubSubmissions);
+    updateInList(STATE.remoteClubSubmissions);
+    saveState();
+
+    // If remote update succeeded, also pull fresh list (covers other devices)
+    if (!result.local) {
+      try { await refreshRemoteSubmissions(); } catch(e) {}
+    }
+
+    track('Edit Recipe Submitted', { id: existing.id, mode: result.local ? 'local' : 'remote' });
+
+    const updated = result.submission || {
+      ...existing,
+      dish, note, why: note,
+      img: _arPhoto || existing.img || '',
+      recipe: { ingredients: (existing.recipe && existing.recipe.ingredients) || [], method: methodSteps },
+      story: note,
+    };
+    _lastSubmission = updated;
+    renderRecipeSuccess(updated);
+    // Tweak success copy for edit
+    const head = document.querySelector('#screen-recipe-success .success-headline');
+    if (head) head.textContent = 'Recipe updated';
+    const sub  = document.querySelector('#screen-recipe-success .success-sub');
+    if (sub)  sub.textContent = 'Your changes are live for the community.';
+    go('screen-recipe-success');
+
+    _editingSubmission = null;
+    btn.textContent = 'Share with the community';
+    return;
+  }
+
+  // ===== CREATE MODE =====
   const submission = {
     id: 'local-' + Date.now(),
     name: STATE.user.name || 'You',
@@ -3044,20 +3492,61 @@ document.getElementById('ar-submit').addEventListener('click', async () => {
   await refreshRemoteSubmissions();
 
   track('Add Recipe Submitted', { dish, method_steps: methodSteps.length, mode: result.local ? 'local' : 'remote' });
-  showToast(result.local
-    ? 'Saved on your phone — community sharing coming soon'
-    : 'Your recipe is live in the community');
 
-  // Reset form
+  // Show the success screen with the rendered submission card (instead of the old toast)
+  const justSubmitted = result.submission || submission;
+  _lastSubmission = justSubmitted;
+  renderRecipeSuccess(justSubmitted);
+  // Reset success-screen copy to the create-mode wording (in case it was last set to "Recipe updated")
+  const _sHead = document.querySelector('#screen-recipe-success .success-headline');
+  if (_sHead) _sHead.textContent = 'Your recipe is live';
+  const _sSub  = document.querySelector('#screen-recipe-success .success-sub');
+  if (_sSub) _sSub.textContent = 'Other members will now see it on their Featured page. Thank you for sharing.';
+  go('screen-recipe-success');
+  track('Recipe Success Screen Viewed', { mode: result.local ? 'local' : 'remote' });
+
+  // Reset form (so a fresh open after Done lands on empty state)
   document.getElementById('ar-dish').value = '';
+  document.getElementById('ar-method').value = '';
   document.getElementById('ar-note').value = '';
-  _arPhoto = null; _arTag = null;
-  btn.textContent = 'Add to the Club';
+  _arPhoto = null;
+  document.getElementById('ar-photo-zone').style.backgroundImage = '';
+  btn.textContent = 'Share with the community';
+});
 
-  setTimeout(() => {
-    go('screen-home');
-    renderHome();
-  }, 900);
+// =================== POST-SUBMIT SUCCESS SCREEN ===================
+let _lastSubmission = null;
+
+function renderRecipeSuccess(sub){
+  const img = document.getElementById('success-card-img');
+  if (sub.img) {
+    img.style.backgroundImage = `url('${sub.img}')`;
+    img.classList.remove('no-photo');
+    img.textContent = '';
+  } else {
+    img.style.backgroundImage = '';
+    img.classList.add('no-photo');
+    img.textContent = sub.dish || 'Your recipe';
+  }
+  document.getElementById('success-card-title').textContent = sub.dish || 'Your recipe';
+  document.getElementById('success-card-ava').textContent = (sub.initial || (sub.name||'Y')[0] || 'Y').toUpperCase();
+  document.getElementById('success-card-byline').textContent = `${sub.name || 'You'} · ${sub.loc || 'India'}`;
+  document.getElementById('success-card-lead').textContent = `"${sub.why || sub.note || ''}"`;
+}
+
+document.getElementById('success-done').addEventListener('click', () => {
+  track('Recipe Success Dismissed', { method: 'done' });
+  go('screen-home');
+  renderHome();
+});
+
+document.getElementById('success-share-wa').addEventListener('click', () => {
+  const sub = _lastSubmission;
+  if (!sub) { go('screen-home'); renderHome(); return; }
+  const url = window.location.origin + window.location.pathname;
+  const msg = `I just shared my recipe on Habuild Recipes — ${sub.dish}\n\nCome try the app + share yours:\n${url}`;
+  track('Share Initiated', { share_target: 'whatsapp', content_id: sub.id, content_type: 'own-recipe' });
+  window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
 });
 
 // =================== BROWSE ===================
@@ -3254,14 +3743,12 @@ phoneContinue.addEventListener('click',()=>{
   track('Onboarding Phone Submitted',{fields_filled:2});
   track('Form Submitted',{form_name:'onboarding',fields_filled:2});
   track('Onboarding Completed');
-  // First-time users see the 5-screen walkthrough; returning go straight home
-  if(!STATE.walkthroughSeen){
-    track('Walkthrough Started',{trigger:'new-user'});
-    wtGo(1,'new-user');
-  } else {
-    go('screen-home');
-    renderHome();
-  }
+  // Walkthrough removed — drop straight to home (research: 5 screens too long for this audience,
+  // and members were trying to interact with the static mock cards).
+  STATE.walkthroughSeen = true;
+  saveState();
+  go('screen-home');
+  renderHome();
 });
 
 // =================== WALKTHROUGH (5 feature screens — instrumented for funnel analysis) ===================
@@ -3789,21 +4276,40 @@ function renderHome(){
   document.getElementById('mag-title').innerHTML = t.title.replace(' ', '<br/>');
   document.getElementById('mag-lead').textContent = t.short;
 
-  // Feature
-  document.getElementById('mag-feature-img').style.backgroundImage = `url('${feat.img}')`;
-  document.getElementById('mag-feat-kicker').textContent = `From the Community · ${feat.condition}`;
-  document.getElementById('mag-feat-title').textContent = feat.dish;
-  document.getElementById('mag-feat-ava').textContent = feat.initial;
-  document.getElementById('mag-feat-byline').textContent = `${feat.name} · ${feat.loc}`;
-  document.getElementById('mag-feat-lead').textContent = `"${feat.note}"`;
+  // Feature — defensive: every field has a fallback so the card never collapses on a partial record
+  const featImg = feat.img || 'assets/kirti-ragi-laddu.jpg';
+  document.getElementById('mag-feature-img').style.backgroundImage = `url('${featImg}')`;
+  const featCondition = feat.condition || feat.tag || 'Member dish';
+  document.getElementById('mag-feat-kicker').textContent = `From the Community · ${featCondition}`;
+  document.getElementById('mag-feat-title').textContent = feat.dish || 'Member recipe';
+  document.getElementById('mag-feat-ava').textContent = (feat.initial || (feat.name||'?')[0] || '?').toUpperCase();
+  document.getElementById('mag-feat-byline').textContent = `${feat.name||'Member'} · ${feat.loc||'India'}`;
+  document.getElementById('mag-feat-lead').textContent = `"${feat.note || feat.why || 'A member-shared dish from the community.'}"`;
 
   document.getElementById('mag-cta').onclick = ()=>openTodayDetail(t);
   document.querySelector('.cover-content').onclick = ()=>openTodayDetail(t);
   document.getElementById('mag-feature-card').onclick = ()=>openMemberDetail(feat);
+
+  // Home Featured like button — sync state from feat + wire click
+  const featLikeBtn   = document.getElementById('mag-feat-like');
+  const featLikeCount = document.getElementById('mag-feat-like-count');
+  if (featLikeBtn && featLikeCount) {
+    featLikeBtn.classList.toggle('liked', isLiked(feat));
+    featLikeCount.textContent = getLikeCount(feat);
+    featLikeBtn.onclick = (e) => {
+      e.stopPropagation();   // don't trigger the parent card's openMemberDetail
+      const nowLiked = toggleLike(feat);
+      featLikeBtn.classList.toggle('liked', nowLiked);
+      featLikeCount.textContent = getLikeCount(feat);
+    };
+  }
   // mag-browse & mag-cover-voice & mag-spine elements were removed — skip if missing
   const more=document.getElementById('bp-more'); if(more) more.onclick=()=>openBrowse();
   const homeUp=document.getElementById('upload-cta-home'); if(homeUp) homeUp.onclick=()=>openAddRecipe();
   const faqUp=document.getElementById('faq-cta-home'); if(faqUp) faqUp.onclick=()=>openFAQ();
+
+  // Your recipes section
+  try { renderMyRecipes(); } catch(e) { console.warn('renderMyRecipes failed', e); }
   // Saved link on home — only show when user has saved something
   const savedLink=document.getElementById('home-saved-link');
   const savedCount=document.getElementById('home-saved-count');
@@ -3846,6 +4352,65 @@ function renderHome(){
 
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
 
+// =================== YOUR RECIPES — HOME SECTION ===================
+function renderMyRecipes(){
+  const wrap = document.getElementById('my-recipes-wrap');
+  if (!wrap) return;
+  const recipes = getMyRecipes();
+
+  if (recipes.length === 0) {
+    // Empty state — invite first submission
+    wrap.innerHTML = `
+      <div class="my-recipes-empty" id="my-recipes-empty">
+        <div class="ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        </div>
+        <div class="t">You haven't added a recipe yet</div>
+        <div class="s">Share something you cooked — even one line is fine. Other members will see it.</div>
+        <div class="cta">Add your first recipe →</div>
+      </div>
+    `;
+    const empty = document.getElementById('my-recipes-empty');
+    if (empty) empty.onclick = () => { track('My Recipes Empty Tapped'); openAddRecipe(); };
+    return;
+  }
+
+  // Populated state — 2-col grid of submissions + "Add another" tile at the end
+  const tiles = recipes.map(r => {
+    const imgStyle = r.img ? `style="background-image:url('${r.img}')"` : '';
+    const noPhoto = !r.img ? ' no-photo' : '';
+    const imgInner = r.img ? '' : (r.dish || 'Your recipe');
+    return `
+      <div class="my-recipe-tile" data-rid="${r.id}">
+        <div class="img${noPhoto}" ${imgStyle}>${imgInner}</div>
+        <div class="label">
+          <div class="t">${(r.dish||'Your recipe').replace(/</g,'&lt;')}</div>
+          <div class="you-badge">YOUR RECIPE</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const addTile = `
+    <div class="my-recipe-tile-add" id="my-recipe-add-tile">
+      <div class="ic-c">+</div>
+      <div class="t-c">Add another</div>
+    </div>
+  `;
+
+  wrap.innerHTML = `<div class="my-recipes-grid">${tiles}${addTile}</div>`;
+
+  wrap.querySelectorAll('.my-recipe-tile').forEach(t => {
+    t.addEventListener('click', () => {
+      const id = t.getAttribute('data-rid');
+      const r = recipes.find(x => x.id === id);
+      if (r) openMemberDetail(r);
+    });
+  });
+  const addEl = document.getElementById('my-recipe-add-tile');
+  if (addEl) addEl.onclick = () => { track('My Recipes Add Another'); openAddRecipe(); };
+}
+
 function init(){
   // Force walkthrough preview via ?wt — bypass everything else
   if(new URLSearchParams(location.search).has('wt')){
@@ -3854,13 +4419,12 @@ function init(){
     return;
   }
   if(STATE.user.phone && STATE.user.name){
-    if(!STATE.walkthroughSeen){
-      track('Walkthrough Started',{trigger:'returning-user'});
-      wtGo(1,'returning-user');
-    } else {
-      go('screen-home');
-      renderHome();
-    }
+    // Walkthrough removed — always go straight to home (was triggering on every reload for users
+    // whose walkthroughSeen flag hadn't been set yet)
+    STATE.walkthroughSeen = true;
+    saveState();
+    go('screen-home');
+    renderHome();
   } else if(STATE.user.name){
     go('screen-onb-phone');
   } else {
