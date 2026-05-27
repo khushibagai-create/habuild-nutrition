@@ -169,6 +169,7 @@ body {
   backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
 }
 .badge.condition { background:rgba(255,255,255,0.95); color:var(--forest); }
+.badge.meal { background:rgba(255,255,255,0.92); color:var(--gold); border:1px solid rgba(139,105,20,0.2); }
 .badge.hidden { background:rgba(181,69,69,0.9); color:white; }
 .badge.featured { background:rgba(139,105,20,0.95); color:white; }
 .badge.new { background:rgba(74,124,89,0.95); color:white; }
@@ -382,6 +383,17 @@ body {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <input id="search" type="text" placeholder="Search dish, member, city…">
     </div>
+    <select id="filter-meal">
+      <option value="">All meal types</option>
+      <option value="breakfast">Breakfast</option>
+      <option value="lunch">Lunch</option>
+      <option value="dinner">Dinner</option>
+      <option value="morning-drink">Morning drink</option>
+      <option value="snack">Snack</option>
+      <option value="dessert">Dessert</option>
+      <option value="side">Side / Chutney</option>
+      <option value="__unset">Not categorized</option>
+    </select>
     <select id="filter-condition">
       <option value="">All conditions</option>
       <option value="Diabetes">Diabetes</option>
@@ -462,6 +474,21 @@ body {
             <input id="f-dish" required maxlength="80" placeholder="e.g. Moong Dal Cheela">
           </div>
           <div class="form-field">
+            <label>Meal type</label>
+            <select id="f-meal">
+              <option value="">— none —</option>
+              <option value="breakfast">Breakfast</option>
+              <option value="lunch">Lunch</option>
+              <option value="dinner">Dinner</option>
+              <option value="morning-drink">Morning drink</option>
+              <option value="snack">Snack</option>
+              <option value="dessert">Dessert</option>
+              <option value="side">Side / Chutney</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
             <label>Condition tag</label>
             <select id="f-condition">
               <option value="">— none —</option>
@@ -471,6 +498,10 @@ body {
               <option value="Immunity">Immunity</option>
               <option value="PCOD">PCOD</option>
             </select>
+          </div>
+          <div class="form-field">
+            <label>&nbsp;</label>
+            <div style="font-size:11.5px;color:var(--muted);padding-top:11px;">Meal type is stored locally for now. Add a <code style="font-family:monospace;">meal_type</code> column to Supabase to make it permanent.</div>
           </div>
         </div>
         <div class="form-row">
@@ -516,13 +547,26 @@ let pendingPhotoBlob = null;
 
 const MOD_KEY = 'habuild_dashboard_moderation';
 function loadMod() {
-  try { return JSON.parse(localStorage.getItem(MOD_KEY)) || { hidden:[], featured:[] }; }
-  catch { return { hidden:[], featured:[] }; }
+  try {
+    const m = JSON.parse(localStorage.getItem(MOD_KEY)) || {};
+    return { hidden: m.hidden || [], featured: m.featured || [], mealType: m.mealType || {} };
+  } catch { return { hidden:[], featured:[], mealType:{} }; }
 }
 function saveMod(m) { localStorage.setItem(MOD_KEY, JSON.stringify(m)); }
 let mod = loadMod();
 
-const filters = { q:'', condition:'', date:'all', status:'all', photo:'all' };
+const MEAL_LABELS = {
+  'breakfast':'Breakfast', 'lunch':'Lunch', 'dinner':'Dinner',
+  'morning-drink':'Morning drink', 'snack':'Snack', 'dessert':'Dessert', 'side':'Side'
+};
+function getMealType(id) {
+  // Prefer backend column if present; fall back to localStorage map
+  const r = findRecipe(id);
+  if (r && r.meal_type) return r.meal_type;
+  return mod.mealType[id] || '';
+}
+
+const filters = { q:'', meal:'', condition:'', date:'all', status:'all', photo:'all' };
 
 // ============== HELPERS ==============
 function toast(msg, isError) {
@@ -580,6 +624,12 @@ function applyFilters(list) {
       if (!hay.includes(q)) return false;
     }
     if (filters.condition && r.condition_tag !== filters.condition) return false;
+    if (filters.meal) {
+      const mt = getMealType(r.id);
+      if (filters.meal === '__unset') {
+        if (mt) return false;
+      } else if (mt !== filters.meal) return false;
+    }
     if (filters.date !== 'all') {
       if (!r.created_at) return false;
       const ageH = (Date.now() - new Date(r.created_at)) / (1000*60*60);
@@ -645,9 +695,11 @@ function cardHtml(r) {
   const isHidden = mod.hidden.includes(r.id);
   const isFeatured = mod.featured.includes(r.id);
   const isNew = r.created_at && (Date.now() - new Date(r.created_at)) < 24*60*60*1000;
+  const mealType = getMealType(r.id);
   const badges = [];
   if (isFeatured) badges.push('<span class="badge featured">★ Featured</span>');
   if (isHidden) badges.push('<span class="badge hidden">Hidden</span>');
+  if (mealType) badges.push(`<span class="badge meal">${MEAL_LABELS[mealType] || mealType}</span>`);
   if (r.condition_tag) badges.push(`<span class="badge condition">${r.condition_tag}</span>`);
   if (isNew && !isHidden) badges.push('<span class="badge new">New</span>');
 
@@ -714,6 +766,12 @@ function openView(id) {
       <div class="view-field"><div class="label">Member</div><div class="value">${escapeHtml(r.member_name||'—')}</div></div>
       <div class="view-field"><div class="label">City</div><div class="value">${escapeHtml(r.city||'—')}</div></div>
       <div class="view-field"><div class="label">Condition</div><div class="value">${escapeHtml(r.condition_tag||'—')}</div></div>
+      <div class="view-field"><div class="label">Meal type</div><div class="value">
+        <select onchange="setMealType('${r.id}', this.value)" style="padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-family:inherit;font-size:13px;background:white;">
+          <option value="">— not set —</option>
+          ${Object.entries(MEAL_LABELS).map(([v,l]) => `<option value="${v}" ${getMealType(r.id)===v?'selected':''}>${l}</option>`).join('')}
+        </select>
+      </div></div>
       <div class="view-field"><div class="label">Submitted</div><div class="value">${r.created_at ? new Date(r.created_at).toLocaleString('en-IN') : '—'}</div></div>
     </div>
     ${r.note ? `<div class="view-section"><div class="label">One-line note</div><div class="value">${escapeHtml(r.note)}</div></div>` : ''}
@@ -755,6 +813,7 @@ function openEdit(id) {
   document.getElementById('f-name').value = r.member_name || '';
   document.getElementById('f-city').value = r.city || '';
   document.getElementById('f-condition').value = r.condition_tag || '';
+  document.getElementById('f-meal').value = getMealType(r.id) || '';
   document.getElementById('f-note').value = r.note || '';
   const zone = document.getElementById('photo-zone');
   if (r.image_url) {
@@ -808,6 +867,7 @@ async function submitForm(e) {
   if (!dish || !name) { toast('Dish and member name are required', true); return; }
   const city = document.getElementById('f-city').value.trim();
   const condition = document.getElementById('f-condition').value;
+  const mealType = document.getElementById('f-meal').value;
   const note = document.getElementById('f-note').value.trim();
   const btn = document.getElementById('form-submit');
   const txt = document.getElementById('form-submit-text');
@@ -829,14 +889,22 @@ async function submitForm(e) {
       image_url: photoUrl,
       initial: (name[0] || '?').toUpperCase()
     };
+    let savedId = editingId;
     if (editingId) {
       const { error } = await sb.from('submissions').update(row).eq('id', editingId);
       if (error) throw error;
       toast('Recipe updated');
     } else {
-      const { error } = await sb.from('submissions').insert(row);
+      const { data, error } = await sb.from('submissions').insert(row).select().single();
       if (error) throw error;
+      savedId = data && data.id;
       toast('Recipe added');
+    }
+    // Persist meal type (localStorage today; can graduate to DB column later)
+    if (savedId) {
+      if (mealType) mod.mealType[savedId] = mealType;
+      else delete mod.mealType[savedId];
+      saveMod(mod);
     }
     closeModals();
     await fetchRecipes();
@@ -847,6 +915,14 @@ async function submitForm(e) {
     btn.disabled = false;
     txt.textContent = editingId ? 'Save changes' : 'Save recipe';
   }
+}
+
+function setMealType(id, value) {
+  if (value) mod.mealType[id] = value;
+  else delete mod.mealType[id];
+  saveMod(mod);
+  render();
+  toast(value ? `Tagged as ${MEAL_LABELS[value]}` : 'Meal type cleared');
 }
 
 function toggleHide(id) {
@@ -896,8 +972,9 @@ async function deleteRecipe(id) {
 }
 
 function clearAllFilters() {
-  filters.q = ''; filters.condition = ''; filters.date = 'all'; filters.status = 'all'; filters.photo = 'all';
+  filters.q = ''; filters.meal = ''; filters.condition = ''; filters.date = 'all'; filters.status = 'all'; filters.photo = 'all';
   document.getElementById('search').value = '';
+  document.getElementById('filter-meal').value = '';
   document.getElementById('filter-condition').value = '';
   document.querySelectorAll('.pill-group').forEach(g => {
     g.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.dataset.val === 'all'));
@@ -907,6 +984,7 @@ function clearAllFilters() {
 
 // ============== BIND ==============
 document.getElementById('search').addEventListener('input', debounce(e => { filters.q = e.target.value; render(); }, 180));
+document.getElementById('filter-meal').addEventListener('change', e => { filters.meal = e.target.value; render(); });
 document.getElementById('filter-condition').addEventListener('change', e => { filters.condition = e.target.value; render(); });
 document.getElementById('filter-date').addEventListener('click', e => {
   if (e.target.classList.contains('pill')) {
@@ -946,6 +1024,7 @@ window.deleteRecipe = deleteRecipe;
 window.copyPhone = copyPhone;
 window.closeModals = closeModals;
 window.clearAllFilters = clearAllFilters;
+window.setMealType = setMealType;
 
 // Boot
 fetchRecipes();
